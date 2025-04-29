@@ -1,20 +1,18 @@
-import { fileURLToPath, URL } from 'node:url';
-import { ConfigEnv, UserConfig } from 'vite';
+import {fileURLToPath, URL} from 'node:url';
+import {ConfigEnv, UserConfig} from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import compression from 'vite-plugin-compression';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
-import vueDevTools from 'vite-plugin-vue-devtools';
-import { visualizer } from 'rollup-plugin-visualizer';
-import { proxy } from './src/config/proxy';
-import { cool } from '@cool-vue/vite-plugin';
+import {proxy} from './src/config/proxy';
+import {cool} from '@cool-vue/vite-plugin';
 
 function toPath(dir: string) {
 	return fileURLToPath(new URL(dir, import.meta.url));
 }
 
 // https://vitejs.dev/config
-export default ({ mode }: ConfigEnv): UserConfig => {
+export default ({mode}: ConfigEnv): UserConfig => {
 	const isDev = mode === 'development';
 
 	return {
@@ -45,7 +43,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
 		],
 		base: '/',
 		server: {
-			port: 9000,
+			port: 0,
 			proxy,
 			hmr: {
 				overlay: true

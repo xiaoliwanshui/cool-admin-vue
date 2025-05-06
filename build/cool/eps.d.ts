@@ -679,22 +679,7 @@ declare namespace Eps {
 		/**
 		 * 专题关联类型
 		 */
-		type?: number;
-
-		/**
-		 * create_at
-		 */
-		create_at?: BigInt;
-
-		/**
-		 * update_at
-		 */
-		update_at?: BigInt;
-
-		/**
-		 * update_at
-		 */
-		site_id?: number;
+		category_id?: number;
 
 		/**
 		 * 创建时间
@@ -2550,14 +2535,9 @@ declare namespace Eps {
 		title?: string;
 
 		/**
-		 * 分类一级id
+		 * 分类
 		 */
-		category_pid?: BigInt;
-
-		/**
-		 * 分类二级id
-		 */
-		category_child_id?: BigInt;
+		category_id?: number;
 
 		/**
 		 * 影片封面图
@@ -2637,12 +2617,12 @@ declare namespace Eps {
 		/**
 		 * 自定义语言
 		 */
-		language?: string;
+		language?: number;
 
 		/**
 		 * 自定义地区
 		 */
-		region?: string;
+		region?: number;
 
 		/**
 		 * 连载状态
@@ -3133,19 +3113,24 @@ declare namespace Eps {
 		class_id?: number;
 
 		/**
-		 * 采集资源分类id
-		 */
-		category_id?: number;
-
-		/**
-		 * 采集资源分类
+		 * 采集资源分类名称
 		 */
 		class_name?: string;
 
 		/**
-		 * 系统分类id
+		 * 采集资源分类父id
 		 */
-		category_child_id?: number;
+		class_pid?: string;
+
+		/**
+		 * 采集资源分类pid
+		 */
+		parentId?: number;
+
+		/**
+		 * 系统资源分类id
+		 */
+		sys_category_id?: number;
 
 		/**
 		 * 收费模式 1免费 2vip免费 3金币点播
@@ -3161,21 +3146,6 @@ declare namespace Eps {
 		 * 购买模式 1按部 2按集
 		 */
 		buy_mode?: number;
-
-		/**
-		 * create_at
-		 */
-		create_at?: BigInt;
-
-		/**
-		 * update_at
-		 */
-		update_at?: BigInt;
-
-		/**
-		 * 站点id
-		 */
-		site_id?: BigInt;
 
 		/**
 		 * 创建时间
@@ -3347,16 +3317,6 @@ declare namespace Eps {
 		json_server?: string;
 
 		/**
-		 * create_at
-		 */
-		create_at?: BigInt;
-
-		/**
-		 * update_at
-		 */
-		update_at?: BigInt;
-
-		/**
 		 * 创建时间
 		 */
 		createTime?: string;
@@ -3437,21 +3397,6 @@ declare namespace Eps {
 		 * 排序
 		 */
 		sort?: number;
-
-		/**
-		 * create_at
-		 */
-		create_at?: BigInt;
-
-		/**
-		 * update_at
-		 */
-		update_at?: BigInt;
-
-		/**
-		 * 站点id
-		 */
-		site_id?: number;
 
 		/**
 		 * 标识
@@ -3568,14 +3513,9 @@ declare namespace Eps {
 		title?: string;
 
 		/**
-		 * 分类一级id
+		 * 分类
 		 */
-		category_pid?: BigInt;
-
-		/**
-		 * 分类二级id
-		 */
-		category_child_id?: BigInt;
+		category_id?: number;
 
 		/**
 		 * 影片封面图
@@ -3688,16 +3628,6 @@ declare namespace Eps {
 		status?: BigInt;
 
 		/**
-		 * 创建时间
-		 */
-		create_at?: BigInt;
-
-		/**
-		 * 创建时间
-		 */
-		update_at?: BigInt;
-
-		/**
 		 * 时长(单位s)
 		 */
 		duration?: BigInt;
@@ -3705,12 +3635,12 @@ declare namespace Eps {
 		/**
 		 * 自定义地区
 		 */
-		region?: string;
+		region?: number;
 
 		/**
 		 * 自定义语言
 		 */
-		language?: string;
+		language?: number;
 
 		/**
 		 * 自定义标签
@@ -3788,11 +3718,6 @@ declare namespace Eps {
 		watch?: BigInt;
 
 		/**
-		 * collection_id
-		 */
-		collection_id?: BigInt;
-
-		/**
 		 * use_local_image
 		 */
 		use_local_image?: number;
@@ -3806,21 +3731,6 @@ declare namespace Eps {
 		 * 片尾时间
 		 */
 		trailer_time?: number;
-
-		/**
-		 * 站点id
-		 */
-		site_id?: number;
-
-		/**
-		 * 顶级分类状态
-		 */
-		category_pid_status?: number;
-
-		/**
-		 * 子级分类状态
-		 */
-		category_child_id_status?: number;
 
 		/**
 		 * 采集的源地址
@@ -3841,16 +3751,6 @@ declare namespace Eps {
 		 * 更新时间
 		 */
 		updateTime?: string;
-
-		/**
-		 * 分类名称
-		 */
-		category_name?: string;
-
-		/**
-		 * 分类名称
-		 */
-		category_child_name?: string;
 
 		/**
 		 * 任意键值
@@ -3893,21 +3793,6 @@ declare namespace Eps {
 		 * 排序
 		 */
 		sort?: number;
-
-		/**
-		 * create_at
-		 */
-		create_at?: BigInt;
-
-		/**
-		 * update_at
-		 */
-		update_at?: BigInt;
-
-		/**
-		 * 站点id
-		 */
-		site_id?: number;
 
 		/**
 		 * 标识
@@ -4089,16 +3974,6 @@ declare namespace Eps {
 		title?: string;
 
 		/**
-		 * 分类一级id
-		 */
-		category_pid?: BigInt;
-
-		/**
-		 * 分类二级id
-		 */
-		category_child_id?: BigInt;
-
-		/**
 		 * 影片封面图
 		 */
 		surface_plot?: string;
@@ -4176,12 +4051,12 @@ declare namespace Eps {
 		/**
 		 * 自定义语言
 		 */
-		language?: string;
+		language?: number;
 
 		/**
 		 * 自定义地区
 		 */
-		region?: string;
+		region?: number;
 
 		/**
 		 * 连载状态
@@ -6663,11 +6538,6 @@ declare namespace Eps {
 		collection_day(data?: any): Promise<any>;
 
 		/**
-		 * sync_category
-		 */
-		sync_category(data?: any): Promise<any>;
-
-		/**
 		 * 删除
 		 */
 		delete(data?: any): Promise<any>;
@@ -6706,7 +6576,6 @@ declare namespace Eps {
 		 */
 		permission: {
 			collection_day: string;
-			sync_category: string;
 			delete: string;
 			update: string;
 			info: string;
@@ -6720,7 +6589,6 @@ declare namespace Eps {
 		 */
 		_permission: {
 			collection_day: boolean;
-			sync_category: boolean;
 			delete: boolean;
 			update: boolean;
 			info: boolean;
@@ -6733,6 +6601,11 @@ declare namespace Eps {
 	}
 
 	interface VideoCollection_category {
+		/**
+		 * sync_category
+		 */
+		sync_category(data?: any): Promise<any>;
+
 		/**
 		 * 删除
 		 */
@@ -6771,6 +6644,7 @@ declare namespace Eps {
 		 * 权限标识
 		 */
 		permission: {
+			sync_category: string;
 			delete: string;
 			update: string;
 			info: string;
@@ -6783,6 +6657,7 @@ declare namespace Eps {
 		 * 权限状态
 		 */
 		_permission: {
+			sync_category: boolean;
 			delete: boolean;
 			update: boolean;
 			info: boolean;
@@ -7390,5 +7265,42 @@ declare namespace Eps {
 		};
 	};
 
-	type DictKey = "brand" | "occupation" | "video_data_method";
+	type DictKey =
+		| "wallpaperTags"
+		| "wallpaperType"
+		| "songTags"
+		| "songAlbumType"
+		| "goodsTags"
+		| "goodsType"
+		| "appType"
+		| "appTags"
+		| "agreementType"
+		| "orderStatus"
+		| "integralType"
+		| "appModule"
+		| "emailType"
+		| "specialType"
+		| "flix"
+		| "documentType"
+		| "documentTags"
+		| "updateType"
+		| "commonType"
+		| "messageType"
+		| "friendApplyStatus"
+		| "liveStatus"
+		| "liveType"
+		| "liveTags"
+		| "week"
+		| "index-tabs"
+		| "comicTags"
+		| "area"
+		| "language"
+		| "cloudDiskType"
+		| "pageType"
+		| "comicUpdateStatus"
+		| "comicType"
+		| "videoM3u8SliceStatus"
+		| "cloudDiskTags"
+		| "songType"
+		| "video_category";
 }

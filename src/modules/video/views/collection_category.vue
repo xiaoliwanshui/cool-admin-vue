@@ -3,8 +3,6 @@
 		<cl-row>
 			<!-- 刷新按钮 -->
 			<cl-refresh-btn/>
-			<!-- 新增按钮 -->
-			<cl-add-btn/>
 			<!-- 删除按钮 -->
 			<cl-multi-delete-btn/>
 
@@ -30,43 +28,51 @@
 </template>
 
 <script lang="ts" name="video-collection_category" setup>
+import {onMounted, ref} from "vue";
 import {useCrud, useTable, useUpsert} from "@cool-vue/crud";
 import {useCool} from "/@/cool";
+import {useDict} from "/$/dict";
+import {Plugins} from '/#/crud';
 
 const {service} = useCool();
+
+
+const {dict} = useDict();
+
+const collectionList = ref([])
+
+onMounted(() => {
+	videoCollection()
+});
+
+const videoCollection = async () => {
+	collectionList.value = (await service.video.collection.list())?.map(item => {
+		return {
+			label: item.name,
+			value: item.id
+		}
+	})
+};
+
 
 // cl-upsert
 const Upsert = useUpsert({
 	items: [
 		{
-			label: "创建人",
-			prop: "createUserId",
-			component: {name: "el-input", props: {clearable: true}}
-		},
-		{
-			label: "修改人",
-			prop: "updateUserId",
-			component: {name: "el-input", props: {clearable: true}}
-		},
-		{
-			label: "资源id",
-			prop: "resource_id",
-			component: {name: "el-input", props: {clearable: true}}
-		},
-		{
-			label: "采集资源分类id",
-			prop: "class_id",
-			component: {name: "el-input", props: {clearable: true}}
-		},
-		{
-			label: "采集资源分类",
+			label: "资源分类",
 			prop: "class_name",
-			component: {name: "el-input", props: {clearable: true}}
+			component: {name: "el-input", props: {disabled: true}}
 		},
 		{
-			label: "系统分类id",
-			prop: "category_child_id",
-			component: {name: "el-input", props: {clearable: true}}
+			label: "系统分类",
+			prop: "sys_category_id",
+			component: {
+				name: 'el-tree-select',
+				props: {
+					data: dict.get('video_category'),
+					checkStrictly: true
+				}
+			}
 		},
 		{
 			label: "收费模式",
@@ -82,21 +88,6 @@ const Upsert = useUpsert({
 			label: "购买模式",
 			prop: "buy_mode",
 			component: {name: "el-input", props: {clearable: true}}
-		},
-		{
-			label: "create_at",
-			prop: "create_at",
-			component: {name: "el-input", props: {clearable: true}}
-		},
-		{
-			label: "update_at",
-			prop: "update_at",
-			component: {name: "el-input", props: {clearable: true}}
-		},
-		{
-			label: "站点id",
-			prop: "site_id",
-			component: {name: "el-input", props: {clearable: true}}
 		}
 	]
 });
@@ -105,22 +96,26 @@ const Upsert = useUpsert({
 const Table = useTable({
 	columns: [
 		{type: "selection"},
-		{label: "资源id", prop: "resource_id", minWidth: 140},
+		{label: "资源id", prop: "resource_id", minWidth: 140, dict: collectionList},
 		{label: "采集资源分类id", prop: "class_id", minWidth: 140},
 		{label: "采集资源分类", prop: "class_name", minWidth: 140},
-		{label: "系统分类id", prop: "category_child_id", minWidth: 140},
+		{
+			label: "系统分类", prop: "sys_category_id", minWidth: 140, dict: dict.get('video_category'),
+			dictColor: true,
+			minWidth: 150,
+			dictAllLevels: true, // 显示所有等级
+		},
 		{label: "收费模式", prop: "charging_mode", minWidth: 140},
 		{label: "金币点播值", prop: "gold", minWidth: 140},
 		{label: "购买模式", prop: "buy_mode", minWidth: 140},
-		{label: "create_at", prop: "create_at", minWidth: 140},
-		{label: "update_at", prop: "update_at", minWidth: 140},
-		{label: "站点id", prop: "site_id", minWidth: 140},
 		{label: "创建人", prop: "createUserId", minWidth: 140},
 		{label: "修改人", prop: "updateUserId", minWidth: 140},
 		{label: "创建时间", prop: "createTime", minWidth: 140, sortable: "desc"},
 		{label: "更新时间", prop: "updateTime", minWidth: 140},
 		{type: "op", buttons: ["edit", "delete"]}
-	]
+	],
+//【很重要】配置插件
+	plugins: [Plugins.Table.toTree()]
 });
 
 // cl-crud

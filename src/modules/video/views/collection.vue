@@ -91,18 +91,16 @@ const Upsert = useUpsert({
 			component: {name: "el-input", props: {clearable: true}}
 		},
 		{
-			label: "数据类型:1JSON",
+			label: "数据类型",
 			prop: "data_method",
 			required: true,
 			component: {
-				name: "el-select",
-				options: dict.get("video_data_method")
-			}
-		},
-		{
-			label: "数据类型:1视频",
-			prop: "data_type",
-			component: {name: "el-input", props: {clearable: true}}
+				name: "el-radio-group",
+				options: [
+					{value: 1, label: "JSON"},
+					{value: 2, label: "XML"}
+				]
+			},
 		},
 		{
 			label: "地址",
@@ -110,110 +108,15 @@ const Upsert = useUpsert({
 			component: {name: "el-input", props: {clearable: true}}
 		},
 		{
-			label: "参数",
-			prop: "param",
-			component: {name: "el-input", props: {clearable: true}}
-		},
-		{
-			label: "收费模式",
-			prop: "charging_mode",
-			component: {name: "el-input", props: {clearable: true}}
-		},
-		{
-			label: "数据操作",
-			prop: "data_handle",
-			component: {name: "el-input", props: {clearable: true}}
-		},
-		{
-			label: "请求日志id",
-			prop: "log_id",
-			component: {name: "el-input", props: {clearable: true}}
-		},
-		{
-			label: "超管平台资源id",
-			prop: "sr_id",
-			component: {name: "el-input", props: {clearable: true}}
-		},
-		{
-			label: "COMMENT",
-			prop: "status",
-			component: {name: "el-input", props: {clearable: true}}
-		},
-		{
 			label: "说明",
 			prop: "desc",
 			component: {name: "el-input", props: {clearable: true}}
 		},
-		{
-			label: "来源",
-			prop: "tags",
-			component: {name: "el-input", props: {clearable: true}}
-		},
-		{
-			label: "来源",
-			prop: "color",
-			component: {name: "el-input", props: {clearable: true}}
-		},
-		{
-			label: "来源",
-			prop: "bold",
-			component: {name: "el-input", props: {clearable: true}}
-		},
-		{
-			label: "适用系统:sda-精品",
-			prop: "cms",
-			component: {name: "el-input", props: {clearable: true}}
-		},
-		{
-			label: "关联播放器ID",
-			prop: "player_id",
-			component: {name: "el-input", props: {clearable: true}}
-		},
-		{
-			label: "是否匹配资源播放器",
-			prop: "match_player",
-			component: {name: "el-input", props: {clearable: true}}
-		},
-		{
-			label: "是否启用解析,1-是，2-否",
-			prop: "use_parse",
-			component: {name: "el-input", props: {clearable: true}}
-		},
-		{
-			label: "解析地址，视频播放地址",
-			prop: "parse_address",
-			component: {name: "el-input", props: {clearable: true}}
-		},
-		{
-			label: "排序",
-			prop: "sort",
-			component: {name: "el-input", props: {clearable: true}}
-		},
-		{
-			label: "创建人",
-			prop: "createUserId",
-			component: {name: "el-input", props: {clearable: true}}
-		},
-		{
-			label: "修改人",
-			prop: "updateUserId",
-			component: {name: "el-input", props: {clearable: true}}
-		},
-		{
-			label: "create_at",
-			prop: "create_at",
-			component: {name: "el-input", props: {clearable: true}}
-		},
-		{
-			label: "update_at",
-			prop: "update_at",
-			component: {name: "el-input", props: {clearable: true}}
-		}
 	],
 });
 
 const syncCategory = async (scope) => {
-	service.video.collection.sync_category(scope.row);
+	service.video.collection_category.sync_category(scope.row);
 }
 
 // cl-table
@@ -321,13 +224,11 @@ async function fetchEventStream(url) {
 		const text = decoder.decode(value);
 		const data = qs.parse(text);
 		if (data) {
-			console.log(data.video)
 			if (data.video) {
 				tableData.value.push({
 					...data.video,
 					updateType: data.type,
 				})
-				console.log('data====>', tableData.value)
 			}
 
 		}

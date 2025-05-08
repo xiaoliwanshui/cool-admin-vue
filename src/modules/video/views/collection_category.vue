@@ -3,12 +3,22 @@
 		<cl-row>
 			<!-- 刷新按钮 -->
 			<cl-refresh-btn/>
+			<!--快速绑定分类-->
+			<el-button @click="matchCategory">快速绑定分类</el-button>
 			<!-- 删除按钮 -->
 			<cl-multi-delete-btn/>
 
 			<cl-flex1/>
 			<!-- 关键字搜索 -->
 			<cl-search-key placeholder="搜索关键字"/>
+			<cl-filter label="资源">
+				<cl-select
+					:options="collectionList"
+					:width="140"
+					check-strictly
+					prop="resource_id"
+				/>
+			</cl-filter>
 		</cl-row>
 
 		<cl-row>
@@ -54,6 +64,10 @@ const videoCollection = async () => {
 	})
 };
 
+const matchCategory = () => {
+	service.video.collection_category.match_category()
+}
+
 
 // cl-upsert
 const Upsert = useUpsert({
@@ -96,9 +110,9 @@ const Upsert = useUpsert({
 const Table = useTable({
 	columns: [
 		{type: "selection"},
-		{label: "资源id", prop: "resource_id", minWidth: 140, dict: collectionList},
-		{label: "采集资源分类id", prop: "class_id", minWidth: 140},
+		{label: "资源", prop: "collection_name", minWidth: 140},
 		{label: "采集资源分类", prop: "class_name", minWidth: 140},
+		{label: "采集资源分类id", prop: "class_id", minWidth: 140},
 		{
 			label: "系统分类", prop: "sys_category_id", minWidth: 140, dict: dict.get('video_category'),
 			dictColor: true,

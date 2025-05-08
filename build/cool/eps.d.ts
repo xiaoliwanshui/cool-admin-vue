@@ -188,6 +188,58 @@ declare namespace Eps {
 		[key: string]: any;
 	}
 
+	interface NoticeInfoEntity {
+		/**
+		 * ID
+		 */
+		id?: number;
+
+		/**
+		 * 创建用户ID
+		 */
+		createUserId?: number;
+
+		/**
+		 * 更新用户ID
+		 */
+		updateUserId?: number;
+
+		/**
+		 * 标题
+		 */
+		title?: string;
+
+		/**
+		 * 内容
+		 */
+		content?: longtext;
+
+		/**
+		 * 类型
+		 */
+		type?: number;
+
+		/**
+		 * 状态
+		 */
+		status?: number;
+
+		/**
+		 * 创建时间
+		 */
+		createTime?: string;
+
+		/**
+		 * 更新时间
+		 */
+		updateTime?: string;
+
+		/**
+		 * 任意键值
+		 */
+		[key: string]: any;
+	}
+
 	interface BaseSysDepartmentEntity {
 		/**
 		 * ID
@@ -3105,7 +3157,12 @@ declare namespace Eps {
 		/**
 		 * 资源id
 		 */
-		resource_id?: number;
+		collection_id?: number;
+
+		/**
+		 * 资源名称
+		 */
+		collection_name?: string;
 
 		/**
 		 * 采集资源分类id
@@ -3354,6 +3411,11 @@ declare namespace Eps {
 		video_id?: BigInt;
 
 		/**
+		 * 影视名称
+		 */
+		video_name?: string;
+
+		/**
 		 * 资源ID
 		 */
 		video_line_id?: BigInt;
@@ -3362,6 +3424,16 @@ declare namespace Eps {
 		 * 名称
 		 */
 		name?: string;
+
+		/**
+		 * 资源id
+		 */
+		collection_id?: number;
+
+		/**
+		 * 资源名称
+		 */
+		collection_name?: string;
 
 		/**
 		 * 文件地址
@@ -3456,14 +3528,9 @@ declare namespace Eps {
 		relatedId?: number;
 
 		/**
-		 * appid
+		 * category
 		 */
-		appid?: number;
-
-		/**
-		 * 类型
-		 */
-		type?: number;
+		category?: number;
 
 		/**
 		 * 排序
@@ -3780,9 +3847,19 @@ declare namespace Eps {
 		video_id?: BigInt;
 
 		/**
+		 * 影视名称
+		 */
+		video_name?: string;
+
+		/**
 		 * 名称
 		 */
-		name?: string;
+		collection_name?: string;
+
+		/**
+		 * 资源id
+		 */
+		collection_id?: number;
 
 		/**
 		 * 关联播放器ID
@@ -4265,6 +4342,68 @@ declare namespace Eps {
 		page(data?: any): Promise<{
 			pagination: { size: number; page: number; total: number; [key: string]: any };
 			list: AppMenuEntity[];
+			[key: string]: any;
+		}>;
+
+		/**
+		 * 新增
+		 */
+		add(data?: any): Promise<any>;
+
+		/**
+		 * 权限标识
+		 */
+		permission: {
+			delete: string;
+			update: string;
+			info: string;
+			list: string;
+			page: string;
+			add: string;
+		};
+
+		/**
+		 * 权限状态
+		 */
+		_permission: {
+			delete: boolean;
+			update: boolean;
+			info: boolean;
+			list: boolean;
+			page: boolean;
+			add: boolean;
+		};
+
+		request: Service["request"];
+	}
+
+	interface ApplicationNoticeInfo {
+		/**
+		 * 删除
+		 */
+		delete(data?: any): Promise<any>;
+
+		/**
+		 * 修改
+		 */
+		update(data?: any): Promise<any>;
+
+		/**
+		 * 单个信息
+		 */
+		info(data?: any): Promise<NoticeInfoEntity>;
+
+		/**
+		 * 列表查询
+		 */
+		list(data?: any): Promise<NoticeInfoEntity[]>;
+
+		/**
+		 * 分页查询
+		 */
+		page(data?: any): Promise<{
+			pagination: { size: number; page: number; total: number; [key: string]: any };
+			list: NoticeInfoEntity[];
 			[key: string]: any;
 		}>;
 
@@ -6471,6 +6610,11 @@ declare namespace Eps {
 
 	interface VideoCategory {
 		/**
+		 * match_category
+		 */
+		match_category(data?: any): Promise<any>;
+
+		/**
 		 * 删除
 		 */
 		delete(data?: any): Promise<any>;
@@ -6508,6 +6652,7 @@ declare namespace Eps {
 		 * 权限标识
 		 */
 		permission: {
+			match_category: string;
 			delete: string;
 			update: string;
 			info: string;
@@ -6520,6 +6665,7 @@ declare namespace Eps {
 		 * 权限状态
 		 */
 		_permission: {
+			match_category: boolean;
 			delete: boolean;
 			update: boolean;
 			info: boolean;
@@ -6602,6 +6748,11 @@ declare namespace Eps {
 
 	interface VideoCollection_category {
 		/**
+		 * match_category
+		 */
+		match_category(data?: any): Promise<any>;
+
+		/**
 		 * sync_category
 		 */
 		sync_category(data?: any): Promise<any>;
@@ -6644,6 +6795,7 @@ declare namespace Eps {
 		 * 权限标识
 		 */
 		permission: {
+			match_category: string;
 			sync_category: string;
 			delete: string;
 			update: string;
@@ -6657,6 +6809,7 @@ declare namespace Eps {
 		 * 权限状态
 		 */
 		_permission: {
+			match_category: boolean;
 			sync_category: boolean;
 			delete: boolean;
 			update: boolean;
@@ -7204,7 +7357,11 @@ declare namespace Eps {
 			[key: string]: any;
 		}): Promise<any>;
 
-		application: { appList: ApplicationAppList; appMenu: ApplicationAppMenu };
+		application: {
+			appList: ApplicationAppList;
+			appMenu: ApplicationAppMenu;
+			noticeInfo: ApplicationNoticeInfo;
+		};
 		base: {
 			coding: BaseCoding;
 			comm: BaseComm;
@@ -7302,5 +7459,6 @@ declare namespace Eps {
 		| "videoM3u8SliceStatus"
 		| "cloudDiskTags"
 		| "songType"
-		| "video_category";
+		| "video_category"
+		| "notice_type";
 }

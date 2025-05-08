@@ -2,44 +2,45 @@
 	<cl-crud ref="Crud">
 		<cl-row>
 			<!-- 刷新按钮 -->
-			<cl-refresh-btn />
+			<cl-refresh-btn/>
 			<!-- 新增按钮 -->
-			<cl-add-btn />
+			<cl-add-btn/>
 			<!-- 删除按钮 -->
-			<cl-multi-delete-btn />
-			<cl-flex1 />
+			<cl-multi-delete-btn/>
+			<cl-flex1/>
 			<!-- 关键字搜索 -->
-			<cl-search ref="Search" />
+			<cl-search ref="Search"/>
 		</cl-row>
 
 		<cl-row>
 			<!-- 数据表格 -->
-			<cl-table ref="Table" />
+			<cl-table ref="Table"/>
 		</cl-row>
 
 		<cl-row>
-			<cl-flex1 />
+			<cl-flex1/>
 			<!-- 分页控件 -->
-			<cl-pagination />
+			<cl-pagination/>
 		</cl-row>
 
 		<!-- 新增、编辑 -->
-		<cl-upsert ref="Upsert" />
+		<cl-upsert ref="Upsert"/>
 	</cl-crud>
-	<cl-dialog title="视频预览" v-model="visible" height="auto" :before-close="beforeClose">
+	<cl-dialog v-model="visible" :before-close="beforeClose" height="auto" title="视频预览">
 		<div id="playerRefDom"></div>
 	</cl-dialog>
 </template>
 
 <script lang="ts" name="video-play_line" setup>
-import { useCrud, useTable, useUpsert, useSearch } from "@cool-vue/crud";
-import { useCool } from "/@/cool";
-import { nextTick, ref } from "vue";
+import {useCrud, useSearch, useTable, useUpsert} from "@cool-vue/crud";
+import {useCool} from "/@/cool";
+import {nextTick, ref} from "vue";
 import Artplayer from "artplayer";
 import artplayerPluginHlsQuality from "artplayer-plugin-hls-quality";
 import Hls from "hls.js";
+
 const ArtplayerContainer = ref<Artplayer>();
-const { service } = useCool();
+const {service} = useCool();
 const visible = ref<boolean>(false);
 const beforeClose = (done) => {
 	ArtplayerContainer.value.destroy();
@@ -122,56 +123,56 @@ const Upsert = useUpsert({
 			label: "影视ID",
 			prop: "video_id",
 			hook: "number",
-			component: { name: "el-input-number" }
+			component: {name: "el-input-number"}
 		},
 		{
 			label: "资源ID",
 			prop: "video_line_id",
 			hook: "number",
-			component: { name: "el-input-number" }
+			component: {name: "el-input-number"}
 		},
 		{
 			label: "名称",
 			prop: "name",
-			component: { name: "el-input", props: { clearable: true } },
+			component: {name: "el-input", props: {clearable: true}},
 			required: true
 		},
 		{
 			label: "文件地址",
 			prop: "file",
-			component: { name: "el-input", props: { type: "textarea", rows: 4 } }
+			component: {name: "el-input", props: {type: "textarea", rows: 4}}
 		},
 		{
 			label: "收费模式",
 			prop: "charging_mode",
 			hook: "number",
-			component: { name: "el-input-number" }
+			component: {name: "el-input-number"}
 		},
 		{
 			label: "金币数量",
 			prop: "currency",
 			hook: "number",
-			component: { name: "el-input-number" }
+			component: {name: "el-input-number"}
 		},
 		{
 			label: "副标题",
 			prop: "sub_title",
-			component: { name: "el-input", props: { clearable: true } }
+			component: {name: "el-input", props: {clearable: true}}
 		},
-		{ label: "状态", prop: "status", hook: "number", component: { name: "el-input-number" } },
+		{label: "状态", prop: "status", hook: "number", component: {name: "el-input-number"}},
 		{
 			label: "直播源",
 			prop: "live_source",
 			flex: false,
-			component: { name: "cl-switch" }
+			component: {name: "cl-switch"}
 		},
-		{ label: "排序", prop: "sort", hook: "number", component: { name: "el-input-number" } },
+		{label: "排序", prop: "sort", hook: "number", component: {name: "el-input-number"}},
 		{
 			label: "create_at",
 			prop: "create_at",
 			component: {
 				name: "el-date-picker",
-				props: { type: "date", valueFormat: "YYYY-MM-DD" }
+				props: {type: "date", valueFormat: "YYYY-MM-DD"}
 			}
 		},
 		{
@@ -179,69 +180,54 @@ const Upsert = useUpsert({
 			prop: "update_at",
 			component: {
 				name: "el-date-picker",
-				props: { type: "date", valueFormat: "YYYY-MM-DD" }
+				props: {type: "date", valueFormat: "YYYY-MM-DD"}
 			}
 		},
 		{
 			label: "站点id",
 			prop: "site_id",
 			hook: "number",
-			component: { name: "el-input-number" }
+			component: {name: "el-input-number"}
 		},
-		{ label: "标识", prop: "tag", component: { name: "el-input", props: { clearable: true } } }
+		{label: "标识", prop: "tag", component: {name: "el-input", props: {clearable: true}}}
 	]
 });
 
 // cl-table
 const Table = useTable({
 	columns: [
-		{ type: "selection" },
-		{ label: "副标题", prop: "sub_title", minWidth: 140 },
-		{ label: "影视ID", prop: "video_id", minWidth: 140 },
-		{ label: "资源ID", prop: "video_line_id", minWidth: 140 },
-		{ label: "线路名", prop: "line_name", minWidth: 140 },
-		{ label: "名称", prop: "name", minWidth: 140 },
-		{ label: "文件地址", prop: "file", showOverflowTooltip: true, minWidth: 200 },
-		{ label: "收费模式", prop: "charging_mode", minWidth: 140 },
-		{ label: "金币数量", prop: "currency", minWidth: 140 },
-		{ label: "状态", prop: "status", minWidth: 140 },
+		{type: "selection"},
+
+		{label: "影视名称", prop: "video_name", minWidth: 140},
+		{label: "线路名", prop: "collection_name", minWidth: 140},
+		{label: "副标题", prop: "sub_title", minWidth: 140},
+		{label: "名称", prop: "name", minWidth: 140},
+		{label: "文件地址", prop: "file", showOverflowTooltip: true, minWidth: 200},
+		{label: "收费模式", prop: "charging_mode", minWidth: 140},
+		{label: "金币数量", prop: "currency", minWidth: 140},
+		{label: "状态", prop: "status", minWidth: 140},
 		{
 			label: "是否是直播源1-是",
 			prop: "live_source",
 			minWidth: 100,
-			component: { name: "cl-switch" }
+			component: {name: "cl-switch"}
 		},
-		{ label: "排序", prop: "sort", minWidth: 140 },
-		{
-			label: "create_at",
-			prop: "create_at",
-			sortable: "custom",
-			minWidth: 140,
-			component: { name: "cl-date-text" }
-		},
-		{
-			label: "update_at",
-			prop: "update_at",
-			sortable: "custom",
-			minWidth: 140,
-			component: { name: "cl-date-text" }
-		},
-		{ label: "站点id", prop: "site_id", minWidth: 140 },
-		{ label: "标识", prop: "tag", minWidth: 140 },
+		{label: "排序", prop: "sort", minWidth: 140},
+		{label: "标识", prop: "tag", minWidth: 140},
 		{
 			label: "创建时间",
 			prop: "createTime",
 			minWidth: 160,
-			component: { name: "cl-date-text" }
+			component: {name: "cl-date-text"}
 		},
 		{
 			label: "更新时间",
 			prop: "updateTime",
 			minWidth: 160,
-			component: { name: "cl-date-text" }
+			component: {name: "cl-date-text"}
 		},
-		{ label: "创建人", prop: "createUserId", minWidth: 140 },
-		{ label: "修改人", prop: "updateUserId", minWidth: 140 },
+		{label: "创建人", prop: "createUserId", minWidth: 140},
+		{label: "修改人", prop: "updateUserId", minWidth: 140},
 		{
 			type: "op",
 			width: 300,
@@ -250,7 +236,7 @@ const Table = useTable({
 				"delete",
 				{
 					label: "播放",
-					async onClick({ scope }) {
+					async onClick({scope}) {
 						play(scope.row.file);
 					}
 				}

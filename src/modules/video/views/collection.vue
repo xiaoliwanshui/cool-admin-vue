@@ -75,11 +75,9 @@ const {service} = useCool();
 const visible = ref<boolean>(false);
 const modelValue = ref<Array<any>>([]);
 const resourceId = ref<number>(0);
-const collectionCategoryVisible = ref<boolean>(false);
 //定义采集进度show
-const collectionShow = ref<boolean>(true);
+const collectionShow = ref<boolean>(false);
 //定义采集进度 结果数组
-const collectionProgress = ref<Array<any>>([]);
 
 
 // cl-upsert
@@ -91,14 +89,19 @@ const Upsert = useUpsert({
 			component: {name: "el-input", props: {clearable: true}}
 		},
 		{
+			label: "参数",
+			prop: "param",
+			component: {name: "el-input", props: {clearable: true}}
+		},
+		{
 			label: "数据类型",
 			prop: "data_method",
 			required: true,
 			component: {
 				name: "el-radio-group",
 				options: [
-					{value: 1, label: "JSON"},
-					{value: 2, label: "XML"}
+					{value: "1", label: "JSON"},
+					{value: "2", label: "XML"}
 				]
 			},
 		},
@@ -119,6 +122,10 @@ const syncCategory = async (scope) => {
 	service.video.collection_category.sync_category(scope.row);
 }
 
+const syncVideo = async (scope) => {
+	service.video.collection.collection_day(scope.row);
+}
+
 // cl-table
 const Table = useTable({
 	columns: [
@@ -126,18 +133,11 @@ const Table = useTable({
 		{label: "ID", prop: "id", minWidth: 140},
 		{label: "名称", prop: "name", minWidth: 140},
 		{label: "数据类型:1JSON", prop: "data_method", minWidth: 140},
-		{label: "数据类型:1视频", prop: "data_type", minWidth: 140},
 		{label: "地址", prop: "address", minWidth: 140},
 		{label: "参数", prop: "param", minWidth: 140},
-		{label: "收费模式", prop: "charging_mode", minWidth: 140},
-		{label: "数据操作", prop: "data_handle", minWidth: 140},
-		{label: "请求日志id", prop: "log_id", minWidth: 140},
-		{label: "超管平台资源id", prop: "sr_id", minWidth: 140},
 		{label: "COMMENT", prop: "status", minWidth: 140},
 		{label: "说明", prop: "desc", minWidth: 140},
 		{label: "来源", prop: "tags", minWidth: 140},
-		{label: "来源", prop: "color", minWidth: 140},
-		{label: "来源", prop: "bold", minWidth: 140},
 		{label: "适用系统:sda-精品", prop: "cms", minWidth: 140},
 		{label: "关联播放器ID", prop: "player_id", minWidth: 140},
 		{label: "是否匹配资源播放器", prop: "match_player", minWidth: 140},
@@ -146,15 +146,12 @@ const Table = useTable({
 		{label: "排序", prop: "sort", minWidth: 140},
 		{label: "创建人", prop: "createUserId", minWidth: 140},
 		{label: "修改人", prop: "updateUserId", minWidth: 140},
-		{label: "create_at", prop: "create_at", minWidth: 140},
-		{label: "update_at", prop: "update_at", minWidth: 140},
 		{label: "创建时间", prop: "createTime", minWidth: 140, sortable: "desc"},
 		{label: "更新时间", prop: "updateTime", minWidth: 140},
 		{
 			type: "op",
 			width: 400,
 			buttons: [
-
 				{
 					label: "同步分类",
 					async onClick({scope}) {
@@ -162,17 +159,9 @@ const Table = useTable({
 					}
 				},
 				{
-					label: "绑定数据",
+					label: "开始采集",
 					async onClick({scope}) {
-						resourceId.value = scope.row.id;
-						visible.value = !visible.value;
-					}
-				},
-				{
-					label: "数据预览",
-					async onClick({scope}) {
-						resourceId.value = scope.row.id;
-						collectionCategoryVisible.value = !collectionCategoryVisible.value;
+						await syncVideo(scope)
 					}
 				},
 				"edit",

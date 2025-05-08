@@ -33,14 +33,28 @@ import {useDict} from "/$/dict";
 import {useCrud, useSearch, useTable, useUpsert} from "@cool-vue/crud";
 import {useCool} from "/@/cool";
 import {useI18n} from "vue-i18n";
+import {reactive} from "vue";
 
 defineOptions({
-	name: "video-swiper",
+	name: "application-notice-info",
 });
 
-const {dict} = useDict();
 const {service} = useCool();
 const {t} = useI18n();
+const {dict} = useDict();
+
+// 选项
+const options = reactive({
+	type: [
+		{label: t("系统公告"), value: 0},
+		{label: t("版本更新"), value: 1},
+		{label: t("活动通知"), value: 2},
+	],
+	status: [
+		{label: t("未发布"), value: 0, type: "danger"},
+		{label: t("已发布"), value: 1, type: "success"},
+	],
+});
 
 // cl-upsert
 const Upsert = useUpsert({
@@ -49,47 +63,31 @@ const Upsert = useUpsert({
 			label: t("标题"),
 			prop: "title",
 			component: {name: "el-input", props: {clearable: true}},
-
+			required: true,
 		},
 		{
-			label: t("图片"),
-			prop: "image",
-			component: {name: "el-input", props: {clearable: true}},
-
-		},
-		{
-			label: t("页面"),
-			prop: "path",
-			component: {name: "el-input", props: {clearable: true}},
-
-		},
-		{
-			label: t("选择关联"),
-			prop: "relatedId",
-			component: {name: "el-input", props: {clearable: true}},
-
+			label: t("内容"),
+			prop: "content",
+			component: {name: "cl-editor-wang", props: {clearable: true}},
+			required: true,
 		},
 		{
 			label: t("类型"),
-			prop: "category",
+			prop: "type",
 			component: {
 				name: 'el-tree-select',
 				props: {
-					data: dict.get('video_category'),
+					data: dict.get('notice_type'),
 				}
-			}
-		},
-		{
-			label: t("排序"),
-			prop: "sort",
-			component: {name: "el-input", props: {clearable: true}},
-
+			},
+			required: true,
 		},
 		{
 			label: t("状态"),
 			prop: "status",
-			component: {name: "el-input", props: {clearable: true}},
-
+			component: {
+				name: "cl-switch",
+			},
 			required: true,
 		},
 	],
@@ -100,21 +98,16 @@ const Table = useTable({
 	columns: [
 		{type: "selection"},
 		{label: t("标题"), prop: "title", minWidth: 120},
+		{label: t("类型"), prop: "type", minWidth: 120, dict: dict.get('notice_type'),},
 		{
-			label: t("图片"), prop: "image", minWidth: 120, component: {
-				name: 'el-image',
+			label: t("状态"),
+			prop: "status",
+			minWidth: 120,
+			component: {
+				name: "cl-switch"
 			}
 		},
-		{
-			label: "分类", prop: "category", dict: dict.get('video_category'),
-			dictColor: true,
-			minWidth: 150,
-			dictAllLevels: true, // 显示所有等级
-		},
-		{label: t("页面"), prop: "path", minWidth: 120},
-		{label: t("关联ID"), prop: "relatedId", minWidth: 120},
-		{label: t("排序"), prop: "sort", minWidth: 120},
-		{label: t("状态"), prop: "status", minWidth: 120},
+
 		{label: t("创建用户ID"), prop: "createUserId", minWidth: 120},
 		{label: t("更新用户ID"), prop: "updateUserId", minWidth: 120},
 		{
@@ -141,7 +134,7 @@ const Search = useSearch();
 // cl-crud
 const Crud = useCrud(
 	{
-		service: service.video.swiper,
+		service: service.application.noticeInfo,
 	},
 	(app) => {
 		app.refresh();

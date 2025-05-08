@@ -2,28 +2,29 @@
 	<cl-crud ref="Crud">
 		<cl-row>
 			<!-- 刷新按钮 -->
-			<cl-refresh-btn />
+			<cl-refresh-btn/>
+			<cl-add-btn/>
 			<!-- 删除按钮 -->
-			<cl-multi-delete-btn />
-			<cl-flex1 />
+			<cl-multi-delete-btn/>
+			<cl-flex1/>
 
 			<!-- 搜索 -->
-			<cl-search ref="Search" />
+			<cl-search ref="Search"/>
 		</cl-row>
 
 		<cl-row>
 			<!-- 数据表格 -->
-			<cl-table ref="Table" />
+			<cl-table ref="Table"/>
 		</cl-row>
 
 		<cl-row>
-			<cl-flex1 />
+			<cl-flex1/>
 			<!-- 分页控件 -->
-			<cl-pagination />
+			<cl-pagination/>
 		</cl-row>
 
 		<!-- 新增、编辑 -->
-		<cl-upsert ref="Upsert" />
+		<cl-upsert ref="Upsert"/>
 	</cl-crud>
 </template>
 
@@ -32,13 +33,13 @@ defineOptions({
 	name: 'user-list'
 });
 
-import { useCrud, useSearch, useTable, useUpsert } from '@cool-vue/crud';
-import { useI18n } from 'vue-i18n';
-import { useCool } from '/@/cool';
-import { reactive } from 'vue';
+import {useCrud, useSearch, useTable, useUpsert} from '@cool-vue/crud';
+import {useI18n} from 'vue-i18n';
+import {useCool} from '/@/cool';
+import {reactive} from 'vue';
 
-const { t } = useI18n();
-const { service } = useCool();
+const {t} = useI18n();
+const {service} = useCool();
 
 const options = reactive({
 	loginType: [
@@ -154,17 +155,27 @@ const Upsert = useUpsert({
 		{
 			prop: 'avatarUrl',
 			label: t('头像'),
-			component: { name: 'cl-upload' }
+			component: {name: 'cl-upload'}
 		},
 		{
 			prop: 'nickName',
 			label: t('昵称'),
-			component: { name: 'el-input' },
+			component: {name: 'el-input'},
 			required: true
 		},
 		{
 			prop: 'phone',
 			label: t('手机号'),
+			component: {
+				name: 'el-input',
+				props: {
+					maxlength: 11
+				}
+			}
+		},
+		{
+			prop: 'password',
+			label: t('密码'),
 			component: {
 				name: 'el-input',
 				props: {

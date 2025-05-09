@@ -66,6 +66,17 @@ const Upsert = useUpsert({
 			required: true,
 		},
 		{
+			label: t("摘要"),
+			prop: "summary",
+			component: {
+				name: "el-input", props: {
+					type: 'textarea',
+					rows: 4
+				}
+			},
+			required: true,
+		},
+		{
 			label: t("内容"),
 			prop: "content",
 			component: {name: "cl-editor-wang", props: {clearable: true}},
@@ -98,6 +109,7 @@ const Table = useTable({
 	columns: [
 		{type: "selection"},
 		{label: t("标题"), prop: "title", minWidth: 120},
+		{label: t("摘要"), prop: "summary", minWidth: 120},
 		{label: t("类型"), prop: "type", minWidth: 120, dict: dict.get('notice_type'),},
 		{
 			label: t("状态"),

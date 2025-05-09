@@ -220,6 +220,11 @@ declare namespace Eps {
 		type?: number;
 
 		/**
+		 * 摘要
+		 */
+		summary?: longtext;
+
+		/**
 		 * 状态
 		 */
 		status?: number;

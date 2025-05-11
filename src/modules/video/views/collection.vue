@@ -67,7 +67,6 @@ import {useCrud, useTable, useUpsert} from "@cool-vue/crud";
 import {useCool} from "/@/cool";
 import {ref} from "vue";
 import collectionCategory from "/$/video/components/collection-category.vue"
-import qs from 'qs'
 import {useDict} from "/$/dict";
 
 const {dict} = useDict();
@@ -123,7 +122,11 @@ const syncCategory = async (scope) => {
 }
 
 const syncVideo = async (scope) => {
-	service.video.collection.collection_day(scope.row);
+	service.video.collection.collection_day(
+		{
+			collection: scope.row,
+		}
+	);
 }
 
 // cl-table

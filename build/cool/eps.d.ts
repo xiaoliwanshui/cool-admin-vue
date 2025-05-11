@@ -3225,6 +3225,88 @@ declare namespace Eps {
 		[key: string]: any;
 	}
 
+	interface CollectionTaskTaskEntity {
+		/**
+		 * ID
+		 */
+		id?: number;
+
+		/**
+		 * 创建用户ID
+		 */
+		createUserId?: number;
+
+		/**
+		 * 更新用户ID
+		 */
+		updateUserId?: number;
+
+		/**
+		 * 名称
+		 */
+		taskName?: string;
+
+		/**
+		 * 任务状态
+		 */
+		taskStatus?: number;
+
+		/**
+		 * 任务类型
+		 */
+		taskType?: number;
+
+		/**
+		 * 执行参数
+		 */
+		execParams?: json;
+
+		/**
+		 * 执行结果
+		 */
+		execResult?: json;
+
+		/**
+		 * 采集源
+		 */
+		collectionSource?: json;
+
+		/**
+		 * 开始时间
+		 */
+		startDate?: Date;
+
+		/**
+		 * 结束时间
+		 */
+		endDate?: Date;
+
+		/**
+		 * 备注信息
+		 */
+		remark?: string;
+
+		/**
+		 * 错误信息
+		 */
+		errorMessage?: json;
+
+		/**
+		 * 创建时间
+		 */
+		createTime?: string;
+
+		/**
+		 * 更新时间
+		 */
+		updateTime?: string;
+
+		/**
+		 * 任意键值
+		 */
+		[key: string]: any;
+	}
+
 	interface UserLiveEntity {
 		/**
 		 * ID
@@ -6827,6 +6909,68 @@ declare namespace Eps {
 		request: Service["request"];
 	}
 
+	interface VideoCollection_task {
+		/**
+		 * 删除
+		 */
+		delete(data?: any): Promise<any>;
+
+		/**
+		 * 修改
+		 */
+		update(data?: any): Promise<any>;
+
+		/**
+		 * 单个信息
+		 */
+		info(data?: any): Promise<CollectionTaskTaskEntity>;
+
+		/**
+		 * 列表查询
+		 */
+		list(data?: any): Promise<CollectionTaskTaskEntity[]>;
+
+		/**
+		 * 分页查询
+		 */
+		page(data?: any): Promise<{
+			pagination: { size: number; page: number; total: number; [key: string]: any };
+			list: CollectionTaskTaskEntity[];
+			[key: string]: any;
+		}>;
+
+		/**
+		 * 新增
+		 */
+		add(data?: any): Promise<any>;
+
+		/**
+		 * 权限标识
+		 */
+		permission: {
+			delete: string;
+			update: string;
+			info: string;
+			list: string;
+			page: string;
+			add: string;
+		};
+
+		/**
+		 * 权限状态
+		 */
+		_permission: {
+			delete: boolean;
+			update: boolean;
+			info: boolean;
+			list: boolean;
+			page: boolean;
+			add: boolean;
+		};
+
+		request: Service["request"];
+	}
+
 	interface VideoLive {
 		/**
 		 * 删除
@@ -7416,6 +7560,7 @@ declare namespace Eps {
 			category: VideoCategory;
 			collection: VideoCollection;
 			collection_category: VideoCollection_category;
+			collection_task: VideoCollection_task;
 			live: VideoLive;
 			player: VideoPlayer;
 			play_line: VideoPlay_line;

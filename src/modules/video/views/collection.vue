@@ -67,6 +67,7 @@ import {useCrud, useTable, useUpsert} from "@cool-vue/crud";
 import {useCool} from "/@/cool";
 import {ref} from "vue";
 import collectionCategory from "/$/video/components/collection-category.vue"
+import {VIDEOPARAMS} from "/$/video/utils/VideoParams";
 import {useDict} from "/$/dict";
 
 const {dict} = useDict();
@@ -121,10 +122,11 @@ const syncCategory = async (scope) => {
 	service.video.collection_category.sync_category(scope.row);
 }
 
-const syncVideo = async (scope) => {
+const syncVideo = async (scope, params: VIDEOPARAMS) => {
 	service.video.collection.collection_day(
 		{
 			collection: scope.row,
+			params
 		}
 	);
 }
@@ -162,9 +164,27 @@ const Table = useTable({
 					}
 				},
 				{
-					label: "开始采集",
+					label: "采集全部",
 					async onClick({scope}) {
 						await syncVideo(scope)
+					}
+				},
+				{
+					label: "采集本周",
+					async onClick({scope}) {
+						await syncVideo(scope, {
+							op: "week",
+							h: 24 * 7
+						})
+					}
+				},
+				{
+					label: "采集今日",
+					async onClick({scope}) {
+						await syncVideo(scope, {
+							op: "day",
+							h: 24
+						})
 					}
 				},
 				"edit",

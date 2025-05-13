@@ -2358,6 +2358,16 @@ declare namespace Eps {
 		associationId?: number;
 
 		/**
+		 * 视频时长
+		 */
+		duration?: number;
+
+		/**
+		 * 观看时长
+		 */
+		viewingDuration?: number;
+
+		/**
 		 * 封面
 		 */
 		cover?: string;
@@ -6416,6 +6426,11 @@ declare namespace Eps {
 
 	interface UserViews {
 		/**
+		 * 删除
+		 */
+		delete(data?: any): Promise<any>;
+
+		/**
 		 * 单个信息
 		 */
 		info(data?: any): Promise<ViewsEntity>;
@@ -6437,12 +6452,12 @@ declare namespace Eps {
 		/**
 		 * 权限标识
 		 */
-		permission: { info: string; list: string; page: string };
+		permission: { delete: string; info: string; list: string; page: string };
 
 		/**
 		 * 权限状态
 		 */
-		_permission: { info: boolean; list: boolean; page: boolean };
+		_permission: { delete: boolean; info: boolean; list: boolean; page: boolean };
 
 		request: Service["request"];
 	}

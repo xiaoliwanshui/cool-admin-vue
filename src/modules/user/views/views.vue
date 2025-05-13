@@ -3,6 +3,7 @@
 		<cl-row>
 			<!-- 刷新按钮 -->
 			<cl-refresh-btn/>
+			<cl-multi-delete-btn/>
 
 			<cl-flex1/>
 			<!-- 条件搜索 -->
@@ -82,13 +83,19 @@ const Upsert = useUpsert({
 // cl-table
 const Table = useTable({
 	columns: [
-		{label: t("#ID"), type: "index"},
+		{type: "selection"},
 		{label: t("标题"), prop: "title", minWidth: 120},
 		{label: t("分类"), prop: "type", minWidth: 120},
 		{
 			label: t("封面"), prop: "cover", component: {
 				name: "cl-image",
 			}, minWidth: 120
+		},
+		{
+			label: t("观看时长"), prop: "viewingDuration", minWidth: 120
+		},
+		{
+			label: t("视频时长"), prop: "duration", minWidth: 120
 		},
 		{label: t("创建用户ID"), prop: "createUserId", minWidth: 120},
 		{label: t("更新用户ID"), prop: "updateUserId", minWidth: 120},

@@ -95,6 +95,9 @@ const Table = useTable({
 			label: t("观看时长"), prop: "viewingDuration", minWidth: 120
 		},
 		{
+			label: t("视频索引"), prop: "videoIndex", minWidth: 120
+		},
+		{
 			label: t("视频时长"), prop: "duration", minWidth: 120
 		},
 		{label: t("创建用户ID"), prop: "createUserId", minWidth: 120},

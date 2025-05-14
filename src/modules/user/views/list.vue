@@ -56,6 +56,10 @@ const options = reactive({
 		{
 			label: t('H5'),
 			value: 2
+		},
+		{
+			label: t('APP'),
+			value: 3
 		}
 	],
 	gender: [

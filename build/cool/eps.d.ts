@@ -2368,6 +2368,11 @@ declare namespace Eps {
 		viewingDuration?: number;
 
 		/**
+		 * 当前观看索引
+		 */
+		videoIndex?: number;
+
+		/**
 		 * 封面
 		 */
 		cover?: string;

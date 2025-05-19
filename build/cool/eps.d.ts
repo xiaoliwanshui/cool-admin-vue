@@ -2169,7 +2169,7 @@ declare namespace Eps {
 		/**
 		 * 头像
 		 */
-		avatarUrl?: string;
+		avatarUrl?: longtext;
 
 		/**
 		 * 昵称
@@ -2712,7 +2712,7 @@ declare namespace Eps {
 		serial_number?: string;
 
 		/**
-		 * 连载状态
+		 * 年份
 		 */
 		year?: string;
 
@@ -2767,7 +2767,7 @@ declare namespace Eps {
 		play_url?: longtext;
 
 		/**
-		 * 播放地址是否入库1-已经入库
+		 * 播放地址是否入库1-1已经入库 0未入库
 		 */
 		play_url_put_in?: number;
 
@@ -3782,7 +3782,7 @@ declare namespace Eps {
 		note?: string;
 
 		/**
-		 * 连载状态
+		 * 年份
 		 */
 		year?: string;
 
@@ -3907,9 +3907,19 @@ declare namespace Eps {
 		play_url?: longtext;
 
 		/**
-		 * 播放地址是否入库1-已经入库
+		 * 播放地址是否入库1-1已经入库 0未入库
 		 */
 		play_url_put_in?: number;
+
+		/**
+		 * 资源id
+		 */
+		collection_id?: number;
+
+		/**
+		 * 资源名称
+		 */
+		collection_name?: string;
 
 		/**
 		 * 创建时间
@@ -4253,7 +4263,7 @@ declare namespace Eps {
 		serial_number?: string;
 
 		/**
-		 * 连载状态
+		 * 年份
 		 */
 		year?: string;
 
@@ -4308,7 +4318,7 @@ declare namespace Eps {
 		play_url?: longtext;
 
 		/**
-		 * 播放地址是否入库1-已经入库
+		 * 播放地址是否入库1-1已经入库 0未入库
 		 */
 		play_url_put_in?: number;
 

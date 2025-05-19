@@ -34,6 +34,13 @@
 					prop="language"
 				/>
 			</cl-filter>
+			<cl-filter label="入库">
+				<cl-select
+					:options="play_url_put_inDict"
+					:width="140"
+					prop="play_url_put_in"
+				/>
+			</cl-filter>
 			<!-- 关键字搜索 -->
 			<cl-search-key/>
 		</cl-row>
@@ -61,6 +68,10 @@ import {useDict} from "/$/dict";
 
 const {service} = useCool();
 const {dict} = useDict();
+const play_url_put_inDict = [
+	{value: 1, label: '已入库'},
+	{value: 0, label: '未入库'}
+]
 // cl-upsert
 const Upsert = useUpsert({
 	items: [
@@ -281,6 +292,13 @@ const Table = useTable({
 					inactiveValue: "2"
 				}
 			}
+		},
+		// 播放地址是否入库1-1已经入库 0未入库
+		{
+			label: "资源是否入库", prop: "play_url_put_in", dict: play_url_put_inDict,
+			dictColor: true,
+			minWidth: 150,
+			dictAllLevels: true, // 显示所有等级
 		},
 		{
 			label: "创建时间",

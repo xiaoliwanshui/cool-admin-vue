@@ -63,6 +63,36 @@ const Search = useSearch({
 				},
 			},
 		},
+		{
+			label: "视频名称",
+			prop: "video_name",
+			component: {
+				name: "el-input",
+				props: {
+					clearable: true,
+				},
+			},
+		},
+		{
+			label: "资源ID",
+			prop: "collection_id",
+			component: {
+				name: "el-input",
+				props: {
+					clearable: true,
+				},
+			},
+		},
+		{
+			label: "资源名称",
+			prop: "collection_name",
+			component: {
+				name: "el-input",
+				props: {
+					clearable: true,
+				},
+			},
+		},
 	],
 });
 const play = async (url: string) => {

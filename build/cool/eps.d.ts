@@ -3832,6 +3832,11 @@ declare namespace Eps {
 		horizontal_poster?: string;
 
 		/**
+		 * 备注
+		 */
+		remarks?: string;
+
+		/**
 		 * 竖屏海报
 		 */
 		vertical_poster?: string;

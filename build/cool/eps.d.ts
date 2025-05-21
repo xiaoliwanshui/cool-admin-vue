@@ -1,193 +1,4 @@
 declare namespace Eps {
-	interface AppListEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 程序名
-		 */
-		name?: string;
-
-		/**
-		 * logo
-		 */
-		logo?: string;
-
-		/**
-		 * 封面图
-		 */
-		cover?: string;
-
-		/**
-		 * 内容
-		 */
-		content?: string;
-
-		/**
-		 * 联系人
-		 */
-		contact?: string;
-
-		/**
-		 * 联系电话
-		 */
-		phone?: string;
-
-		/**
-		 * 状态
-		 */
-		status?: number;
-
-		/**
-		 * 排序
-		 */
-		sort?: number;
-
-		/**
-		 * 域名
-		 */
-		url?: string;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface AppMenuEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 页面名
-		 */
-		name?: string;
-
-		/**
-		 * 别名
-		 */
-		label?: string;
-
-		/**
-		 * icon
-		 */
-		icon?: string;
-
-		/**
-		 * 页面路径
-		 */
-		path?: string;
-
-		/**
-		 * condition
-		 */
-		condition?: string;
-
-		/**
-		 * 启用
-		 */
-		status?: number;
-
-		/**
-		 * i18n
-		 */
-		i18n?: string;
-
-		/**
-		 * 排序
-		 */
-		sort?: number;
-
-		/**
-		 * 数据来源
-		 */
-		dataSource?: number;
-
-		/**
-		 * component
-		 */
-		component?: string;
-
-		/**
-		 * seo标题
-		 */
-		seoTitle?: string;
-
-		/**
-		 * seo描述
-		 */
-		seoDescription?: string;
-
-		/**
-		 * seo关键字
-		 */
-		seoKeywords?: string;
-
-		/**
-		 *  props
-		 */
-		props?: string;
-
-		/**
-		 *  show
-		 */
-		show?: number;
-
-		/**
-		 *  appid
-		 */
-		appid?: number;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
 	interface NoticeInfoEntity {
 		/**
 		 * ID
@@ -640,752 +451,6 @@ declare namespace Eps {
 		 * socketId
 		 */
 		socketId?: string;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface AlbumEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 类型 1影片 2名人 3文章
-		 */
-		title?: string;
-
-		/**
-		 * 标题
-		 */
-		name?: string;
-
-		/**
-		 * 封面地址
-		 */
-		surface_plot?: string;
-
-		/**
-		 * 是否推荐 1是 2否
-		 */
-		recommend?: BigInt;
-
-		/**
-		 * 是否推荐 1是 2否
-		 */
-		status?: BigInt;
-
-		/**
-		 * 简介
-		 */
-		introduce?: string;
-
-		/**
-		 * 日人气
-		 */
-		popularity_day?: BigInt;
-
-		/**
-		 * 周人气
-		 */
-		popularity_week?: BigInt;
-
-		/**
-		 * 月人气
-		 */
-		popularity_month?: BigInt;
-
-		/**
-		 * 总人气
-		 */
-		popularity_sum?: BigInt;
-
-		/**
-		 * 备注
-		 */
-		note?: string;
-
-		/**
-		 * 排序
-		 */
-		sort?: number;
-
-		/**
-		 * 专题关联类型
-		 */
-		category_id?: number;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface AlbumCloudDiskEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 云盘ID
-		 */
-		cloudDiskId?: number;
-
-		/**
-		 * 专辑ID
-		 */
-		albumId?: number;
-
-		/**
-		 * 排序
-		 */
-		sort?: number;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: Date;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: Date;
-
-		/**
-		 * 标题
-		 */
-		title?: string;
-
-		/**
-		 * 作者
-		 */
-		author?: string;
-
-		/**
-		 * 图片
-		 */
-		image?: string;
-
-		/**
-		 * 标签
-		 */
-		tags?: json;
-
-		/**
-		 * 状态
-		 */
-		status?: number;
-
-		/**
-		 * 内容
-		 */
-		content?: string;
-
-		/**
-		 * 链接
-		 */
-		link?: string;
-
-		/**
-		 * 分类
-		 */
-		type?: number;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface CloudDiskEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 标题
-		 */
-		title?: string;
-
-		/**
-		 * 作者
-		 */
-		author?: string;
-
-		/**
-		 * 分类
-		 */
-		type?: number;
-
-		/**
-		 * 图片
-		 */
-		image?: string;
-
-		/**
-		 * 标签
-		 */
-		tags?: json;
-
-		/**
-		 * 状态
-		 */
-		status?: number;
-
-		/**
-		 * 内容
-		 */
-		content?: string;
-
-		/**
-		 * 链接
-		 */
-		link?: string;
-
-		/**
-		 * 密码
-		 */
-		password?: string;
-
-		/**
-		 * 金币
-		 */
-		coin?: number;
-
-		/**
-		 * 浏览量
-		 */
-		views?: number;
-
-		/**
-		 * 收藏
-		 */
-		collect?: number;
-
-		/**
-		 * 点赞
-		 */
-		like?: number;
-
-		/**
-		 * 分享
-		 */
-		share?: number;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface CloudDiskSwiperEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 标题
-		 */
-		title?: string;
-
-		/**
-		 * 图片
-		 */
-		image?: string;
-
-		/**
-		 * 页面
-		 */
-		path?: string;
-
-		/**
-		 * 关联ID
-		 */
-		relatedId?: number;
-
-		/**
-		 * appid
-		 */
-		appid?: number;
-
-		/**
-		 * 类型
-		 */
-		type?: number;
-
-		/**
-		 * 排序
-		 */
-		sort?: number;
-
-		/**
-		 * 状态
-		 */
-		status?: number;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface AlbumComicEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 漫画ID
-		 */
-		comicId?: number;
-
-		/**
-		 * 专题ID
-		 */
-		albumId?: number;
-
-		/**
-		 * 排序
-		 */
-		sort?: number;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: Date;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: Date;
-
-		/**
-		 * 标题
-		 */
-		name?: string;
-
-		/**
-		 * 封面图片链接
-		 */
-		coverImg?: string;
-
-		/**
-		 * 标签
-		 */
-		tags?: json;
-
-		/**
-		 * 评分
-		 */
-		score?: float;
-
-		/**
-		 * 漫画简介
-		 */
-		description?: string;
-
-		/**
-		 * 上架下架状态
-		 */
-		status?: number;
-
-		/**
-		 * 总章节数
-		 */
-		chapter?: number;
-
-		/**
-		 * 出版日期
-		 */
-		publishingDate?: string;
-
-		/**
-		 * 出版社
-		 */
-		publishingHouse?: string;
-
-		/**
-		 * 买断价格
-		 */
-		buyoutPrice?: number;
-
-		/**
-		 * 是否直接买断
-		 */
-		buyoutStatus?: number;
-
-		/**
-		 * 总卷数
-		 */
-		volume?: number;
-
-		/**
-		 * 收藏
-		 */
-		collect?: number;
-
-		/**
-		 * 总页数
-		 */
-		page?: number;
-
-		/**
-		 * 漫画语言
-		 */
-		language?: number;
-
-		/**
-		 * 分类
-		 */
-		type?: number;
-
-		/**
-		 * 漫画更新状态
-		 */
-		updateStatus?: number;
-
-		/**
-		 * 人气
-		 */
-		popularity?: number;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface ComicEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 标题
-		 */
-		name?: string;
-
-		/**
-		 * 标签
-		 */
-		tags?: json;
-
-		/**
-		 * 分类
-		 */
-		type?: number;
-
-		/**
-		 * 人气
-		 */
-		popularity?: number;
-
-		/**
-		 * 收藏
-		 */
-		collect?: number;
-
-		/**
-		 * 关联作者
-		 */
-		author?: string;
-
-		/**
-		 * 封面图片链接
-		 */
-		coverImg?: string;
-
-		/**
-		 * 出版社
-		 */
-		publishingHouse?: string;
-
-		/**
-		 * 出版日期
-		 */
-		publishingDate?: string;
-
-		/**
-		 * 漫画简介
-		 */
-		description?: string;
-
-		/**
-		 * 上架下架状态
-		 */
-		status?: number;
-
-		/**
-		 * 总卷数
-		 */
-		volume?: number;
-
-		/**
-		 * 是否直接买断
-		 */
-		buyoutStatus?: number;
-
-		/**
-		 * 买断价格
-		 */
-		buyoutPrice?: number;
-
-		/**
-		 * 总章节数
-		 */
-		chapter?: number;
-
-		/**
-		 * 总页数
-		 */
-		page?: number;
-
-		/**
-		 * 评分
-		 */
-		score?: float;
-
-		/**
-		 * 漫画语言
-		 */
-		language?: number;
-
-		/**
-		 * 漫画更新状态
-		 */
-		updateStatus?: number;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface ComicImageEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 标题
-		 */
-		title?: string;
-
-		/**
-		 * 漫画
-		 */
-		comicId?: number;
-
-		/**
-		 * 剧集封面
-		 */
-		coverImg?: string;
-
-		/**
-		 * 图片链接
-		 */
-		image?: json;
-
-		/**
-		 * 图片在漫画中的顺序
-		 */
-		sequence?: number;
-
-		/**
-		 * 状态
-		 */
-		status?: number;
-
-		/**
-		 * 是否收费
-		 */
-		payStatus?: number;
-
-		/**
-		 * 价格
-		 */
-		price?: number;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface ComicSwiperEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 标题
-		 */
-		title?: string;
-
-		/**
-		 * 图片
-		 */
-		image?: string;
-
-		/**
-		 * 页面
-		 */
-		path?: string;
-
-		/**
-		 * 关联ID
-		 */
-		relatedId?: number;
-
-		/**
-		 * appid
-		 */
-		appid?: number;
-
-		/**
-		 * 类型
-		 */
-		type?: number;
-
-		/**
-		 * 排序
-		 */
-		sort?: number;
-
-		/**
-		 * 状态
-		 */
-		status?: number;
 
 		/**
 		 * 创建时间
@@ -2103,48 +1168,6 @@ declare namespace Eps {
 		[key: string]: any;
 	}
 
-	interface DownloadEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 关联Id
-		 */
-		associationId?: number;
-
-		/**
-		 * appid
-		 */
-		appid?: number;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
 	interface UserInfoEntity {
 		/**
 		 * ID
@@ -2538,6 +1561,103 @@ declare namespace Eps {
 		 * updated_at
 		 */
 		updatedAt?: Date;
+
+		/**
+		 * 创建时间
+		 */
+		createTime?: string;
+
+		/**
+		 * 更新时间
+		 */
+		updateTime?: string;
+
+		/**
+		 * 任意键值
+		 */
+		[key: string]: any;
+	}
+
+	interface VideoAlbumEntity {
+		/**
+		 * ID
+		 */
+		id?: number;
+
+		/**
+		 * 创建用户ID
+		 */
+		createUserId?: number;
+
+		/**
+		 * 更新用户ID
+		 */
+		updateUserId?: number;
+
+		/**
+		 * 类型 1影片 2名人 3文章
+		 */
+		title?: string;
+
+		/**
+		 * 标题
+		 */
+		name?: string;
+
+		/**
+		 * 封面地址
+		 */
+		surface_plot?: string;
+
+		/**
+		 * 是否推荐 1是 2否
+		 */
+		recommend?: BigInt;
+
+		/**
+		 * 是否推荐 1是 2否
+		 */
+		status?: BigInt;
+
+		/**
+		 * 简介
+		 */
+		introduce?: string;
+
+		/**
+		 * 日人气
+		 */
+		popularity_day?: BigInt;
+
+		/**
+		 * 周人气
+		 */
+		popularity_week?: BigInt;
+
+		/**
+		 * 月人气
+		 */
+		popularity_month?: BigInt;
+
+		/**
+		 * 总人气
+		 */
+		popularity_sum?: BigInt;
+
+		/**
+		 * 备注
+		 */
+		note?: string;
+
+		/**
+		 * 排序
+		 */
+		sort?: number;
+
+		/**
+		 * 专题关联类型
+		 */
+		category_id?: number;
 
 		/**
 		 * 创建时间
@@ -4370,130 +3490,6 @@ declare namespace Eps {
 
 	type json = any;
 
-	interface ApplicationAppList {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<AppListEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<AppListEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: AppListEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
-
-	interface ApplicationAppMenu {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<AppMenuEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<AppMenuEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: AppMenuEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
-
 	interface ApplicationNoticeInfo {
 		/**
 		 * 删除
@@ -5053,545 +4049,6 @@ declare namespace Eps {
 			delete: boolean;
 			update: boolean;
 			move: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
-
-	interface CloudDiskAlbum {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<AlbumEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<AlbumEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: AlbumEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
-
-	interface CloudDiskAlbum_cloudDisk {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<AlbumCloudDiskEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<AlbumCloudDiskEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: AlbumCloudDiskEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
-
-	interface CloudDiskCloudDisk {
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<CloudDiskEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<CloudDiskEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: CloudDiskEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: { update: string; info: string; list: string; page: string; add: string };
-
-		/**
-		 * 权限状态
-		 */
-		_permission: { update: boolean; info: boolean; list: boolean; page: boolean; add: boolean };
-
-		request: Service["request"];
-	}
-
-	interface CloudDiskSwiper {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<CloudDiskSwiperEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<CloudDiskSwiperEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: CloudDiskSwiperEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
-
-	interface ComicAlbum {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<AlbumEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<AlbumEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: AlbumEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
-
-	interface ComicAlbum_comic {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<AlbumComicEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<AlbumComicEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: AlbumComicEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
-
-	interface ComicComic {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<ComicEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<ComicEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: ComicEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
-
-	interface ComicImage_comic {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<ComicImageEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<ComicImageEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: ComicImageEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
-
-	interface ComicSwiper {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<ComicSwiperEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<ComicSwiperEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: ComicSwiperEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
 			info: boolean;
 			list: boolean;
 			page: boolean;
@@ -6239,68 +4696,6 @@ declare namespace Eps {
 		request: Service["request"];
 	}
 
-	interface UserDownload {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<DownloadEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<DownloadEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: DownloadEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
-
 	interface UserInfo {
 		/**
 		 * 删除
@@ -6558,19 +4953,19 @@ declare namespace Eps {
 		/**
 		 * 单个信息
 		 */
-		info(data?: any): Promise<AlbumEntity>;
+		info(data?: any): Promise<VideoAlbumEntity>;
 
 		/**
 		 * 列表查询
 		 */
-		list(data?: any): Promise<AlbumEntity[]>;
+		list(data?: any): Promise<VideoAlbumEntity[]>;
 
 		/**
 		 * 分页查询
 		 */
 		page(data?: any): Promise<{
 			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: AlbumEntity[];
+			list: VideoAlbumEntity[];
 			[key: string]: any;
 		}>;
 
@@ -7541,11 +5936,7 @@ declare namespace Eps {
 			[key: string]: any;
 		}): Promise<any>;
 
-		application: {
-			appList: ApplicationAppList;
-			appMenu: ApplicationAppMenu;
-			noticeInfo: ApplicationNoticeInfo;
-		};
+		application: { noticeInfo: ApplicationNoticeInfo };
 		base: {
 			coding: BaseCoding;
 			comm: BaseComm;
@@ -7559,19 +5950,6 @@ declare namespace Eps {
 				user: BaseSysUser;
 			};
 		};
-		cloudDisk: {
-			album: CloudDiskAlbum;
-			album_cloudDisk: CloudDiskAlbum_cloudDisk;
-			cloudDisk: CloudDiskCloudDisk;
-			swiper: CloudDiskSwiper;
-		};
-		comic: {
-			album: ComicAlbum;
-			album_comic: ComicAlbum_comic;
-			comic: ComicComic;
-			image_comic: ComicImage_comic;
-			swiper: ComicSwiper;
-		};
 		demo: { goods: DemoGoods; tenant: DemoTenant };
 		dict: { info: DictInfo; type: DictType };
 		plugin: { info: PluginInfo };
@@ -7581,7 +5959,6 @@ declare namespace Eps {
 		user: {
 			address: UserAddress;
 			collect: UserCollect;
-			download: UserDownload;
 			info: UserInfo;
 			like: UserLike;
 			share: UserShare;
@@ -7608,42 +5985,11 @@ declare namespace Eps {
 	};
 
 	type DictKey =
-		| "wallpaperTags"
-		| "wallpaperType"
-		| "songTags"
-		| "songAlbumType"
-		| "goodsTags"
-		| "goodsType"
-		| "appType"
-		| "appTags"
-		| "agreementType"
-		| "orderStatus"
-		| "integralType"
-		| "appModule"
-		| "emailType"
-		| "specialType"
-		| "flix"
-		| "documentType"
-		| "documentTags"
-		| "updateType"
-		| "commonType"
-		| "messageType"
-		| "friendApplyStatus"
-		| "liveStatus"
 		| "liveType"
 		| "liveTags"
 		| "week"
-		| "index-tabs"
-		| "comicTags"
 		| "area"
 		| "language"
-		| "cloudDiskType"
-		| "pageType"
-		| "comicUpdateStatus"
-		| "comicType"
-		| "videoM3u8SliceStatus"
-		| "cloudDiskTags"
-		| "songType"
 		| "video_category"
 		| "notice_type";
 }

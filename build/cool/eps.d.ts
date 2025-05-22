@@ -1692,7 +1692,7 @@ declare namespace Eps {
 		updateUserId?: number;
 
 		/**
-		 * 名人id
+		 * 专辑id
 		 */
 		album_id?: BigInt;
 
@@ -1700,16 +1700,6 @@ declare namespace Eps {
 		 * 影片id
 		 */
 		videos_id?: BigInt;
-
-		/**
-		 * create_at
-		 */
-		create_at?: BigInt;
-
-		/**
-		 * update_at
-		 */
-		update_at?: BigInt;
 
 		/**
 		 * 创建时间
@@ -1834,7 +1824,7 @@ declare namespace Eps {
 		/**
 		 * 年份
 		 */
-		year?: string;
+		year?: number;
 
 		/**
 		 * alias
@@ -2089,16 +2079,6 @@ declare namespace Eps {
 		 * 排序
 		 */
 		sort?: BigInt;
-
-		/**
-		 * create_at
-		 */
-		create_at?: BigInt;
-
-		/**
-		 * update_at
-		 */
-		update_at?: BigInt;
 
 		/**
 		 * 是否是竖屏，1-是，0-否
@@ -2904,7 +2884,7 @@ declare namespace Eps {
 		/**
 		 * 年份
 		 */
-		year?: string;
+		year?: number;
 
 		/**
 		 * 关联专题id
@@ -3390,7 +3370,7 @@ declare namespace Eps {
 		/**
 		 * 年份
 		 */
-		year?: string;
+		year?: number;
 
 		/**
 		 * alias

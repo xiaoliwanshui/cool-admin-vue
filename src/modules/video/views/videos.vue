@@ -26,7 +26,7 @@
 					prop="region"
 				/>
 			</cl-filter>
-			<cl-filter label="語言">
+			<cl-filter label="语言">
 				<cl-select
 					:options="dict.get('language')"
 					:width="140"
@@ -201,30 +201,6 @@ const Table = useTable({
 			component: {name: "cl-image", props: {size: 60}}
 		},
 		{
-			label: "是否推荐",
-			prop: "recommend",
-			minWidth: 100,
-			component: {
-				name: "cl-switch",
-				props: {
-					activeValue: "1",
-					inactiveValue: "2"
-				}
-			}
-		},
-		{
-			label: "是否轮播",
-			prop: "cycle",
-			minWidth: 100,
-			component: {
-				name: "cl-switch",
-				props: {
-					activeValue: "1",
-					inactiveValue: "2"
-				}
-			}
-		},
-		{
 			label: "地区", prop: "region", dict: dict.get('area'),
 			dictColor: true,
 			minWidth: 150,
@@ -236,27 +212,6 @@ const Table = useTable({
 			minWidth: 150,
 			dictAllLevels: true, // 显示所有等级
 		},
-		{
-			label: "轮播图片",
-			prop: "cycle_img",
-			minWidth: 100,
-			component: {name: "cl-image", props: {size: 60}}
-		},
-		{
-			label: "收费模式",
-			prop: "charging_mode",
-			dict: [{value: "1免费"}, {value: "2vip免费"}, {value: "3金币点播"}],
-			dictColor: true,
-			minWidth: 120
-		},
-		{
-			label: "购买模式",
-			prop: "buy_mode",
-			dict: [{value: "1按部"}, {value: "2按集"}],
-			dictColor: true,
-			minWidth: 120
-		},
-		{label: "金币点播值", prop: "gold", minWidth: 140},
 		{label: "导演", prop: "directors", showOverflowTooltip: true, minWidth: 200},
 		{label: "演员", prop: "actors", showOverflowTooltip: true, minWidth: 200},
 		{
@@ -278,9 +233,6 @@ const Table = useTable({
 		{label: "周人气", prop: "popularity_week", minWidth: 140},
 		{label: "月人气", prop: "popularity_month", minWidth: 140},
 		{label: "总人气", prop: "popularity_sum", minWidth: 140},
-		{label: "连载状态", prop: "note", minWidth: 140},
-		{label: "连载状态", prop: "year", minWidth: 140},
-		{label: "关联专题id", prop: "album_id", minWidth: 140},
 		{
 			label: "状态",
 			prop: "status",
@@ -300,38 +252,7 @@ const Table = useTable({
 			minWidth: 150,
 			dictAllLevels: true, // 显示所有等级
 		},
-		{
-			label: "创建时间",
-			prop: "create_at",
-			sortable: "custom",
-			minWidth: 140,
-			component: {name: "cl-date-text"}
-		},
-		{
-			label: "创建时间",
-			prop: "update_at",
-			sortable: "custom",
-			minWidth: 140,
-			component: {name: "cl-date-text"}
-		},
-		{label: "时长(单位s)", prop: "duration", minWidth: 140},
-		{label: "自定义标签", prop: "label", showOverflowTooltip: true, minWidth: 200},
-		{label: "总集数", prop: "number", minWidth: 140},
-		{label: "更新集数", prop: "total", minWidth: 140},
-		{
-			label: "横屏海报",
-			prop: "horizontal_poster",
-			minWidth: 100,
-			component: {name: "cl-image", props: {size: 60}}
-		},
-		{
-			label: "竖屏海报",
-			prop: "vertical_poster",
-			minWidth: 100,
-			component: {name: "cl-image", props: {size: 60}}
-		},
-		{label: "片头时间", prop: "titles_time", minWidth: 140},
-		{label: "片尾时间", prop: "trailer_time", minWidth: 140},
+
 		{label: "采集的源地址", prop: "play_url", showOverflowTooltip: true, minWidth: 200},
 		{
 			label: "创建时间",

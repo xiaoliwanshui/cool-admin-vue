@@ -94,18 +94,6 @@ const Upsert = useUpsert({
 			component: {name: "el-input", props: {clearable: true}}
 		},
 		{
-			label: "数据类型",
-			prop: "data_method",
-			required: true,
-			component: {
-				name: "el-radio-group",
-				options: [
-					{value: "1", label: "JSON"},
-					{value: "2", label: "XML"}
-				]
-			},
-		},
-		{
 			label: "地址",
 			prop: "address",
 			component: {name: "el-input", props: {clearable: true}}
@@ -137,17 +125,9 @@ const Table = useTable({
 		{type: "selection"},
 		{label: "ID", prop: "id", minWidth: 140},
 		{label: "名称", prop: "name", minWidth: 140},
-		{label: "数据类型:1JSON", prop: "data_method", minWidth: 140},
 		{label: "地址", prop: "address", minWidth: 140},
 		{label: "参数", prop: "param", minWidth: 140},
-		{label: "COMMENT", prop: "status", minWidth: 140},
 		{label: "说明", prop: "desc", minWidth: 140},
-		{label: "来源", prop: "tags", minWidth: 140},
-		{label: "适用系统:sda-精品", prop: "cms", minWidth: 140},
-		{label: "关联播放器ID", prop: "player_id", minWidth: 140},
-		{label: "是否匹配资源播放器", prop: "match_player", minWidth: 140},
-		{label: "是否启用解析,1-是，2-否", prop: "use_parse", minWidth: 140},
-		{label: "解析地址，视频播放地址", prop: "parse_address", minWidth: 140},
 		{label: "排序", prop: "sort", minWidth: 140},
 		{label: "创建人", prop: "createUserId", minWidth: 140},
 		{label: "修改人", prop: "updateUserId", minWidth: 140},
@@ -155,7 +135,7 @@ const Table = useTable({
 		{label: "更新时间", prop: "updateTime", minWidth: 140},
 		{
 			type: "op",
-			width: 400,
+			width: 600,
 			buttons: [
 				{
 					label: "同步分类",

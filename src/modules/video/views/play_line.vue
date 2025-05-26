@@ -233,15 +233,6 @@ const Table = useTable({
 		{label: "副标题", prop: "sub_title", minWidth: 140},
 		{label: "名称", prop: "name", minWidth: 140},
 		{label: "文件地址", prop: "file", showOverflowTooltip: true, minWidth: 200},
-		{label: "收费模式", prop: "charging_mode", minWidth: 140},
-		{label: "金币数量", prop: "currency", minWidth: 140},
-		{label: "状态", prop: "status", minWidth: 140},
-		{
-			label: "是否是直播源1-是",
-			prop: "live_source",
-			minWidth: 100,
-			component: {name: "cl-switch"}
-		},
 		{label: "排序", prop: "sort", minWidth: 140},
 		{label: "标识", prop: "tag", minWidth: 140},
 		{

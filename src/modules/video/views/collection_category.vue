@@ -119,9 +119,6 @@ const Table = useTable({
 			minWidth: 150,
 			dictAllLevels: true, // 显示所有等级
 		},
-		{label: "收费模式", prop: "charging_mode", minWidth: 140},
-		{label: "金币点播值", prop: "gold", minWidth: 140},
-		{label: "购买模式", prop: "buy_mode", minWidth: 140},
 		{label: "创建人", prop: "createUserId", minWidth: 140},
 		{label: "修改人", prop: "updateUserId", minWidth: 140},
 		{label: "创建时间", prop: "createTime", minWidth: 140, sortable: "desc"},

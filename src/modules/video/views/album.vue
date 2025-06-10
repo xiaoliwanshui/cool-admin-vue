@@ -59,6 +59,7 @@
 			<el-button type="primary" @click="submit">确定</el-button>
 		</template>
 	</cl-dialog>
+	<cl-form ref="addListForm"></cl-form>
 </template>
 
 <script lang="ts" name="video-album" setup>
@@ -69,13 +70,18 @@ import videos from "/$/video/components/videos.vue";
 import videosAlbum from "/$/video/components/videos-album.vue";
 import _ from "lodash";
 import {useDict} from "/$/dict";
-
+import { useForm } from "@cool-vue/crud";
 const {service} = useCool();
 const visible = ref<boolean>(false);
 const modelValue = ref<Array<any>>([]);
 const albumId = ref<number>(0);
 const videoAlbumVisible = ref<boolean>(false);
+const addListForm  = useForm();
 const {dict} = useDict();
+
+
+
+
 
 const Upsert = useUpsert({
 	items: [
@@ -173,10 +179,46 @@ const Upsert = useUpsert({
 	]
 });
 
+function addListFormOpen(scope) {
+
+	addListForm.value?.open({
+		title: "批量添加视频",
+		items: [
+			{
+				label: "视频标题",
+				prop: "title",
+				required: true,
+				component: {name: "el-input", props: {type: "textarea", rows: 4,clearable: true,
+						placeholder: "举例(用英文逗号分割):恐怖游轮 死神来了"}}
+			},
+		],
+		on: {
+			submit(data, { close, done }) {
+				//使用,分割
+				const titles = data.title.trim().split(",");
+				//并校验titles数据可靠性
+				if (titles.length >0) {
+					console.info(scope.row.id);
+					service.video.album_video.add_list({
+						id:scope.row.id,titles
+					})
+				}
+
+				console.log(titles);
+				setTimeout(() => {
+					close();
+				}, 1500);
+			},
+		},
+	});
+	console.log(scope);
+}
+
 // cl-table
 const Table = useTable({
 	columns: [
 		{type: "selection"},
+		{label: "ID", prop: "id", minWidth: 140},
 		{label: "标题", prop: "title", minWidth: 140},
 		{
 			label: "图片",
@@ -248,6 +290,13 @@ const Table = useTable({
 			buttons: [
 				"edit",
 				"delete",
+				{
+					label: "快速添加",
+					async onClick({scope}) {
+						addListFormOpen(scope)
+
+					}
+				},
 				{
 					label: "绑定数据",
 					async onClick({scope}) {

@@ -337,13 +337,11 @@ const Table = useTable({
 	columns: [
 		{type: "selection"},
 		{label: "影片标题", prop: "title", minWidth: 140},
-		{label: "分类一级id", prop: "category_pid", dict: [], dictColor: true, minWidth: 120},
 		{
-			label: "分类二级id",
-			prop: "category_child_id",
-			dict: [],
+			label: "分类", prop: "category_id", dict: dict.get('video_category'),
 			dictColor: true,
-			minWidth: 120
+			minWidth: 150,
+			dictAllLevels: true, // 显示所有等级
 		},
 		{
 			label: "影片封面图",
@@ -351,54 +349,40 @@ const Table = useTable({
 			minWidth: 100,
 			component: {name: "cl-image", props: {size: 60}}
 		},
-		{label: "是否推荐", prop: "recommend", minWidth: 100, component: {name: "cl-switch"}},
-		{label: "是否轮播", prop: "cycle", minWidth: 100, component: {name: "cl-switch"}},
 		{
-			label: "轮播图片",
-			prop: "cycle_img",
-			minWidth: 100,
-			component: {name: "cl-image", props: {size: 60}}
-		},
-		{
-			label: "收费模式",
-			prop: "charging_mode",
-			dict: [{value: "1免费"}, {value: "2vip免费"}, {value: "3金币点播"}],
+			label: "地区", prop: "region", dict: dict.get('area'),
 			dictColor: true,
-			minWidth: 120
+			minWidth: 150,
+			dictAllLevels: true, // 显示所有等级
 		},
 		{
-			label: "购买模式",
-			prop: "buy_mode",
-			dict: [{value: "1按部"}, {value: "2按集"}],
+			label: "语言", prop: "language", dict: dict.get('language'),
 			dictColor: true,
-			minWidth: 120
+			minWidth: 150,
+			dictAllLevels: true, // 显示所有等级
 		},
-		{label: "金币点播值", prop: "gold", minWidth: 140},
 		{label: "导演", prop: "directors", showOverflowTooltip: true, minWidth: 200},
 		{label: "演员", prop: "actors", showOverflowTooltip: true, minWidth: 200},
 		{
-			label: "imd评分.百分制",
+			label: "imd评分",
 			prop: "imdb_score",
 			minWidth: 150,
 			component: {name: "el-rate", props: {disabled: true}}
 		},
-		{label: "iimd评分ID", prop: "imdb_score_id", minWidth: 140},
+		{label: "iimdID", prop: "imdb_score_id", minWidth: 140},
 		{
 			label: "豆瓣评分.百分制",
 			prop: "douban_score",
 			minWidth: 150,
 			component: {name: "el-rate", props: {disabled: true}}
 		},
-		{label: "豆瓣评分ID", prop: "douban_score_id", minWidth: 140},
+		{label: "豆瓣ID", prop: "douban_score_id", minWidth: 140},
 		{label: "简介", prop: "introduce", showOverflowTooltip: true, minWidth: 200},
 		{label: "日人气", prop: "popularity_day", minWidth: 140},
 		{label: "周人气", prop: "popularity_week", minWidth: 140},
 		{label: "月人气", prop: "popularity_month", minWidth: 140},
-		{label: "总人气", prop: "popularity_sum", minWidth: 140},
-		{label: "连载状态", prop: "note", minWidth: 140},
-		{label: "连载状态", prop: "year", minWidth: 140},
-		{label: "关联专题id", prop: "album_id", minWidth: 140},
-		{label: "状态", prop: "status", minWidth: 100, component: {name: "cl-switch"}},
+		{label: "总人气", prop: "popularity", minWidth: 140},
+		{label: "上映日期", prop: "pubdate", minWidth: 140},
 		{
 			label: "创建时间",
 			prop: "create_at",

@@ -232,7 +232,8 @@ const Table = useTable({
 		{label: "日人气", prop: "popularity_day", minWidth: 140},
 		{label: "周人气", prop: "popularity_week", minWidth: 140},
 		{label: "月人气", prop: "popularity_month", minWidth: 140},
-		{label: "总人气", prop: "popularity_sum", minWidth: 140},
+		{label: "总人气", prop: "popularity", minWidth: 140},
+		{label: "上映日期", prop: "pubdate", minWidth: 140},
 		{
 			label: "状态",
 			prop: "status",

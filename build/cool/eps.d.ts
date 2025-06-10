@@ -1675,7 +1675,7 @@ declare namespace Eps {
 		[key: string]: any;
 	}
 
-	interface VideoAlbum {
+	interface VideoAlbumRelationship {
 		/**
 		 * ID
 		 */
@@ -1722,14 +1722,14 @@ declare namespace Eps {
 		category_id?: number;
 
 		/**
+		 * 父级分类
+		 */
+		category_pid?: number;
+
+		/**
 		 * 影片封面图
 		 */
 		surface_plot?: string;
-
-		/**
-		 * 是否推荐 1是 2否
-		 */
-		recommend?: BigInt;
 
 		/**
 		 * 是否轮播 1是 2否
@@ -1740,21 +1740,6 @@ declare namespace Eps {
 		 * 轮播图片
 		 */
 		cycle_img?: string;
-
-		/**
-		 * 收费模式 1免费 2vip免费 3金币点播
-		 */
-		charging_mode?: BigInt;
-
-		/**
-		 * 购买模式 1按部 2按集
-		 */
-		buy_mode?: BigInt;
-
-		/**
-		 * 金币点播值
-		 */
-		gold?: BigInt;
 
 		/**
 		 * 导演
@@ -1792,54 +1777,9 @@ declare namespace Eps {
 		introduce?: string;
 
 		/**
-		 * 自定义标签
-		 */
-		label?: string;
-
-		/**
-		 * 自定义语言
-		 */
-		language?: number;
-
-		/**
-		 * 自定义地区
-		 */
-		region?: number;
-
-		/**
-		 * 连载状态
-		 */
-		note?: string;
-
-		/**
-		 * 时长(单位s)
-		 */
-		duration?: BigInt;
-
-		/**
-		 * 序列号
-		 */
-		serial_number?: string;
-
-		/**
-		 * 年份
-		 */
-		year?: number;
-
-		/**
-		 * alias
-		 */
-		alias?: string;
-
-		/**
-		 * 状态
-		 */
-		status?: BigInt;
-
-		/**
 		 * 总人气
 		 */
-		popularity_sum?: BigInt;
+		popularity?: BigInt;
 
 		/**
 		 * 日人气
@@ -1847,49 +1787,49 @@ declare namespace Eps {
 		popularity_day?: BigInt;
 
 		/**
-		 * 月人气
-		 */
-		popularity_month?: BigInt;
-
-		/**
 		 * 周人气
 		 */
 		popularity_week?: BigInt;
 
 		/**
-		 * alias
+		 * 月人气
 		 */
-		release_at?: BigInt;
+		popularity_month?: BigInt;
 
 		/**
-		 * shelf_at
+		 * 总人气
 		 */
-		shelf_at?: BigInt;
+		popularity_sum?: BigInt;
 
 		/**
-		 * 截屏
+		 * 连载状态
 		 */
-		screenshot?: string;
+		note?: string;
 
 		/**
-		 * 采集的源地址
+		 * 年份
 		 */
-		play_url?: longtext;
+		year?: number;
 
 		/**
-		 * 播放地址是否入库1-1已经入库 0未入库
+		 * 状态
 		 */
-		play_url_put_in?: number;
+		status?: BigInt;
 
 		/**
-		 * 片尾时间
+		 * 时长(单位s)
 		 */
-		trailer_time?: number;
+		duration?: BigInt;
 
 		/**
-		 * unit
+		 * 自定义地区
 		 */
-		unit?: string;
+		region?: number;
+
+		/**
+		 * 自定义语言
+		 */
+		language?: number;
 
 		/**
 		 * 总集数
@@ -1907,14 +1847,74 @@ declare namespace Eps {
 		horizontal_poster?: string;
 
 		/**
+		 * 备注
+		 */
+		remarks?: string;
+
+		/**
 		 * 竖屏海报
 		 */
 		vertical_poster?: string;
 
 		/**
-		 * gif
+		 * 发行商
 		 */
-		gif?: string;
+		publish?: string;
+
+		/**
+		 * 上映日期
+		 */
+		pubdate?: string;
+
+		/**
+		 * 序列号
+		 */
+		serial_number?: string;
+
+		/**
+		 * 截屏
+		 */
+		screenshot?: string;
+
+		/**
+		 * 是否连载完毕 0,1
+		 */
+		end?: number;
+
+		/**
+		 * 单位
+		 */
+		unit?: string;
+
+		/**
+		 * 采集的源地址
+		 */
+		play_url?: longtext;
+
+		/**
+		 * 播放地址是否入库1-1已经入库 0未入库
+		 */
+		play_url_put_in?: number;
+
+		/**
+		 * 资源id
+		 */
+		collection_id?: number;
+
+		/**
+		 * 顶数
+		 */
+		up?: number;
+
+		/**
+		 * 踩数
+		 */
+		down?: number;
+
+		/**
+		 * 资源名称
+		 */
+		collection_name?: string;
 
 		/**
 		 * 任意键值
@@ -2717,14 +2717,14 @@ declare namespace Eps {
 		category_id?: number;
 
 		/**
+		 * 父级分类
+		 */
+		category_pid?: number;
+
+		/**
 		 * 影片封面图
 		 */
 		surface_plot?: string;
-
-		/**
-		 * 是否推荐 1是 2否
-		 */
-		recommend?: BigInt;
 
 		/**
 		 * 是否轮播 1是 2否
@@ -2735,21 +2735,6 @@ declare namespace Eps {
 		 * 轮播图片
 		 */
 		cycle_img?: string;
-
-		/**
-		 * 收费模式 1免费 2vip免费 3金币点播
-		 */
-		charging_mode?: BigInt;
-
-		/**
-		 * 购买模式 1按部 2按集
-		 */
-		buy_mode?: BigInt;
-
-		/**
-		 * 金币点播值
-		 */
-		gold?: BigInt;
 
 		/**
 		 * 导演
@@ -2787,6 +2772,11 @@ declare namespace Eps {
 		introduce?: string;
 
 		/**
+		 * 总人气
+		 */
+		popularity?: BigInt;
+
+		/**
 		 * 日人气
 		 */
 		popularity_day?: BigInt;
@@ -2817,11 +2807,6 @@ declare namespace Eps {
 		year?: number;
 
 		/**
-		 * 关联专题id
-		 */
-		album_id?: number;
-
-		/**
 		 * 状态
 		 */
 		status?: BigInt;
@@ -2840,11 +2825,6 @@ declare namespace Eps {
 		 * 自定义语言
 		 */
 		language?: number;
-
-		/**
-		 * 自定义标签
-		 */
-		label?: string;
 
 		/**
 		 * 总集数
@@ -2877,6 +2857,11 @@ declare namespace Eps {
 		publish?: string;
 
 		/**
+		 * 上映日期
+		 */
+		pubdate?: string;
+
+		/**
 		 * 序列号
 		 */
 		serial_number?: string;
@@ -2887,54 +2872,14 @@ declare namespace Eps {
 		screenshot?: string;
 
 		/**
-		 * gif
-		 */
-		gif?: string;
-
-		/**
-		 * alias
-		 */
-		alias?: string;
-
-		/**
-		 * alias
-		 */
-		release_at?: BigInt;
-
-		/**
-		 * shelf_at
-		 */
-		shelf_at?: BigInt;
-
-		/**
-		 * end
+		 * 是否连载完毕 0,1
 		 */
 		end?: number;
 
 		/**
-		 * unit
+		 * 单位
 		 */
 		unit?: string;
-
-		/**
-		 * watch
-		 */
-		watch?: BigInt;
-
-		/**
-		 * use_local_image
-		 */
-		use_local_image?: number;
-
-		/**
-		 * 片头时间
-		 */
-		titles_time?: number;
-
-		/**
-		 * 片尾时间
-		 */
-		trailer_time?: number;
 
 		/**
 		 * 采集的源地址
@@ -2950,6 +2895,16 @@ declare namespace Eps {
 		 * 资源id
 		 */
 		collection_id?: number;
+
+		/**
+		 * 顶数
+		 */
+		up?: number;
+
+		/**
+		 * 踩数
+		 */
+		down?: number;
 
 		/**
 		 * 资源名称
@@ -3198,14 +3153,14 @@ declare namespace Eps {
 		title?: string;
 
 		/**
+		 * 父级分类
+		 */
+		category_pid?: number;
+
+		/**
 		 * 影片封面图
 		 */
 		surface_plot?: string;
-
-		/**
-		 * 是否推荐 1是 2否
-		 */
-		recommend?: BigInt;
 
 		/**
 		 * 是否轮播 1是 2否
@@ -3216,21 +3171,6 @@ declare namespace Eps {
 		 * 轮播图片
 		 */
 		cycle_img?: string;
-
-		/**
-		 * 收费模式 1免费 2vip免费 3金币点播
-		 */
-		charging_mode?: BigInt;
-
-		/**
-		 * 购买模式 1按部 2按集
-		 */
-		buy_mode?: BigInt;
-
-		/**
-		 * 金币点播值
-		 */
-		gold?: BigInt;
 
 		/**
 		 * 导演
@@ -3268,11 +3208,6 @@ declare namespace Eps {
 		introduce?: string;
 
 		/**
-		 * 自定义标签
-		 */
-		label?: string;
-
-		/**
 		 * 自定义语言
 		 */
 		language?: number;
@@ -3303,11 +3238,6 @@ declare namespace Eps {
 		year?: number;
 
 		/**
-		 * alias
-		 */
-		alias?: string;
-
-		/**
 		 * 状态
 		 */
 		status?: BigInt;
@@ -3333,16 +3263,6 @@ declare namespace Eps {
 		popularity_week?: BigInt;
 
 		/**
-		 * alias
-		 */
-		release_at?: BigInt;
-
-		/**
-		 * shelf_at
-		 */
-		shelf_at?: BigInt;
-
-		/**
 		 * 截屏
 		 */
 		screenshot?: string;
@@ -3358,12 +3278,7 @@ declare namespace Eps {
 		play_url_put_in?: number;
 
 		/**
-		 * 片尾时间
-		 */
-		trailer_time?: number;
-
-		/**
-		 * unit
+		 * 单位
 		 */
 		unit?: string;
 
@@ -3386,11 +3301,6 @@ declare namespace Eps {
 		 * 竖屏海报
 		 */
 		vertical_poster?: string;
-
-		/**
-		 * gif
-		 */
-		gif?: string;
 
 		/**
 		 * 任意键值
@@ -4913,6 +4823,11 @@ declare namespace Eps {
 
 	interface VideoAlbum_video {
 		/**
+		 * add_list
+		 */
+		add_list(data?: any): Promise<any>;
+
+		/**
 		 * 删除
 		 */
 		delete(data?: any): Promise<any>;
@@ -4925,19 +4840,19 @@ declare namespace Eps {
 		/**
 		 * 单个信息
 		 */
-		info(data?: any): Promise<VideoAlbum>;
+		info(data?: any): Promise<VideoAlbumRelationship>;
 
 		/**
 		 * 列表查询
 		 */
-		list(data?: any): Promise<VideoAlbum[]>;
+		list(data?: any): Promise<VideoAlbumRelationship[]>;
 
 		/**
 		 * 分页查询
 		 */
 		page(data?: any): Promise<{
 			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: VideoAlbum[];
+			list: VideoAlbumRelationship[];
 			[key: string]: any;
 		}>;
 
@@ -4950,6 +4865,7 @@ declare namespace Eps {
 		 * 权限标识
 		 */
 		permission: {
+			add_list: string;
 			delete: string;
 			update: string;
 			info: string;
@@ -4962,6 +4878,7 @@ declare namespace Eps {
 		 * 权限状态
 		 */
 		_permission: {
+			add_list: boolean;
 			delete: boolean;
 			update: boolean;
 			info: boolean;

@@ -286,7 +286,7 @@ const Table = useTable({
 		},
 		{
 			type: "op",
-			width: 400,
+			width: 600,
 			buttons: [
 				"edit",
 				"delete",

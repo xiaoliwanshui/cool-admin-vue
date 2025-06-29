@@ -5488,11 +5488,6 @@ declare namespace Eps {
 		update(data?: any): Promise<any>;
 
 		/**
-		 * album
-		 */
-		album(data?: any): Promise<any>;
-
-		/**
 		 * sort
 		 */
 		sort(data?: any): Promise<any>;
@@ -5532,7 +5527,6 @@ declare namespace Eps {
 		permission: {
 			delete: string;
 			update: string;
-			album: string;
 			sort: string;
 			week: string;
 			info: string;
@@ -5547,7 +5541,6 @@ declare namespace Eps {
 		_permission: {
 			delete: boolean;
 			update: boolean;
-			album: boolean;
 			sort: boolean;
 			week: boolean;
 			info: boolean;

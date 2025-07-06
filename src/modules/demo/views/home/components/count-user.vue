@@ -3,39 +3,53 @@
 		<div class="card">
 			<div class="card__header">
 				<span class="label">{{ $t('总用户数') }}</span>
-				<cl-svg name="team" class="icon" />
+				<cl-svg class="icon" name="team" />
 			</div>
 
 			<div class="card__container">
-				<cl-number :value="num" class="num" />
+				<cl-number :value="props.user.total" class="num" />
 
 				<div class="rise">
 					<el-icon>
 						<top-right />
 					</el-icon>
 
-					<span>+12%</span>
+					<span>{{ dayOverDayRate }}%</span>
 				</div>
 			</div>
 
 			<div class="card__footer">
 				<span class="mr-2">{{ $t('日增用户数') }}</span>
-				<span>69</span>
+				<span>{{ props.user.today }}</span>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script lang="ts" setup>
-import { BottomRight, TopRight } from '@element-plus/icons-vue';
-import { random } from 'lodash-es';
-import { onMounted, ref } from 'vue';
+import { TopRight } from '@element-plus/icons-vue';
+import { ref, toRefs, watch } from 'vue';
 
-const num = ref(0);
+const dayOverDayRate = ref(0);
 
-onMounted(() => {
-	num.value = random(100000);
-});
+const props = defineProps<{
+	user: { total: number; today: number };
+}>();
+
+const { user } = toRefs(props);
+
+//计算日环比
+function getRatio() {
+	dayOverDayRate.value = ((user.value.today - user.value.total) / user.value.total) * 100;
+}
+
+watch(
+	() => props,
+	newProps => {
+		getRatio();
+	},
+	{ deep: true }
+);
 </script>
 
 <style lang="scss" scoped>

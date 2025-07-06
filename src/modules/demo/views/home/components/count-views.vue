@@ -3,7 +3,7 @@
 		<div class="card">
 			<div class="card__header">
 				<span class="label">{{ $t('浏览量') }}</span>
-				<cl-svg name="trend" class="icon" />
+				<cl-svg class="icon" name="trend" />
 			</div>
 
 			<div class="card__container">
@@ -12,16 +12,18 @@
 
 			<div class="card__footer">
 				<span class="mr-2">{{ $t('访客数') }}</span>
-				<span>142</span>
+				<span>{{ props.visit.total }}</span>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref } from 'vue';
-import { random, range } from 'lodash-es';
+import { onMounted, reactive, toRefs, watch } from 'vue';
 
+const props = defineProps<{
+	visit: { total: number; today: number; data: object };
+}>();
 const chartOption = reactive({
 	grid: {
 		left: 0,
@@ -35,20 +37,7 @@ const chartOption = reactive({
 		axisLine: {
 			show: false
 		},
-		data: [
-			'00:00',
-			'2:00',
-			'4:00',
-			'6:00',
-			'8:00',
-			'10:00',
-			'12:00',
-			'14:00',
-			'16:00',
-			'18:00',
-			'20:00',
-			'22:00'
-		]
+		data: []
 	},
 	yAxis: {
 		type: 'value',
@@ -72,7 +61,7 @@ const chartOption = reactive({
 			showSymbol: false,
 			symbol: 'circle',
 			symbolSize: 6,
-			data: range(12).map(() => parseInt((Math.random() * 1000).toFixed(0)) + 500),
+			data: [],
 			itemStyle: {
 				color: '#4165d7'
 			},
@@ -82,11 +71,24 @@ const chartOption = reactive({
 		}
 	]
 });
-
-const num = ref(0);
-
+const { visit } = toRefs(props);
+const render = () => {
+	if (Object.keys(visit.value.data).length > 0) {
+		const time = Object.keys(visit.value.data);
+		const data = Object.values(visit.value.data);
+		chartOption.xAxis.data = time;
+		chartOption.series[0].data = data;
+	}
+};
+watch(
+	() => props,
+	newProps => {
+		render();
+	},
+	{ deep: true }
+);
 onMounted(() => {
-	num.value = random(1000000);
+	render();
 });
 </script>
 

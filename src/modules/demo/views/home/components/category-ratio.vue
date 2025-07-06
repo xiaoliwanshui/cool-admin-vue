@@ -12,8 +12,11 @@
 
 <script lang="ts" setup>
 import { useDark } from '@vueuse/core';
-import { computed, reactive } from 'vue';
+import { computed, onMounted, reactive, toRefs, watch } from 'vue';
 
+const props = defineProps<{
+	videoCategory: Array<{ total: number; today: number }>;
+}>();
 const isDark = useDark();
 
 const textColor = computed(() => (isDark.value ? '#f1f1f9' : '#000'));
@@ -44,15 +47,19 @@ const chartOption = reactive({
 			label: {
 				color: textColor
 			},
-			data: [
-				{ value: 387, name: '电子产品' },
-				{ value: 314, name: '服装' },
-				{ value: 253, name: '家居用品' },
-				{ value: 198, name: '书籍' },
-				{ value: 123, name: '其他' }
-			]
+			data: []
 		}
 	]
+});
+const { videoCategory } = toRefs(props);
+watch(
+	() => videoCategory.value,
+	val => {
+		chartOption.series[0].data = val;
+	}
+);
+onMounted(() => {
+	chartOption.series[0].data = videoCategory.value;
 });
 </script>
 

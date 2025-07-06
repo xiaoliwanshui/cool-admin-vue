@@ -3,10 +3,10 @@
 		<div class="demo-home">
 			<el-row :gutter="10">
 				<el-col :lg="6" :md="12" :xs="24">
-					<count-user />
+					<count-user :user="data.user" />
 				</el-col>
 				<el-col :lg="6" :md="12" :xs="24">
-					<count-views />
+					<count-views :visit="data.visit" />
 				</el-col>
 				<el-col :lg="6" :md="12" :xs="24">
 					<count-paid />
@@ -18,16 +18,16 @@
 
 			<el-row :gutter="10">
 				<el-col :lg="24" :xs="24">
-					<tab-chart />
+					<tab-chart :video-create-time="data.videoCreateTime" />
 				</el-col>
 			</el-row>
 
 			<el-row :gutter="10">
 				<el-col :lg="14" :sm="24">
-					<hot-goods />
+					<hot-search />
 				</el-col>
 				<el-col :lg="10" :sm="24">
-					<category-ratio />
+					<category-ratio :video-category="data.videoCategory" />
 				</el-col>
 			</el-row>
 		</div>
@@ -35,17 +35,51 @@
 </template>
 
 <script lang="ts" setup>
-defineOptions({
-	name: 'home'
-});
-
+import { onMounted, ref } from 'vue';
+import { useCool } from '/@/cool/hooks';
 import CategoryRatio from './components/category-ratio.vue';
 import CountUser from './components/count-user.vue';
 import CountViews from './components/count-views.vue';
 import CountPaid from './components/count-paid.vue';
 import CountEffect from './components/count-effect.vue';
 import TabChart from './components/tab-chart.vue';
-import HotGoods from './components/hot-goods.vue';
+import HotSearch from './components/hot-search.vue';
+
+const { service } = useCool();
+defineOptions({
+	name: 'home'
+});
+
+const data = ref({
+	user: {
+		total: 0,
+		today: 0
+	},
+	visit: {
+		total: 0,
+		today: 0,
+		data: {}
+	},
+	statisticTitleCount: {
+		today: [],
+		week: [],
+		month: [],
+		year: []
+	},
+	videoCategory: [],
+	videoCreateTime: {
+		create: [],
+		update: []
+	}
+});
+
+const getData = async () => {
+	data.value = await service.echart.echart.info();
+};
+
+onMounted(() => {
+	getData();
+});
 </script>
 
 <style lang="scss">

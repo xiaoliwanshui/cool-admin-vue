@@ -54,10 +54,6 @@
 		title="视频列表"
 	>
 		<videos-album :albumId="albumId" style="height: 600px"></videos-album>
-		<template #footer>
-			<el-button @click="visible = false">取消</el-button>
-			<el-button type="primary" @click="submit">确定</el-button>
-		</template>
 	</cl-dialog>
 	<cl-form ref="addListForm"></cl-form>
 </template>

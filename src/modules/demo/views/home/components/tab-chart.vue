@@ -2,8 +2,6 @@
 	<div class="card">
 		<div class="card__header">
 			<cl-select-button v-model="tab.active" :options="tab.list" @change="onChange" />
-
-			<span class="year">{{ $t('{year}年', { year: dayjs().year() }) }}</span>
 		</div>
 
 		<v-chart :option="chartOption" autoresize />
@@ -11,28 +9,34 @@
 </template>
 
 <script lang="ts" setup>
-import { range } from 'lodash-es';
-import { computed, onMounted, reactive } from 'vue';
-import dayjs from 'dayjs';
+import { computed, onMounted, reactive, toRefs } from 'vue';
 import { useDark } from '@vueuse/core';
 import { useI18n } from 'vue-i18n';
 import { useTheme } from '/#/theme';
 
+const props = defineProps<{
+	videoCreateTime: {
+		create: Array<{ date: string; value: number }>;
+		update: Array<{ date: string; value: number }>;
+	};
+}>();
+
+const { videoCreateTime } = toRefs(props);
 const { t } = useI18n();
 const isDark = useDark();
 const theme = useTheme();
 
 const tab = reactive({
-	active: 'sales',
+	active: 'create',
 
 	list: [
 		{
-			label: t('销售金额'),
-			value: 'sales'
+			label: t('日新增'),
+			value: 'create'
 		},
 		{
-			label: t('销售订单'),
-			value: 'order'
+			label: t('日更新'),
+			value: 'update'
 		}
 	]
 });
@@ -105,18 +109,21 @@ const chartOption = reactive({
 	]
 });
 
-function refresh() {
-	chartOption.xAxis.data = range(12).map((_, i) => t('{i}月', { i: i + 1 }));
-	chartOption.series[0].data = range(12).map(() => parseInt(String(Math.random() * 10000)));
-	chartOption.series[1].data = range(12).map(() => 10000);
+function refresh(key: string) {
+	chartOption.series[0].data = videoCreateTime.value[key].map((item, index) => item.value);
+	chartOption.xAxis.data = videoCreateTime.value[key].map((item, index) =>
+		item.date.slice(0, 10)
+	);
 }
 
-function onChange() {
-	refresh();
+function onChange(key: string) {
+	refresh(key);
 }
 
 onMounted(() => {
-	refresh();
+	setTimeout(() => {
+		refresh('create');
+	}, 1000);
 });
 </script>
 

@@ -1917,6 +1917,21 @@ declare namespace Eps {
 		collection_name?: string;
 
 		/**
+		 * 影片副标题
+		 */
+		sub_title?: string;
+
+		/**
+		 * 影片标签
+		 */
+		video_tag?: string;
+
+		/**
+		 * 影片类型
+		 */
+		video_class?: string;
+
+		/**
 		 * 任意键值
 		 */
 		[key: string]: any;
@@ -2710,6 +2725,21 @@ declare namespace Eps {
 		 * 影片标题
 		 */
 		title?: string;
+
+		/**
+		 * 影片副标题
+		 */
+		sub_title?: string;
+
+		/**
+		 * 影片标签
+		 */
+		video_tag?: string;
+
+		/**
+		 * 影片类型
+		 */
+		video_class?: string;
 
 		/**
 		 * 分类
@@ -4107,6 +4137,25 @@ declare namespace Eps {
 		request: Service["request"];
 	}
 
+	interface EchartEchart {
+		/**
+		 * 单个信息
+		 */
+		info(data?: any): Promise<any>;
+
+		/**
+		 * 权限标识
+		 */
+		permission: { info: string };
+
+		/**
+		 * 权限状态
+		 */
+		_permission: { info: boolean };
+
+		request: Service["request"];
+	}
+
 	interface PluginInfo {
 		/**
 		 * 安装插件
@@ -4823,7 +4872,7 @@ declare namespace Eps {
 
 	interface VideoAlbum_video {
 		/**
-		 * add_list
+		 * 批量添加专辑
 		 */
 		add_list(data?: any): Promise<any>;
 
@@ -4954,7 +5003,7 @@ declare namespace Eps {
 
 	interface VideoCategory {
 		/**
-		 * match_category
+		 * 匹配分类
 		 */
 		match_category(data?: any): Promise<any>;
 
@@ -5023,7 +5072,7 @@ declare namespace Eps {
 
 	interface VideoCollection {
 		/**
-		 * collection_day
+		 * 日更新
 		 */
 		collection_day(data?: any): Promise<any>;
 
@@ -5092,12 +5141,12 @@ declare namespace Eps {
 
 	interface VideoCollection_category {
 		/**
-		 * match_category
+		 * 匹配分类
 		 */
 		match_category(data?: any): Promise<any>;
 
 		/**
-		 * sync_category
+		 * 同步分类
 		 */
 		sync_category(data?: any): Promise<any>;
 
@@ -5488,12 +5537,12 @@ declare namespace Eps {
 		update(data?: any): Promise<any>;
 
 		/**
-		 * sort
+		 * 排序
 		 */
 		sort(data?: any): Promise<any>;
 
 		/**
-		 * week
+		 * 周数据
 		 */
 		week(data?: any): Promise<any>;
 
@@ -5772,6 +5821,7 @@ declare namespace Eps {
 		};
 		demo: { goods: DemoGoods; tenant: DemoTenant };
 		dict: { info: DictInfo; type: DictType };
+		echart: { echart: EchartEchart };
 		plugin: { info: PluginInfo };
 		recycle: { data: RecycleData };
 		space: { info: SpaceInfo; type: SpaceType };

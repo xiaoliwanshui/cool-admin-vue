@@ -53,7 +53,7 @@ const Upsert = useUpsert({
 		{
 			label: t('图片'),
 			prop: 'image',
-			component: { name: 'el-input', props: { clearable: true } }
+			component: { name: 'cl-upload', props: { clearable: true } }
 		},
 		{
 			label: t('页面'),
@@ -81,11 +81,18 @@ const Upsert = useUpsert({
 			component: { name: 'el-input', props: { clearable: true } }
 		},
 		{
-			label: t('状态'),
+			label: '状态',
 			prop: 'status',
-			component: { name: 'el-input', props: { clearable: true } },
-
-			required: true
+			flex: false,
+			component: {
+				name: 'cl-switch',
+				props: {
+					activeValue: 1,
+					inactiveValue: 2
+				}
+			},
+			required: true,
+			value: 1
 		}
 	]
 });

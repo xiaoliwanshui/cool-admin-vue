@@ -1,21 +1,21 @@
 <template>
-	<el-button type="success" @click="open" v-if="isDev">{{ $t('快速创建') }}</el-button>
+	<el-button v-if="isDev" type="success" @click="open">{{ $t('快速创建') }}</el-button>
 
 	<cl-form ref="Form">
 		<template #slot-entity="{ scope }">
 			<el-cascader
 				v-model="scope.entity"
-				filterable
-				clearable
-				separator="."
 				:options="tree"
 				:placeholder="$t('请选择数据结构')"
+				clearable
+				filterable
+				separator="."
 				@change="onEntityChange"
 			/>
 		</template>
 	</cl-form>
 
-	<ai-code-dev path="/ai" :ref="setRefs('aiCode')" hide />
+	<ai-code-dev :ref="setRefs('aiCode')" hide path="/ai" />
 </template>
 
 <script lang="ts" setup>
@@ -148,7 +148,7 @@ function open() {
 		on: {
 			async submit(data, { done, close }) {
 				const entity = list.find(e => e.value == data.entity.join('/'));
-
+				console.log(entity, 333);
 				// 发送消息
 				refs.aiCode.send(
 					'createVue',
@@ -165,12 +165,14 @@ function open() {
 							code
 						})
 							.then(create => {
+								console.log(2222);
 								mitt.emit('helper.createMenu');
 
 								create();
 								close();
 							})
 							.catch(err => {
+								console.log(1111);
 								console.error(err);
 								done();
 							});

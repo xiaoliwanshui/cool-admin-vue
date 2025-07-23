@@ -24,7 +24,7 @@
 
 			<el-row :gutter="10">
 				<el-col :lg="14" :sm="24">
-					<hot-search />
+					<hot-search :key-word="data.keyWord" />
 				</el-col>
 				<el-col :lg="10" :sm="24">
 					<category-ratio :video-category="data.videoCategory" />
@@ -70,7 +70,13 @@ const data = ref({
 	videoCreateTime: {
 		create: [],
 		update: []
-	}
+	},
+	keyWord: [
+		{
+			params: {},
+			count: '0'
+		}
+	]
 });
 
 const getData = async () => {

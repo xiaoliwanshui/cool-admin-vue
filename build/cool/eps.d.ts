@@ -1168,6 +1168,48 @@ declare namespace Eps {
 		[key: string]: any;
 	}
 
+	interface ContactEntity {
+		/**
+		 * ID
+		 */
+		id?: number;
+
+		/**
+		 * 创建用户ID
+		 */
+		createUserId?: number;
+
+		/**
+		 * 更新用户ID
+		 */
+		updateUserId?: number;
+
+		/**
+		 * 联系人姓名
+		 */
+		name?: string;
+
+		/**
+		 * 手机号
+		 */
+		phone?: number;
+
+		/**
+		 * 创建时间
+		 */
+		createTime?: string;
+
+		/**
+		 * 更新时间
+		 */
+		updateTime?: string;
+
+		/**
+		 * 任意键值
+		 */
+		[key: string]: any;
+	}
+
 	interface UserInfoEntity {
 		/**
 		 * ID
@@ -2401,12 +2443,7 @@ declare namespace Eps {
 		/**
 		 * 分类
 		 */
-		type?: number;
-
-		/**
-		 * 标签
-		 */
-		types?: json;
+		category_id?: number;
 
 		/**
 		 * 推流地址
@@ -4565,6 +4602,49 @@ declare namespace Eps {
 		request: Service["request"];
 	}
 
+	interface UserContacts {
+		/**
+		 * 删除
+		 */
+		delete(data?: any): Promise<any>;
+
+		/**
+		 * 单个信息
+		 */
+		info(data?: any): Promise<ContactEntity>;
+
+		/**
+		 * 列表查询
+		 */
+		list(data?: any): Promise<ContactEntity[]>;
+
+		/**
+		 * 分页查询
+		 */
+		page(data?: any): Promise<{
+			pagination: { size: number; page: number; total: number; [key: string]: any };
+			list: ContactEntity[];
+			[key: string]: any;
+		}>;
+
+		/**
+		 * 新增
+		 */
+		add(data?: any): Promise<any>;
+
+		/**
+		 * 权限标识
+		 */
+		permission: { delete: string; info: string; list: string; page: string; add: string };
+
+		/**
+		 * 权限状态
+		 */
+		_permission: { delete: boolean; info: boolean; list: boolean; page: boolean; add: boolean };
+
+		request: Service["request"];
+	}
+
 	interface UserInfo {
 		/**
 		 * 删除
@@ -5829,6 +5909,7 @@ declare namespace Eps {
 		user: {
 			address: UserAddress;
 			collect: UserCollect;
+			contacts: UserContacts;
 			info: UserInfo;
 			like: UserLike;
 			share: UserShare;
@@ -5855,7 +5936,7 @@ declare namespace Eps {
 	};
 
 	type DictKey =
-		| "liveType"
+		| "live_category"
 		| "liveTags"
 		| "week"
 		| "area"

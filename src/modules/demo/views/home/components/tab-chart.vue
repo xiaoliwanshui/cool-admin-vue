@@ -92,7 +92,10 @@ const chartOption = reactive({
 			type: 'bar',
 			data: [] as number[],
 			itemStyle: {
-				color: computed(() => theme.color)
+				color: computed(() => theme.color),
+				normal: {
+					barBorderRadius: [12, 12, 12, 12]
+				}
 			}
 		},
 		{
@@ -102,7 +105,10 @@ const chartOption = reactive({
 			barGap: '-100%',
 			data: [] as number[],
 			itemStyle: {
-				color: computed(() => (isDark.value ? '#f1f1f911' : '#f1f1f9'))
+				color: computed(() => (isDark.value ? '#f1f1f911' : '#f1f1f9')),
+				normal: {
+					barBorderRadius: [12, 12, 12, 12]
+				}
 			},
 			zlevel: -1
 		}

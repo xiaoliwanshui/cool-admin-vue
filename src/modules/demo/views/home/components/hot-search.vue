@@ -1,17 +1,17 @@
 <template>
-	<div class="hot-search">
+	<div class="hot-search card">
 		<div class="card__header">
 			<span class="year">热搜排行榜</span>
 		</div>
 
 		<div class="hot-search__container">
 			<el-row :gutter="20" class="hot-search__chart">
-				<el-col :md="12" :xs="24">
+				<el-col :md="24" :xs="24">
 					<div class="block">
 						<div class="count">
 							<div class="number">
 								<span>搜索用户数</span>
-								<span>1242</span>
+								<span>{{ count }}</span>
 							</div>
 							<div class="rise">
 								<i class="el-icon-top-right"></i>
@@ -19,24 +19,7 @@
 							</div>
 						</div>
 
-						<v-chart :option="chartOption()" autoresize />
-					</div>
-				</el-col>
-
-				<el-col :md="12" :xs="24">
-					<div class="block is-last">
-						<div class="count">
-							<div class="number">
-								<span>关注用户数</span>
-								<span>365</span>
-							</div>
-							<div class="rise">
-								<i class="el-icon-top-right"></i>
-								<span>+2%</span>
-							</div>
-						</div>
-
-						<v-chart :option="chartOption()" autoresize />
+						<v-chart :option="chartOptions" autoresize />
 					</div>
 				</el-col>
 			</el-row>
@@ -53,17 +36,27 @@
 <script lang="ts" setup>
 import * as echarts from 'echarts';
 import { useCrud, useTable } from '@cool-vue/crud';
-import { reactive, toRefs } from 'vue';
+import { computed, reactive, ref, watch } from 'vue';
 
 const props = defineProps<{
-	statisticTitleCount: {
-		today: Array<{ title: string; count: number }>;
-		week: Array<{ title: string; count: number }>;
-		month: Array<{ title: string; count: number }>;
-		year: Array<{ title: string; count: number }>;
-	};
+	keyWord: Array<{
+		params: {
+			keyWord: string;
+		};
+		count: string;
+	}>;
 }>();
-const { statisticTitleCount } = toRefs(props);
+
+// 使用ref而不是reactive来保持响应性
+const keyWord = ref(props.keyWord);
+
+// 计算count总数
+const count = computed(() => {
+	return keyWord.value.reduce((total, item) => {
+		return total + parseInt(item.count || '0');
+	}, 0);
+});
+
 const tab = reactive({
 	active: 'today',
 	list: [
@@ -81,45 +74,116 @@ const tab = reactive({
 		}
 	]
 });
-const onChange = val => {};
+
+const chartOptions = ref({
+	grid: {
+		left: 0,
+		top: 10,
+		right: 0,
+		bottom: 0
+	},
+	xAxis: {
+		type: 'category',
+		data: [],
+		boundaryGap: false
+	},
+	yAxis: {
+		type: 'value',
+		splitLine: {
+			show: false
+		},
+		axisTick: {
+			show: false
+		},
+		axisLine: {
+			show: false
+		},
+		axisLabel: {
+			show: false
+		}
+	},
+	series: [
+		{
+			name: '总访问量',
+			type: 'line',
+			smooth: true,
+			showSymbol: false,
+			symbol: 'circle',
+			symbolSize: 6,
+			data: [],
+			areaStyle: {
+				color: new echarts.graphic.LinearGradient(
+					0,
+					0,
+					0,
+					1,
+					[
+						{
+							offset: 0,
+							color: '#D1E5FF'
+						},
+						{
+							offset: 1,
+							color: '#FFFFFF'
+						}
+					],
+					false
+				)
+			},
+			itemStyle: {
+				color: '#4165d7'
+			},
+			lineStyle: {
+				width: 2
+			}
+		}
+	]
+});
+
+// 初始化图表数据
+function initChartData() {
+	chartOptions.value = {
+		...chartOptions.value,
+		series: [
+			{
+				...chartOptions.value.series[0],
+				data: keyWord.value.map(item => item.count)
+			}
+		],
+		xAxis: {
+			...chartOptions.value.xAxis,
+			data: Array.from({ length: 12 }, (_, i) => `${i + 1}月`)
+		}
+	};
+}
+
+// 监听keyWord变化
+watch(
+	() => props.keyWord,
+	newVal => {
+		keyWord.value = newVal;
+		initChartData();
+	},
+	{ immediate: true }
+);
+
 const Crud = useCrud(
 	{
 		service: {
 			page() {
 				return Promise.resolve({
-					list: [
-						{
-							keyWord: '无线耳机',
-							users: 983,
-							ud: 5
-						},
-						{
-							keyWord: '运动耳机',
-							users: 763,
-							ud: -3
-						},
-						{
-							keyWord: '蓝牙音箱',
-							users: 328,
-							ud: 7
-						},
-						{
-							keyWord: '4k显示屏',
-							users: 144,
-							ud: 4
-						},
-						{
-							keyWord: '罗技 G530',
-							users: 121,
-							ud: -1
-						}
-					]
+					list: keyWord.value.slice(0, 7).map(item => ({
+						keyWord: item.params.keyWord,
+						count: item.count
+					}))
 				});
 			}
 		}
 	},
 	app => {
-		app.refresh();
+		setTimeout(() => {
+			app.refresh();
+		}, 1000);
 	}
 );
 
@@ -139,93 +203,14 @@ const Table = useTable({
 		},
 		{
 			label: '用户数',
-			prop: 'users',
-			minWidth: 100
-		},
-		{
-			label: '周涨幅',
-			prop: 'ud',
-			sortable: 'desc',
+			prop: 'count',
 			minWidth: 100
 		}
 	]
 });
 
-function chartOption() {
-	return {
-		grid: {
-			left: 0,
-			top: 10,
-			right: 0,
-			bottom: 0
-		},
-		xAxis: {
-			type: 'category',
-			data: [],
-			boundaryGap: false
-		},
-		yAxis: {
-			type: 'value',
-			splitLine: {
-				show: false
-			},
-			axisTick: {
-				show: false
-			},
-			axisLine: {
-				show: false
-			},
-			axisLabel: {
-				show: false
-			}
-		},
-		series: [
-			{
-				name: '总访问量',
-				type: 'line',
-				smooth: true,
-				showSymbol: false,
-				symbol: 'circle',
-				symbolSize: 6,
-				data: new Array(12)
-					.fill(1)
-					.map(() => parseInt((Math.random() * 1000).toFixed(0)) + 500),
-				areaStyle: {
-					color: new echarts.graphic.LinearGradient(
-						0,
-						0,
-						0,
-						1,
-						[
-							{
-								offset: 0,
-								color: '#D1E5FF'
-							},
-							{
-								offset: 1,
-								color: '#FFFFFF'
-							}
-						],
-						false
-					)
-				},
-				itemStyle: {
-					color: '#4165d7'
-				},
-				lineStyle: {
-					width: 2
-				}
-			}
-		]
-	};
-}
-
-function refresh(key: string) {
-	chartOption.series[0].data = videoCreateTime.value[key].map((item, index) => item.value);
-	chartOption.xAxis.data = videoCreateTime.value[key].map((item, index) =>
-		item.date.slice(0, 10)
-	);
-}
+// 初始化数据
+initChartData();
 </script>
 
 <style lang="scss" scoped>

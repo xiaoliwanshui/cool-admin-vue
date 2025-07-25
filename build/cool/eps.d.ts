@@ -1192,7 +1192,7 @@ declare namespace Eps {
 		/**
 		 * 手机号
 		 */
-		phone?: number;
+		phone?: string;
 
 		/**
 		 * 创建时间

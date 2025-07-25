@@ -71,7 +71,8 @@ const Upsert = useUpsert({
 			component: {
 				name: 'el-tree-select',
 				props: {
-					data: dict.get('video_category')
+					data: dict.get('video_category'),
+					'check-strictly': true
 				}
 			}
 		},

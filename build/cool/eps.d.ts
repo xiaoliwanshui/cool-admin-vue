@@ -1,76 +1,9 @@
 declare namespace Eps {
-	interface NoticeInfoEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 标题
-		 */
-		title?: string;
-
-		/**
-		 * 内容
-		 */
-		content?: longtext;
-
-		/**
-		 * 类型
-		 */
-		type?: number;
-
-		/**
-		 * 摘要
-		 */
-		summary?: longtext;
-
-		/**
-		 * 状态
-		 */
-		status?: number;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
 	interface BaseSysDepartmentEntity {
 		/**
 		 * ID
 		 */
 		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
 
 		/**
 		 * 部门名称
@@ -115,16 +48,6 @@ declare namespace Eps {
 		id?: number;
 
 		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
 		 * 用户ID
 		 */
 		userId?: number;
@@ -142,7 +65,7 @@ declare namespace Eps {
 		/**
 		 * 参数
 		 */
-		params?: json;
+		params?: any;
 
 		/**
 		 * 创建时间
@@ -170,16 +93,6 @@ declare namespace Eps {
 		 * ID
 		 */
 		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
 
 		/**
 		 * 父菜单ID
@@ -254,16 +167,6 @@ declare namespace Eps {
 		id?: number;
 
 		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
 		 * 键
 		 */
 		keyName?: string;
@@ -311,16 +214,6 @@ declare namespace Eps {
 		id?: number;
 
 		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
 		 * 用户ID
 		 */
 		userId?: string;
@@ -348,12 +241,12 @@ declare namespace Eps {
 		/**
 		 * 菜单权限
 		 */
-		menuIdList?: json;
+		menuIdList?: any;
 
 		/**
 		 * 部门权限
 		 */
-		departmentIdList?: json;
+		departmentIdList?: any;
 
 		/**
 		 * 创建时间
@@ -376,16 +269,6 @@ declare namespace Eps {
 		 * ID
 		 */
 		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
 
 		/**
 		 * 部门ID
@@ -475,16 +358,6 @@ declare namespace Eps {
 		id?: number;
 
 		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
 		 * 标题
 		 */
 		title?: string;
@@ -517,7 +390,7 @@ declare namespace Eps {
 		/**
 		 * 示例图
 		 */
-		exampleImages?: json;
+		exampleImages?: any;
 
 		/**
 		 * 库存
@@ -550,16 +423,6 @@ declare namespace Eps {
 		 * ID
 		 */
 		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
 
 		/**
 		 * 类型ID
@@ -614,16 +477,6 @@ declare namespace Eps {
 		id?: number;
 
 		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
 		 * 名称
 		 */
 		name?: string;
@@ -654,16 +507,6 @@ declare namespace Eps {
 		 * ID
 		 */
 		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
 
 		/**
 		 * 名称
@@ -713,22 +556,22 @@ declare namespace Eps {
 		/**
 		 * 内容
 		 */
-		content?: json;
+		content?: any;
 
 		/**
 		 * ts内容
 		 */
-		tsContent?: json;
+		tsContent?: any;
 
 		/**
 		 * 插件的plugin.json
 		 */
-		pluginJson?: json;
+		pluginJson?: any;
 
 		/**
 		 * 配置
 		 */
-		config?: json;
+		config?: any;
 
 		/**
 		 * 创建时间
@@ -753,19 +596,9 @@ declare namespace Eps {
 		id?: number;
 
 		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
 		 * 表
 		 */
-		entityInfo?: json;
+		entityInfo?: any;
 
 		/**
 		 * 操作人
@@ -775,7 +608,7 @@ declare namespace Eps {
 		/**
 		 * 被删除的数据
 		 */
-		data?: json;
+		data?: any;
 
 		/**
 		 * 请求的接口
@@ -785,7 +618,7 @@ declare namespace Eps {
 		/**
 		 * 请求参数
 		 */
-		params?: json;
+		params?: any;
 
 		/**
 		 * 删除数据条数
@@ -818,16 +651,6 @@ declare namespace Eps {
 		 * ID
 		 */
 		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
 
 		/**
 		 * 地址
@@ -892,16 +715,6 @@ declare namespace Eps {
 		id?: number;
 
 		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
 		 * 类别名称
 		 */
 		name?: string;
@@ -932,16 +745,6 @@ declare namespace Eps {
 		 * ID
 		 */
 		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
 
 		/**
 		 * 任务ID
@@ -1051,16 +854,6 @@ declare namespace Eps {
 		id?: number;
 
 		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
 		 * 用户ID
 		 */
 		userId?: number;
@@ -1116,115 +909,11 @@ declare namespace Eps {
 		[key: string]: any;
 	}
 
-	interface CollectEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 标题
-		 */
-		title?: string;
-
-		/**
-		 * 分类
-		 */
-		type?: number;
-
-		/**
-		 * 关联id
-		 */
-		associationId?: number;
-
-		/**
-		 * 封面
-		 */
-		cover?: string;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface ContactEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 联系人姓名
-		 */
-		name?: string;
-
-		/**
-		 * 手机号
-		 */
-		phone?: string;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
 	interface UserInfoEntity {
 		/**
 		 * ID
 		 */
 		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
 
 		/**
 		 * 登录唯一ID
@@ -1234,7 +923,7 @@ declare namespace Eps {
 		/**
 		 * 头像
 		 */
-		avatarUrl?: longtext;
+		avatarUrl?: string;
 
 		/**
 		 * 昵称
@@ -1272,56 +961,24 @@ declare namespace Eps {
 		description?: string;
 
 		/**
-		 * 创建时间
+		 * 生日
 		 */
-		createTime?: string;
+		birthday?: string;
 
 		/**
-		 * 更新时间
+		 * 省
 		 */
-		updateTime?: string;
+		province?: string;
 
 		/**
-		 * 任意键值
+		 * 市
 		 */
-		[key: string]: any;
-	}
-
-	interface LikeEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
+		city?: string;
 
 		/**
-		 * 创建用户ID
+		 * 区
 		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 标题
-		 */
-		title?: string;
-
-		/**
-		 * 分类
-		 */
-		type?: number;
-
-		/**
-		 * 关联id
-		 */
-		associationId?: number;
-
-		/**
-		 * 封面
-		 */
-		cover?: string;
+		district?: string;
 
 		/**
 		 * 创建时间
@@ -1332,2042 +989,6 @@ declare namespace Eps {
 		 * 更新时间
 		 */
 		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface ShareEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 标题
-		 */
-		title?: string;
-
-		/**
-		 * 分类
-		 */
-		type?: number;
-
-		/**
-		 * 关联id
-		 */
-		associationId?: number;
-
-		/**
-		 * 封面
-		 */
-		cover?: string;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface ViewsEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 标题
-		 */
-		title?: string;
-
-		/**
-		 * 分类
-		 */
-		type?: number;
-
-		/**
-		 * 关联id
-		 */
-		associationId?: number;
-
-		/**
-		 * 视频时长
-		 */
-		duration?: number;
-
-		/**
-		 * 观看时长
-		 */
-		viewingDuration?: number;
-
-		/**
-		 * 当前观看索引
-		 */
-		videoIndex?: number;
-
-		/**
-		 * 封面
-		 */
-		cover?: string;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface AdsEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 广告名称
-		 */
-		name?: string;
-
-		/**
-		 * 位置
-		 */
-		position?: string;
-
-		/**
-		 * 广告类型 image图片 text文字 custom自定义
-		 */
-		ads_type?: string;
-
-		/**
-		 * 自定义内容
-		 */
-		custom?: string;
-
-		/**
-		 * 内容
-		 */
-		content?: string;
-
-		/**
-		 * html广告
-		 */
-		html?: string;
-
-		/**
-		 * 视频广告地址
-		 */
-		video?: string;
-
-		/**
-		 * 链接
-		 */
-		link?: string;
-
-		/**
-		 * 排序
-		 */
-		sort?: number;
-
-		/**
-		 * 状态 1显示 2关闭
-		 */
-		state?: number;
-
-		/**
-		 * 允许关闭 1允许 2不允许
-		 */
-		close?: number;
-
-		/**
-		 * 显示时长 单位秒
-		 */
-		duration?: number;
-
-		/**
-		 * 链接
-		 */
-		url?: string;
-
-		/**
-		 * 是否默认静音
-		 */
-		muted?: number;
-
-		/**
-		 * 须观看的时长，期间不能被跳过
-		 */
-		playDuration?: number;
-
-		/**
-		 * 广告总时长，单位为秒
-		 */
-		totalDuration?: number;
-
-		/**
-		 * 创建时间
-		 */
-		create_at?: BigInt;
-
-		/**
-		 * 上线时间
-		 */
-		online_at?: BigInt;
-
-		/**
-		 * 下线时间
-		 */
-		offline_at?: BigInt;
-
-		/**
-		 * 更新时间
-		 */
-		update_at?: BigInt;
-
-		/**
-		 * 打开方式
-		 */
-		target?: string;
-
-		/**
-		 * 是否是全站应用,1-是，2-否
-		 */
-		is_all_site?: number;
-
-		/**
-		 * 定时器
-		 */
-		ad_timer?: number;
-
-		/**
-		 * 终端web h5 app
-		 */
-		terminal?: number;
-
-		/**
-		 * createdAt
-		 */
-		createdAt?: Date;
-
-		/**
-		 * updated_at
-		 */
-		updatedAt?: Date;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface VideoAlbumEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 类型 1影片 2名人 3文章
-		 */
-		title?: string;
-
-		/**
-		 * 标题
-		 */
-		name?: string;
-
-		/**
-		 * 封面地址
-		 */
-		surface_plot?: string;
-
-		/**
-		 * 是否推荐 1是 2否
-		 */
-		recommend?: BigInt;
-
-		/**
-		 * 是否推荐 1是 2否
-		 */
-		status?: BigInt;
-
-		/**
-		 * 简介
-		 */
-		introduce?: string;
-
-		/**
-		 * 日人气
-		 */
-		popularity_day?: BigInt;
-
-		/**
-		 * 周人气
-		 */
-		popularity_week?: BigInt;
-
-		/**
-		 * 月人气
-		 */
-		popularity_month?: BigInt;
-
-		/**
-		 * 总人气
-		 */
-		popularity_sum?: BigInt;
-
-		/**
-		 * 备注
-		 */
-		note?: string;
-
-		/**
-		 * 排序
-		 */
-		sort?: number;
-
-		/**
-		 * 专题关联类型
-		 */
-		category_id?: number;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface VideoAlbumRelationship {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 专辑id
-		 */
-		album_id?: BigInt;
-
-		/**
-		 * 影片id
-		 */
-		videos_id?: BigInt;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 影片标题
-		 */
-		title?: string;
-
-		/**
-		 * 分类
-		 */
-		category_id?: number;
-
-		/**
-		 * 父级分类
-		 */
-		category_pid?: number;
-
-		/**
-		 * 影片封面图
-		 */
-		surface_plot?: string;
-
-		/**
-		 * 是否轮播 1是 2否
-		 */
-		cycle?: BigInt;
-
-		/**
-		 * 轮播图片
-		 */
-		cycle_img?: string;
-
-		/**
-		 * 导演
-		 */
-		directors?: string;
-
-		/**
-		 * 演员
-		 */
-		actors?: string;
-
-		/**
-		 * imd评分.百分制
-		 */
-		imdb_score?: BigInt;
-
-		/**
-		 * iimd评分ID
-		 */
-		imdb_score_id?: string;
-
-		/**
-		 * 豆瓣评分.百分制
-		 */
-		douban_score?: number;
-
-		/**
-		 * 豆瓣评分ID
-		 */
-		douban_score_id?: string;
-
-		/**
-		 * 简介
-		 */
-		introduce?: string;
-
-		/**
-		 * 总人气
-		 */
-		popularity?: BigInt;
-
-		/**
-		 * 日人气
-		 */
-		popularity_day?: BigInt;
-
-		/**
-		 * 周人气
-		 */
-		popularity_week?: BigInt;
-
-		/**
-		 * 月人气
-		 */
-		popularity_month?: BigInt;
-
-		/**
-		 * 总人气
-		 */
-		popularity_sum?: BigInt;
-
-		/**
-		 * 连载状态
-		 */
-		note?: string;
-
-		/**
-		 * 年份
-		 */
-		year?: number;
-
-		/**
-		 * 状态
-		 */
-		status?: BigInt;
-
-		/**
-		 * 时长(单位s)
-		 */
-		duration?: BigInt;
-
-		/**
-		 * 自定义地区
-		 */
-		region?: number;
-
-		/**
-		 * 自定义语言
-		 */
-		language?: number;
-
-		/**
-		 * 总集数
-		 */
-		number?: BigInt;
-
-		/**
-		 * 更新集数
-		 */
-		total?: BigInt;
-
-		/**
-		 * 横屏海报
-		 */
-		horizontal_poster?: string;
-
-		/**
-		 * 备注
-		 */
-		remarks?: string;
-
-		/**
-		 * 竖屏海报
-		 */
-		vertical_poster?: string;
-
-		/**
-		 * 发行商
-		 */
-		publish?: string;
-
-		/**
-		 * 上映日期
-		 */
-		pubdate?: string;
-
-		/**
-		 * 序列号
-		 */
-		serial_number?: string;
-
-		/**
-		 * 截屏
-		 */
-		screenshot?: string;
-
-		/**
-		 * 是否连载完毕 0,1
-		 */
-		end?: number;
-
-		/**
-		 * 单位
-		 */
-		unit?: string;
-
-		/**
-		 * 采集的源地址
-		 */
-		play_url?: longtext;
-
-		/**
-		 * 播放地址是否入库1-1已经入库 0未入库
-		 */
-		play_url_put_in?: number;
-
-		/**
-		 * 资源id
-		 */
-		collection_id?: number;
-
-		/**
-		 * 顶数
-		 */
-		up?: number;
-
-		/**
-		 * 踩数
-		 */
-		down?: number;
-
-		/**
-		 * 资源名称
-		 */
-		collection_name?: string;
-
-		/**
-		 * 影片副标题
-		 */
-		sub_title?: string;
-
-		/**
-		 * 影片标签
-		 */
-		video_tag?: string;
-
-		/**
-		 * 影片类型
-		 */
-		video_class?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface BarrageEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 站点ID
-		 */
-		site_id?: BigInt;
-
-		/**
-		 * 用户ID
-		 */
-		member_id?: string;
-
-		/**
-		 * 视频ID
-		 */
-		video_id?: BigInt;
-
-		/**
-		 * 资源名称
-		 */
-		resource_name?: string;
-
-		/**
-		 * 线路ID
-		 */
-		play_line_id?: BigInt;
-
-		/**
-		 * 相对时间
-		 */
-		relative_time?: number;
-
-		/**
-		 * 发送时间
-		 */
-		send_time?: number;
-
-		/**
-		 * 发送日期
-		 */
-		send_date?: string;
-
-		/**
-		 * 弹幕内容
-		 */
-		content?: string;
-
-		/**
-		 * 弹幕字体大小
-		 */
-		size?: number;
-
-		/**
-		 * 弹幕类型
-		 */
-		type?: number;
-
-		/**
-		 * 弹幕颜色
-		 */
-		color?: string;
-
-		/**
-		 * 点赞数
-		 */
-		agree?: number;
-
-		/**
-		 * IP地址
-		 */
-		ip?: string;
-
-		/**
-		 * 状态
-		 */
-		status?: number;
-
-		/**
-		 * 拒绝理由
-		 */
-		reject_reason?: string;
-
-		/**
-		 * createdAt
-		 */
-		create_at?: BigInt;
-
-		/**
-		 * updatedAt
-		 */
-		updated_at?: BigInt;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface CategoryEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 父id
-		 */
-		parent_id?: BigInt;
-
-		/**
-		 * 类型 1影片 2名人 3文章
-		 */
-		type?: BigInt;
-
-		/**
-		 * 分类名称
-		 */
-		name?: string;
-
-		/**
-		 * 排序
-		 */
-		sort?: BigInt;
-
-		/**
-		 * 是否是竖屏，1-是，0-否
-		 */
-		is_vertical?: number;
-
-		/**
-		 * 是否是纯文字，1-是，0-否
-		 */
-		is_font?: number;
-
-		/**
-		 * 站点id
-		 */
-		site_id?: number;
-
-		/**
-		 * status
-		 */
-		status?: number;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface CollectionEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 名称
-		 */
-		name?: string;
-
-		/**
-		 * 数据类型:1视频 2影人
-		 */
-		data_type?: BigInt;
-
-		/**
-		 * 地址
-		 */
-		address?: string;
-
-		/**
-		 * 参数
-		 */
-		param?: string;
-
-		/**
-		 * 说明
-		 */
-		desc?: string;
-
-		/**
-		 * 来源
-		 */
-		tags?: string;
-
-		/**
-		 * 关联播放器ID
-		 */
-		player_id?: number;
-
-		/**
-		 * 排序
-		 */
-		sort?: number;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface CollectionCategoryEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 资源id
-		 */
-		collection_id?: number;
-
-		/**
-		 * 资源名称
-		 */
-		collection_name?: string;
-
-		/**
-		 * 采集资源分类id
-		 */
-		class_id?: number;
-
-		/**
-		 * 采集资源分类名称
-		 */
-		class_name?: string;
-
-		/**
-		 * 采集资源分类父id
-		 */
-		class_pid?: string;
-
-		/**
-		 * 采集资源分类pid
-		 */
-		parentId?: number;
-
-		/**
-		 * 系统资源分类id
-		 */
-		sys_category_id?: number;
-
-		/**
-		 * 收费模式 1免费 2vip免费 3金币点播
-		 */
-		charging_mode?: number;
-
-		/**
-		 * 金币点播值
-		 */
-		gold?: number;
-
-		/**
-		 * 购买模式 1按部 2按集
-		 */
-		buy_mode?: number;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface CollectionTaskTaskEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 名称
-		 */
-		taskName?: string;
-
-		/**
-		 * 任务状态
-		 */
-		taskStatus?: number;
-
-		/**
-		 * 任务类型
-		 */
-		taskType?: number;
-
-		/**
-		 * 执行参数
-		 */
-		execParams?: json;
-
-		/**
-		 * 执行结果
-		 */
-		execResult?: json;
-
-		/**
-		 * 采集源
-		 */
-		collectionSource?: json;
-
-		/**
-		 * 开始时间
-		 */
-		startDate?: Date;
-
-		/**
-		 * 结束时间
-		 */
-		endDate?: Date;
-
-		/**
-		 * 备注信息
-		 */
-		remark?: string;
-
-		/**
-		 * 错误信息
-		 */
-		errorMessage?: json;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface UserLiveEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 图片
-		 */
-		image?: string;
-
-		/**
-		 * 标题
-		 */
-		title?: string;
-
-		/**
-		 * 房间号
-		 */
-		roomId?: string;
-
-		/**
-		 * 分类
-		 */
-		category_id?: number;
-
-		/**
-		 * 推流地址
-		 */
-		pushUrl?: string;
-
-		/**
-		 * 拉流地址
-		 */
-		pullUrl?: string;
-
-		/**
-		 * 推流码
-		 */
-		pushCode?: string;
-
-		/**
-		 * 状态
-		 */
-		status?: number;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface PlayerEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 名称
-		 */
-		name?: string;
-
-		/**
-		 * 标签
-		 */
-		tag?: string;
-
-		/**
-		 * 排序
-		 */
-		sort?: number;
-
-		/**
-		 * 类型
-		 */
-		type?: string;
-
-		/**
-		 * key
-		 */
-		key?: string;
-
-		/**
-		 * 状态
-		 */
-		status?: number;
-
-		/**
-		 * 介绍
-		 */
-		introduce?: string;
-
-		/**
-		 * 代码
-		 */
-		code?: string;
-
-		/**
-		 * 解析模式
-		 */
-		parse_mod?: number;
-
-		/**
-		 * 解析地址
-		 */
-		parse_address?: string;
-
-		/**
-		 * 解析字段
-		 */
-		parse_column?: string;
-
-		/**
-		 * json服务器
-		 */
-		json_server?: string;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface PlayLineEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 影视ID
-		 */
-		video_id?: BigInt;
-
-		/**
-		 * 影视名称
-		 */
-		video_name?: string;
-
-		/**
-		 * 资源ID
-		 */
-		video_line_id?: BigInt;
-
-		/**
-		 * 名称
-		 */
-		name?: string;
-
-		/**
-		 * 资源id
-		 */
-		collection_id?: number;
-
-		/**
-		 * 资源名称
-		 */
-		collection_name?: string;
-
-		/**
-		 * 文件地址
-		 */
-		file?: string;
-
-		/**
-		 * 收费模式 1免费 2vip免费 3金币点播
-		 */
-		charging_mode?: BigInt;
-
-		/**
-		 * 金币数量
-		 */
-		currency?: BigInt;
-
-		/**
-		 * 副标题
-		 */
-		sub_title?: string;
-
-		/**
-		 * 状态
-		 */
-		status?: number;
-
-		/**
-		 * 是否是直播源1-是 0-否
-		 */
-		live_source?: number;
-
-		/**
-		 * 排序
-		 */
-		sort?: number;
-
-		/**
-		 * 标识
-		 */
-		tag?: string;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface VideoSwiperEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 标题
-		 */
-		title?: string;
-
-		/**
-		 * 图片
-		 */
-		image?: string;
-
-		/**
-		 * 页面
-		 */
-		path?: string;
-
-		/**
-		 * 关联ID
-		 */
-		relatedId?: number;
-
-		/**
-		 * category
-		 */
-		category?: number;
-
-		/**
-		 * 排序
-		 */
-		sort?: number;
-
-		/**
-		 * 状态
-		 */
-		status?: number;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface VideoEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 影片标题
-		 */
-		title?: string;
-
-		/**
-		 * 影片副标题
-		 */
-		sub_title?: string;
-
-		/**
-		 * 影片标签
-		 */
-		video_tag?: string;
-
-		/**
-		 * 影片类型
-		 */
-		video_class?: string;
-
-		/**
-		 * 分类
-		 */
-		category_id?: number;
-
-		/**
-		 * 父级分类
-		 */
-		category_pid?: number;
-
-		/**
-		 * 影片封面图
-		 */
-		surface_plot?: string;
-
-		/**
-		 * 是否轮播 1是 2否
-		 */
-		cycle?: BigInt;
-
-		/**
-		 * 轮播图片
-		 */
-		cycle_img?: string;
-
-		/**
-		 * 导演
-		 */
-		directors?: string;
-
-		/**
-		 * 演员
-		 */
-		actors?: string;
-
-		/**
-		 * imd评分.百分制
-		 */
-		imdb_score?: BigInt;
-
-		/**
-		 * iimd评分ID
-		 */
-		imdb_score_id?: string;
-
-		/**
-		 * 豆瓣评分.百分制
-		 */
-		douban_score?: number;
-
-		/**
-		 * 豆瓣评分ID
-		 */
-		douban_score_id?: string;
-
-		/**
-		 * 简介
-		 */
-		introduce?: string;
-
-		/**
-		 * 总人气
-		 */
-		popularity?: BigInt;
-
-		/**
-		 * 日人气
-		 */
-		popularity_day?: BigInt;
-
-		/**
-		 * 周人气
-		 */
-		popularity_week?: BigInt;
-
-		/**
-		 * 月人气
-		 */
-		popularity_month?: BigInt;
-
-		/**
-		 * 总人气
-		 */
-		popularity_sum?: BigInt;
-
-		/**
-		 * 连载状态
-		 */
-		note?: string;
-
-		/**
-		 * 年份
-		 */
-		year?: number;
-
-		/**
-		 * 状态
-		 */
-		status?: BigInt;
-
-		/**
-		 * 时长(单位s)
-		 */
-		duration?: BigInt;
-
-		/**
-		 * 自定义地区
-		 */
-		region?: number;
-
-		/**
-		 * 自定义语言
-		 */
-		language?: number;
-
-		/**
-		 * 总集数
-		 */
-		number?: BigInt;
-
-		/**
-		 * 更新集数
-		 */
-		total?: BigInt;
-
-		/**
-		 * 横屏海报
-		 */
-		horizontal_poster?: string;
-
-		/**
-		 * 备注
-		 */
-		remarks?: string;
-
-		/**
-		 * 竖屏海报
-		 */
-		vertical_poster?: string;
-
-		/**
-		 * 发行商
-		 */
-		publish?: string;
-
-		/**
-		 * 上映日期
-		 */
-		pubdate?: string;
-
-		/**
-		 * 序列号
-		 */
-		serial_number?: string;
-
-		/**
-		 * 截屏
-		 */
-		screenshot?: string;
-
-		/**
-		 * 是否连载完毕 0,1
-		 */
-		end?: number;
-
-		/**
-		 * 单位
-		 */
-		unit?: string;
-
-		/**
-		 * 采集的源地址
-		 */
-		play_url?: longtext;
-
-		/**
-		 * 播放地址是否入库1-1已经入库 0未入库
-		 */
-		play_url_put_in?: number;
-
-		/**
-		 * 资源id
-		 */
-		collection_id?: number;
-
-		/**
-		 * 顶数
-		 */
-		up?: number;
-
-		/**
-		 * 踩数
-		 */
-		down?: number;
-
-		/**
-		 * 资源名称
-		 */
-		collection_name?: string;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface VideoLineEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 影视ID
-		 */
-		video_id?: BigInt;
-
-		/**
-		 * 影视名称
-		 */
-		video_name?: string;
-
-		/**
-		 * 名称
-		 */
-		collection_name?: string;
-
-		/**
-		 * 资源id
-		 */
-		collection_id?: number;
-
-		/**
-		 * 关联播放器ID
-		 */
-		player_id?: number;
-
-		/**
-		 * 排序
-		 */
-		sort?: number;
-
-		/**
-		 * 标识
-		 */
-		tag?: string;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface WeekEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 标题
-		 */
-		title?: string;
-
-		/**
-		 * 星期几 0-6
-		 */
-		week?: number;
-
-		/**
-		 * 封面地址
-		 */
-		surface_plot?: string;
-
-		/**
-		 * 是否推荐 1是 2否
-		 */
-		recommend?: BigInt;
-
-		/**
-		 * 简介
-		 */
-		introduce?: string;
-
-		/**
-		 * 日人气
-		 */
-		popularity_day?: BigInt;
-
-		/**
-		 * 周人气
-		 */
-		popularity_week?: BigInt;
-
-		/**
-		 * 月人气
-		 */
-		popularity_month?: BigInt;
-
-		/**
-		 * 总人气
-		 */
-		popularity_sum?: BigInt;
-
-		/**
-		 * 备注
-		 */
-		note?: string;
-
-		/**
-		 * 排序
-		 */
-		sort?: number;
-
-		/**
-		 * create_at
-		 */
-		create_at?: BigInt;
-
-		/**
-		 * update_at
-		 */
-		update_at?: BigInt;
-
-		/**
-		 * update_at
-		 */
-		site_id?: number;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface VideoWeekEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 周表id
-		 */
-		week_id?: BigInt;
-
-		/**
-		 * 影片id
-		 */
-		videos_id?: BigInt;
-
-		/**
-		 * 排序
-		 */
-		sort?: BigInt;
-
-		/**
-		 * create_at
-		 */
-		create_at?: BigInt;
-
-		/**
-		 * update_at
-		 */
-		update_at?: BigInt;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 影片标题
-		 */
-		title?: string;
-
-		/**
-		 * 父级分类
-		 */
-		category_pid?: number;
-
-		/**
-		 * 影片封面图
-		 */
-		surface_plot?: string;
-
-		/**
-		 * 是否轮播 1是 2否
-		 */
-		cycle?: BigInt;
-
-		/**
-		 * 轮播图片
-		 */
-		cycle_img?: string;
-
-		/**
-		 * 导演
-		 */
-		directors?: string;
-
-		/**
-		 * 演员
-		 */
-		actors?: string;
-
-		/**
-		 * imd评分.百分制
-		 */
-		imdb_score?: BigInt;
-
-		/**
-		 * iimd评分ID
-		 */
-		imdb_score_id?: string;
-
-		/**
-		 * 豆瓣评分.百分制
-		 */
-		douban_score?: number;
-
-		/**
-		 * 豆瓣评分ID
-		 */
-		douban_score_id?: string;
-
-		/**
-		 * 简介
-		 */
-		introduce?: string;
-
-		/**
-		 * 自定义语言
-		 */
-		language?: number;
-
-		/**
-		 * 自定义地区
-		 */
-		region?: number;
-
-		/**
-		 * 连载状态
-		 */
-		note?: string;
-
-		/**
-		 * 时长(单位s)
-		 */
-		duration?: BigInt;
-
-		/**
-		 * 序列号
-		 */
-		serial_number?: string;
-
-		/**
-		 * 年份
-		 */
-		year?: number;
-
-		/**
-		 * 状态
-		 */
-		status?: BigInt;
-
-		/**
-		 * 总人气
-		 */
-		popularity_sum?: BigInt;
-
-		/**
-		 * 日人气
-		 */
-		popularity_day?: BigInt;
-
-		/**
-		 * 月人气
-		 */
-		popularity_month?: BigInt;
-
-		/**
-		 * 周人气
-		 */
-		popularity_week?: BigInt;
-
-		/**
-		 * 截屏
-		 */
-		screenshot?: string;
-
-		/**
-		 * 采集的源地址
-		 */
-		play_url?: longtext;
-
-		/**
-		 * 播放地址是否入库1-1已经入库 0未入库
-		 */
-		play_url_put_in?: number;
-
-		/**
-		 * 单位
-		 */
-		unit?: string;
-
-		/**
-		 * 总集数
-		 */
-		number?: BigInt;
-
-		/**
-		 * 更新集数
-		 */
-		total?: BigInt;
-
-		/**
-		 * 横屏海报
-		 */
-		horizontal_poster?: string;
-
-		/**
-		 * 竖屏海报
-		 */
-		vertical_poster?: string;
 
 		/**
 		 * 任意键值
@@ -3377,66 +998,92 @@ declare namespace Eps {
 
 	type json = any;
 
-	interface ApplicationNoticeInfo {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
+	interface PagePagination {
+		size: number;
+		page: number;
+		total: number;
+		[key: string]: any;
+	}
 
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
+	interface PageResponse<T> {
+		pagination: PagePagination;
+		list: T[];
+		[key: string]: any;
+	}
 
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<NoticeInfoEntity>;
+	interface BaseSysLogPageResponse {
+		pagination: PagePagination;
+		list: BaseSysLogEntity[];
+	}
 
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<NoticeInfoEntity[]>;
+	interface BaseSysMenuPageResponse {
+		pagination: PagePagination;
+		list: BaseSysMenuEntity[];
+	}
 
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: NoticeInfoEntity[];
-			[key: string]: any;
-		}>;
+	interface BaseSysParamPageResponse {
+		pagination: PagePagination;
+		list: BaseSysParamEntity[];
+	}
 
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
+	interface BaseSysRolePageResponse {
+		pagination: PagePagination;
+		list: BaseSysRoleEntity[];
+	}
 
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
+	interface BaseSysUserPageResponse {
+		pagination: PagePagination;
+		list: BaseSysUserEntity[];
+	}
 
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
+	interface DemoGoodsPageResponse {
+		pagination: PagePagination;
+		list: DemoGoodsEntity[];
+	}
 
-		request: Service["request"];
+	interface DictInfoPageResponse {
+		pagination: PagePagination;
+		list: DictInfoEntity[];
+	}
+
+	interface DictTypePageResponse {
+		pagination: PagePagination;
+		list: DictTypeEntity[];
+	}
+
+	interface PluginInfoPageResponse {
+		pagination: PagePagination;
+		list: PluginInfoEntity[];
+	}
+
+	interface RecycleDataPageResponse {
+		pagination: PagePagination;
+		list: RecycleDataEntity[];
+	}
+
+	interface SpaceInfoPageResponse {
+		pagination: PagePagination;
+		list: SpaceInfoEntity[];
+	}
+
+	interface SpaceTypePageResponse {
+		pagination: PagePagination;
+		list: SpaceTypeEntity[];
+	}
+
+	interface TaskInfoPageResponse {
+		pagination: PagePagination;
+		list: TaskInfoEntity[];
+	}
+
+	interface UserAddressPageResponse {
+		pagination: PagePagination;
+		list: UserAddressEntity[];
+	}
+
+	interface UserInfoPageResponse {
+		pagination: PagePagination;
+		list: UserInfoEntity[];
 	}
 
 	interface BaseCoding {
@@ -3460,7 +1107,7 @@ declare namespace Eps {
 		 */
 		_permission: { getModuleTree: boolean; createCode: boolean };
 
-		request: Service["request"];
+		request: Request;
 	}
 
 	interface BaseComm {
@@ -3525,7 +1172,7 @@ declare namespace Eps {
 			logout: boolean;
 		};
 
-		request: Service["request"];
+		request: Request;
 	}
 
 	interface BaseOpen {
@@ -3576,7 +1223,7 @@ declare namespace Eps {
 			eps: boolean;
 		};
 
-		request: Service["request"];
+		request: Request;
 	}
 
 	interface BaseSysDepartment {
@@ -3621,7 +1268,7 @@ declare namespace Eps {
 			add: boolean;
 		};
 
-		request: Service["request"];
+		request: Request;
 	}
 
 	interface BaseSysLog {
@@ -3643,11 +1290,7 @@ declare namespace Eps {
 		/**
 		 * 分页查询
 		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: BaseSysLogEntity[];
-			[key: string]: any;
-		}>;
+		page(data?: any): Promise<BaseSysLogPageResponse>;
 
 		/**
 		 * 权限标识
@@ -3659,7 +1302,7 @@ declare namespace Eps {
 		 */
 		_permission: { setKeep: boolean; getKeep: boolean; clear: boolean; page: boolean };
 
-		request: Service["request"];
+		request: Request;
 	}
 
 	interface BaseSysMenu {
@@ -3706,11 +1349,7 @@ declare namespace Eps {
 		/**
 		 * 分页查询
 		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: BaseSysMenuEntity[];
-			[key: string]: any;
-		}>;
+		page(data?: any): Promise<BaseSysMenuPageResponse>;
 
 		/**
 		 * 新增
@@ -3749,7 +1388,7 @@ declare namespace Eps {
 			add: boolean;
 		};
 
-		request: Service["request"];
+		request: Request;
 	}
 
 	interface BaseSysParam {
@@ -3776,11 +1415,7 @@ declare namespace Eps {
 		/**
 		 * 分页查询
 		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: BaseSysParamEntity[];
-			[key: string]: any;
-		}>;
+		page(data?: any): Promise<BaseSysParamPageResponse>;
 
 		/**
 		 * 新增
@@ -3811,7 +1446,7 @@ declare namespace Eps {
 			add: boolean;
 		};
 
-		request: Service["request"];
+		request: Request;
 	}
 
 	interface BaseSysRole {
@@ -3838,11 +1473,7 @@ declare namespace Eps {
 		/**
 		 * 分页查询
 		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: BaseSysRoleEntity[];
-			[key: string]: any;
-		}>;
+		page(data?: any): Promise<BaseSysRolePageResponse>;
 
 		/**
 		 * 新增
@@ -3873,7 +1504,7 @@ declare namespace Eps {
 			add: boolean;
 		};
 
-		request: Service["request"];
+		request: Request;
 	}
 
 	interface BaseSysUser {
@@ -3905,11 +1536,7 @@ declare namespace Eps {
 		/**
 		 * 分页查询
 		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: BaseSysUserEntity[];
-			[key: string]: any;
-		}>;
+		page(data?: any): Promise<BaseSysUserPageResponse>;
 
 		/**
 		 * 新增
@@ -3942,7 +1569,7 @@ declare namespace Eps {
 			add: boolean;
 		};
 
-		request: Service["request"];
+		request: Request;
 	}
 
 	interface DemoGoods {
@@ -3969,11 +1596,7 @@ declare namespace Eps {
 		/**
 		 * 分页查询
 		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: DemoGoodsEntity[];
-			[key: string]: any;
-		}>;
+		page(data?: any): Promise<DemoGoodsPageResponse>;
 
 		/**
 		 * 新增
@@ -4004,7 +1627,7 @@ declare namespace Eps {
 			add: boolean;
 		};
 
-		request: Service["request"];
+		request: Request;
 	}
 
 	interface DemoTenant {
@@ -4033,7 +1656,7 @@ declare namespace Eps {
 		 */
 		_permission: { noTenant: boolean; noUse: boolean; use: boolean };
 
-		request: Service["request"];
+		request: Request;
 	}
 
 	interface DictInfo {
@@ -4070,11 +1693,7 @@ declare namespace Eps {
 		/**
 		 * 分页查询
 		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: DictInfoEntity[];
-			[key: string]: any;
-		}>;
+		page(data?: any): Promise<DictInfoPageResponse>;
 
 		/**
 		 * 新增
@@ -4109,7 +1728,7 @@ declare namespace Eps {
 			add: boolean;
 		};
 
-		request: Service["request"];
+		request: Request;
 	}
 
 	interface DictType {
@@ -4136,11 +1755,7 @@ declare namespace Eps {
 		/**
 		 * 分页查询
 		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: DictTypeEntity[];
-			[key: string]: any;
-		}>;
+		page(data?: any): Promise<DictTypePageResponse>;
 
 		/**
 		 * 新增
@@ -4171,26 +1786,7 @@ declare namespace Eps {
 			add: boolean;
 		};
 
-		request: Service["request"];
-	}
-
-	interface EchartEchart {
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: { info: string };
-
-		/**
-		 * 权限状态
-		 */
-		_permission: { info: boolean };
-
-		request: Service["request"];
+		request: Request;
 	}
 
 	interface PluginInfo {
@@ -4222,11 +1818,7 @@ declare namespace Eps {
 		/**
 		 * 分页查询
 		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: PluginInfoEntity[];
-			[key: string]: any;
-		}>;
+		page(data?: any): Promise<PluginInfoPageResponse>;
 
 		/**
 		 * 新增
@@ -4259,7 +1851,7 @@ declare namespace Eps {
 			add: boolean;
 		};
 
-		request: Service["request"];
+		request: Request;
 	}
 
 	interface RecycleData {
@@ -4276,11 +1868,7 @@ declare namespace Eps {
 		/**
 		 * 分页查询
 		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: RecycleDataEntity[];
-			[key: string]: any;
-		}>;
+		page(data?: any): Promise<RecycleDataPageResponse>;
 
 		/**
 		 * 权限标识
@@ -4292,7 +1880,7 @@ declare namespace Eps {
 		 */
 		_permission: { restore: boolean; info: boolean; page: boolean };
 
-		request: Service["request"];
+		request: Request;
 	}
 
 	interface SpaceInfo {
@@ -4319,11 +1907,7 @@ declare namespace Eps {
 		/**
 		 * 分页查询
 		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: SpaceInfoEntity[];
-			[key: string]: any;
-		}>;
+		page(data?: any): Promise<SpaceInfoPageResponse>;
 
 		/**
 		 * 新增
@@ -4354,7 +1938,7 @@ declare namespace Eps {
 			add: boolean;
 		};
 
-		request: Service["request"];
+		request: Request;
 	}
 
 	interface SpaceType {
@@ -4381,11 +1965,7 @@ declare namespace Eps {
 		/**
 		 * 分页查询
 		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: SpaceTypeEntity[];
-			[key: string]: any;
-		}>;
+		page(data?: any): Promise<SpaceTypePageResponse>;
 
 		/**
 		 * 新增
@@ -4416,7 +1996,7 @@ declare namespace Eps {
 			add: boolean;
 		};
 
-		request: Service["request"];
+		request: Request;
 	}
 
 	interface TaskInfo {
@@ -4453,11 +2033,7 @@ declare namespace Eps {
 		/**
 		 * 分页查询
 		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: TaskInfoEntity[];
-			[key: string]: any;
-		}>;
+		page(data?: any): Promise<TaskInfoPageResponse>;
 
 		/**
 		 * 日志
@@ -4499,7 +2075,7 @@ declare namespace Eps {
 			add: boolean;
 		};
 
-		request: Service["request"];
+		request: Request;
 	}
 
 	interface UserAddress {
@@ -4526,11 +2102,7 @@ declare namespace Eps {
 		/**
 		 * 分页查询
 		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: UserAddressEntity[];
-			[key: string]: any;
-		}>;
+		page(data?: any): Promise<UserAddressPageResponse>;
 
 		/**
 		 * 新增
@@ -4561,131 +2133,7 @@ declare namespace Eps {
 			add: boolean;
 		};
 
-		request: Service["request"];
-	}
-
-	interface UserCollect {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<CollectEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<CollectEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: CollectEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
-
-	interface UserContacts {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<ContactEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<ContactEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: ContactEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
+		request: Request;
 	}
 
 	interface UserInfo {
@@ -4712,11 +2160,7 @@ declare namespace Eps {
 		/**
 		 * 分页查询
 		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: UserInfoEntity[];
-			[key: string]: any;
-		}>;
+		page(data?: any): Promise<UserInfoPageResponse>;
 
 		/**
 		 * 新增
@@ -4747,1255 +2191,26 @@ declare namespace Eps {
 			add: boolean;
 		};
 
-		request: Service["request"];
+		request: Request;
 	}
 
-	interface UserLike {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<LikeEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<LikeEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: LikeEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
+	interface RequestOptions {
+		url: string;
+		method?: "OPTIONS" | "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "TRACE" | "CONNECT";
+		data?: any;
+		params?: any;
+		headers?: any;
+		timeout?: number;
+		[key: string]: any;
 	}
 
-	interface UserShare {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
+	type Request = (options: RequestOptions) => Promise<any>;
 
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<ShareEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<ShareEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: ShareEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
-
-	interface UserViews {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<ViewsEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<ViewsEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: ViewsEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
-
-	interface VideoAds {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<AdsEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<AdsEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: AdsEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
-
-	interface VideoAlbum {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<VideoAlbumEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<VideoAlbumEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: VideoAlbumEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
-
-	interface VideoAlbum_video {
-		/**
-		 * 批量添加专辑
-		 */
-		add_list(data?: any): Promise<any>;
-
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<VideoAlbumRelationship>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<VideoAlbumRelationship[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: VideoAlbumRelationship[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			add_list: string;
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			add_list: boolean;
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
-
-	interface VideoBarrage {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<BarrageEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<BarrageEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: BarrageEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
-
-	interface VideoCategory {
-		/**
-		 * 匹配分类
-		 */
-		match_category(data?: any): Promise<any>;
-
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<CategoryEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<CategoryEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: CategoryEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			match_category: string;
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			match_category: boolean;
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
-
-	interface VideoCollection {
-		/**
-		 * 日更新
-		 */
-		collection_day(data?: any): Promise<any>;
-
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<CollectionEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<CollectionEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: CollectionEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			collection_day: string;
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			collection_day: boolean;
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
-
-	interface VideoCollection_category {
-		/**
-		 * 匹配分类
-		 */
-		match_category(data?: any): Promise<any>;
-
-		/**
-		 * 同步分类
-		 */
-		sync_category(data?: any): Promise<any>;
-
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<CollectionCategoryEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<CollectionCategoryEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: CollectionCategoryEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			match_category: string;
-			sync_category: string;
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			match_category: boolean;
-			sync_category: boolean;
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
-
-	interface VideoCollection_task {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<CollectionTaskTaskEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<CollectionTaskTaskEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: CollectionTaskTaskEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
-
-	interface VideoLive {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<UserLiveEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<UserLiveEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: UserLiveEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
-
-	interface VideoPlayer {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<PlayerEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<PlayerEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: PlayerEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
-
-	interface VideoPlay_line {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<PlayLineEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<PlayLineEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: PlayLineEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
-
-	interface VideoSwiper {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<VideoSwiperEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<VideoSwiperEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: VideoSwiperEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
-
-	interface VideoVideos {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 排序
-		 */
-		sort(data?: any): Promise<any>;
-
-		/**
-		 * 周数据
-		 */
-		week(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<VideoEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<VideoEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: VideoEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			sort: string;
-			week: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			sort: boolean;
-			week: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
-
-	interface VideoVideo_line {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<VideoLineEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<VideoLineEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: VideoLineEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
-
-	interface VideoWeek {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<WeekEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<WeekEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: WeekEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
-
-	interface VideoWeek_video {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<VideoWeekEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<VideoWeekEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: VideoWeekEntity[];
-			[key: string]: any;
-		}>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Service["request"];
-	}
+	type DictKey = "brand" | "occupation";
 
 	type Service = {
-		/**
-		 * 基础请求
-		 */
-		request(options?: {
-			url: string;
-			method?: "POST" | "GET" | "PUT" | "DELETE" | "PATCH" | "HEAD" | "OPTIONS";
-			data?: any;
-			params?: any;
-			headers?: {
-				authorization?: string;
-				[key: string]: any;
-			};
-			timeout?: number;
-			proxy?: boolean;
-			[key: string]: any;
-		}): Promise<any>;
+		request: Request;
 
-		application: { noticeInfo: ApplicationNoticeInfo };
 		base: {
 			coding: BaseCoding;
 			comm: BaseComm;
@@ -6011,46 +2226,10 @@ declare namespace Eps {
 		};
 		demo: { goods: DemoGoods; tenant: DemoTenant };
 		dict: { info: DictInfo; type: DictType };
-		echart: { echart: EchartEchart };
 		plugin: { info: PluginInfo };
 		recycle: { data: RecycleData };
 		space: { info: SpaceInfo; type: SpaceType };
 		task: { info: TaskInfo };
-		user: {
-			address: UserAddress;
-			collect: UserCollect;
-			contacts: UserContacts;
-			info: UserInfo;
-			like: UserLike;
-			share: UserShare;
-			views: UserViews;
-		};
-		video: {
-			ads: VideoAds;
-			album: VideoAlbum;
-			album_video: VideoAlbum_video;
-			barrage: VideoBarrage;
-			category: VideoCategory;
-			collection: VideoCollection;
-			collection_category: VideoCollection_category;
-			collection_task: VideoCollection_task;
-			live: VideoLive;
-			player: VideoPlayer;
-			play_line: VideoPlay_line;
-			swiper: VideoSwiper;
-			videos: VideoVideos;
-			video_line: VideoVideo_line;
-			week: VideoWeek;
-			week_video: VideoWeek_video;
-		};
+		user: { address: UserAddress; info: UserInfo };
 	};
-
-	type DictKey =
-		| "live_category"
-		| "liveTags"
-		| "week"
-		| "area"
-		| "language"
-		| "video_category"
-		| "notice_type";
 }

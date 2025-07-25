@@ -1,5 +1,5 @@
 import { last } from 'lodash-es';
-import { filename, extname } from '/@/cool/utils';
+import { extname } from '/@/cool/utils';
 import { module } from '/@/cool';
 
 // 模块参数
@@ -19,18 +19,17 @@ export function fileSize(size = 0): string {
 	return (size / Math.pow(num, 4)).toFixed(2) + 'T';
 }
 
-// 文件名
-export function fileName(url: string) {
-	return filename(url.substring(url.indexOf('_') + 1));
-}
-
 // 文件规则
 export function fileRule(path?: string) {
 	const d = rules.find(e => {
 		return e.exts.find(a => a == extname(path || '').toLocaleLowerCase());
 	});
 
-	return (d || last(rules))!;
+	if (path?.includes('data:image/')) {
+		return rules.find(e => e.type == 'image')!;
+	}
+
+	return (d || rules.find(e => e.type == 'file')!)!;
 }
 
 // 获取规则

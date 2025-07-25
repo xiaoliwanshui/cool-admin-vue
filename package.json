@@ -13,7 +13,7 @@
 		"format": "prettier --write src/"
 	},
 	"dependencies": {
-		"@cool-vue/crud": "^8.0.2",
+		"@cool-vue/crud": "^8.0.6",
 		"@element-plus/icons-vue": "^2.3.1",
 		"@vueuse/core": "^12.5.0",
 		"@wangeditor/editor": "^5.1.23",
@@ -25,7 +25,7 @@
 		"core-js": "^3.40.0",
 		"dayjs": "^1.11.13",
 		"echarts": "^5.6.0",
-		"element-plus": "^2.9.3",
+		"element-plus": "2.10.2",
 		"file-saver": "^2.0.5",
 		"hls.js": "^1.6.2",
 		"lodash": "^4.17.21",
@@ -45,7 +45,7 @@
 		"xml2js": "^0.6.2"
 	},
 	"devDependencies": {
-		"@cool-vue/vite-plugin": "^8.1.1",
+		"@cool-vue/vite-plugin": "^8.2.2",
 		"@intlify/unplugin-vue-i18n": "^6.0.3",
 		"@rushstack/eslint-patch": "^1.10.5",
 		"@tsconfig/node20": "^20.1.4",

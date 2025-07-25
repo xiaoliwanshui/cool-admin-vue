@@ -1,4 +1,4 @@
-export declare type Type = "app" | "admin";
+export declare type Type = "admin" | "app" | "uniapp-x";
 
 export declare namespace Eps {
 	interface Column {
@@ -76,7 +76,6 @@ export declare namespace Ctx {
 }
 
 export declare namespace Config {
-	type Type = "app" | "admin";
 	interface Eps {
 		// 是否开启Eps
 		enable: boolean;
@@ -93,7 +92,7 @@ export declare namespace Config {
 	}
 	interface Options {
 		// 应用类型
-		type: Config.Type;
+		type: Type;
 		// 代理配置
 		proxy: any;
 		// Eps
@@ -107,12 +106,18 @@ export declare namespace Config {
 			// 跳过拼接模块名
 			skipNames?: string[];
 		};
-	}
-	interface Data {
-		type: Config.Type;
-		reqUrl: string;
-		eps: Config.Eps;
-		demo: boolean;
-		[key: string]: any;
+		// tailwind
+		tailwind?: {
+			// 是否开启tailwind
+			enable?: boolean;
+			// 根元素字体大小
+			remUnit?: number;
+			// 小数位数
+			remPrecision?: number;
+			// 转换比例
+			rpxRatio?: number;
+			// 暗黑模式文本类名
+			darkTextClass?: string;
+		};
 	}
 }

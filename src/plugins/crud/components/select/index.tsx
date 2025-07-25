@@ -174,7 +174,6 @@ export default defineComponent({
 		// 聚焦
 		function focus() {
 			refs.select?.focus();
-			refs.select?.$.proxy.$el?.querySelector('.el-select__wrapper')?.click();
 		}
 
 		// 获取选项数据
@@ -230,6 +229,7 @@ export default defineComponent({
 					clearable
 					filterable
 					placeholder={placeholder}
+					disabled={props.disabled}
 					data={list.value}
 					checkStrictly={props.allLevelsId || props.checkStrictly}
 					defaultExpandAll={props.defaultExpandAll}
@@ -249,6 +249,7 @@ export default defineComponent({
 					v-model={value.value}
 					clearable
 					filterable
+					disabled={props.disabled}
 					placeholder={placeholder}
 					style={style}
 					onChange={onChange}

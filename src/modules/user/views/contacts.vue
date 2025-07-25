@@ -80,7 +80,7 @@ const Table = useTable({
 			sortable: 'custom',
 			component: { name: 'cl-date-text' }
 		},
-		{ type: 'op', buttons: ['edit', 'delete'] }
+		{ type: 'op', buttons: ['edit', 'delete', 'update'] }
 	]
 });
 
@@ -96,9 +96,4 @@ const Crud = useCrud(
 		app.refresh();
 	}
 );
-
-// 刷新
-function refresh(params?: any) {
-	Crud.value?.refresh(params);
-}
 </script>

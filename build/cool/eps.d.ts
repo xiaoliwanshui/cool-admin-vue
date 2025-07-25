@@ -4566,6 +4566,16 @@ declare namespace Eps {
 
 	interface UserCollect {
 		/**
+		 * 删除
+		 */
+		delete(data?: any): Promise<any>;
+
+		/**
+		 * 修改
+		 */
+		update(data?: any): Promise<any>;
+
+		/**
 		 * 单个信息
 		 */
 		info(data?: any): Promise<CollectEntity>;
@@ -4592,12 +4602,26 @@ declare namespace Eps {
 		/**
 		 * 权限标识
 		 */
-		permission: { info: string; list: string; page: string; add: string };
+		permission: {
+			delete: string;
+			update: string;
+			info: string;
+			list: string;
+			page: string;
+			add: string;
+		};
 
 		/**
 		 * 权限状态
 		 */
-		_permission: { info: boolean; list: boolean; page: boolean; add: boolean };
+		_permission: {
+			delete: boolean;
+			update: boolean;
+			info: boolean;
+			list: boolean;
+			page: boolean;
+			add: boolean;
+		};
 
 		request: Service["request"];
 	}
@@ -4607,6 +4631,11 @@ declare namespace Eps {
 		 * 删除
 		 */
 		delete(data?: any): Promise<any>;
+
+		/**
+		 * 修改
+		 */
+		update(data?: any): Promise<any>;
 
 		/**
 		 * 单个信息
@@ -4635,12 +4664,26 @@ declare namespace Eps {
 		/**
 		 * 权限标识
 		 */
-		permission: { delete: string; info: string; list: string; page: string; add: string };
+		permission: {
+			delete: string;
+			update: string;
+			info: string;
+			list: string;
+			page: string;
+			add: string;
+		};
 
 		/**
 		 * 权限状态
 		 */
-		_permission: { delete: boolean; info: boolean; list: boolean; page: boolean; add: boolean };
+		_permission: {
+			delete: boolean;
+			update: boolean;
+			info: boolean;
+			list: boolean;
+			page: boolean;
+			add: boolean;
+		};
 
 		request: Service["request"];
 	}
@@ -4709,6 +4752,16 @@ declare namespace Eps {
 
 	interface UserLike {
 		/**
+		 * 删除
+		 */
+		delete(data?: any): Promise<any>;
+
+		/**
+		 * 修改
+		 */
+		update(data?: any): Promise<any>;
+
+		/**
 		 * 单个信息
 		 */
 		info(data?: any): Promise<LikeEntity>;
@@ -4735,12 +4788,26 @@ declare namespace Eps {
 		/**
 		 * 权限标识
 		 */
-		permission: { info: string; list: string; page: string; add: string };
+		permission: {
+			delete: string;
+			update: string;
+			info: string;
+			list: string;
+			page: string;
+			add: string;
+		};
 
 		/**
 		 * 权限状态
 		 */
-		_permission: { info: boolean; list: boolean; page: boolean; add: boolean };
+		_permission: {
+			delete: boolean;
+			update: boolean;
+			info: boolean;
+			list: boolean;
+			page: boolean;
+			add: boolean;
+		};
 
 		request: Service["request"];
 	}
@@ -4750,6 +4817,11 @@ declare namespace Eps {
 		 * 删除
 		 */
 		delete(data?: any): Promise<any>;
+
+		/**
+		 * 修改
+		 */
+		update(data?: any): Promise<any>;
 
 		/**
 		 * 单个信息
@@ -4778,12 +4850,26 @@ declare namespace Eps {
 		/**
 		 * 权限标识
 		 */
-		permission: { delete: string; info: string; list: string; page: string; add: string };
+		permission: {
+			delete: string;
+			update: string;
+			info: string;
+			list: string;
+			page: string;
+			add: string;
+		};
 
 		/**
 		 * 权限状态
 		 */
-		_permission: { delete: boolean; info: boolean; list: boolean; page: boolean; add: boolean };
+		_permission: {
+			delete: boolean;
+			update: boolean;
+			info: boolean;
+			list: boolean;
+			page: boolean;
+			add: boolean;
+		};
 
 		request: Service["request"];
 	}
@@ -4793,6 +4879,11 @@ declare namespace Eps {
 		 * 删除
 		 */
 		delete(data?: any): Promise<any>;
+
+		/**
+		 * 修改
+		 */
+		update(data?: any): Promise<any>;
 
 		/**
 		 * 单个信息
@@ -4814,14 +4905,33 @@ declare namespace Eps {
 		}>;
 
 		/**
+		 * 新增
+		 */
+		add(data?: any): Promise<any>;
+
+		/**
 		 * 权限标识
 		 */
-		permission: { delete: string; info: string; list: string; page: string };
+		permission: {
+			delete: string;
+			update: string;
+			info: string;
+			list: string;
+			page: string;
+			add: string;
+		};
 
 		/**
 		 * 权限状态
 		 */
-		_permission: { delete: boolean; info: boolean; list: boolean; page: boolean };
+		_permission: {
+			delete: boolean;
+			update: boolean;
+			info: boolean;
+			list: boolean;
+			page: boolean;
+			add: boolean;
+		};
 
 		request: Service["request"];
 	}

@@ -9,7 +9,16 @@
 			<cl-multi-delete-btn />
 			<cl-flex1 />
 			<!-- 条件搜索 -->
-			<cl-search ref="Search" />
+			<cl-filter label="分类">
+				<cl-select
+					:options="dict.get('video_category')"
+					:width="140"
+					check-strictly
+					prop="category"
+					tree
+				/>
+			</cl-filter>
+			<cl-search-key placeholder="搜索关键字"/>
 		</cl-row>
 
 		<cl-row>
@@ -149,15 +158,12 @@ const Search = useSearch();
 // cl-crud
 const Crud = useCrud(
 	{
-		service: service.video.swiper
+		service: service.video.swiper,
 	},
 	app => {
 		app.refresh();
 	}
 );
 
-// 刷新
-function refresh(params?: any) {
-	Crud.value?.refresh(params);
-}
+
 </script>

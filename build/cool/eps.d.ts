@@ -582,6 +582,11 @@ declare namespace Eps {
 		orderNum?: number;
 
 		/**
+		 * 是否启用
+		 */
+		status?: number;
+
+		/**
 		 * 备注
 		 */
 		remark?: string;

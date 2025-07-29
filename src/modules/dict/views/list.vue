@@ -1,6 +1,6 @@
 <template>
 	<cl-view-group ref="ViewGroup">
-		<template #item-name="{ item }"> {{ item.name }} - {{ item.key }} </template>
+		<template #item-name="{ item }"> {{ item.name }} - {{ item.key }}</template>
 
 		<template #right>
 			<cl-crud ref="Crud">
@@ -32,15 +32,15 @@
 							<el-input
 								v-model="scope.value"
 								:placeholder="$t('请填写值')"
-								clearable
-								type="textarea"
 								:rows="4"
 								class="mb-2"
+								clearable
+								type="textarea"
 							/>
 
 							<cl-upload-space
-								:text="$t('使用文件')"
 								:limit="1"
+								:text="$t('使用文件')"
 								@confirm="onFileConfirm"
 							/>
 						</div>
@@ -161,6 +161,14 @@ const Upsert = useUpsert({
 				name: 'el-input',
 				props: { type: 'textarea', rows: 4 }
 			}
+		},
+		{
+			label: '状态',
+			prop: 'status',
+			component: {
+				name: 'cl-switch'
+			},
+			required: true
 		}
 	],
 	onSubmit(data, { next }) {
@@ -202,6 +210,14 @@ const Table = useTable({
 			prop: 'value',
 			minWidth: 200,
 			showOverflowTooltip: true
+		},
+		{
+			label: '状态',
+			prop: 'status',
+			component: {
+				name: 'cl-switch'
+			},
+			minWidth: 200
 		},
 		{
 			label: t('备注'),

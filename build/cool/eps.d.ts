@@ -1,4 +1,66 @@
 declare namespace Eps {
+	interface FeedbackInfoEntity {
+		/**
+		 * ID
+		 */
+		id?: number;
+
+		/**
+		 * 创建用户ID
+		 */
+		createUserId?: number;
+
+		/**
+		 * 更新用户ID
+		 */
+		updateUserId?: number;
+
+		/**
+		 * 反馈类型
+		 */
+		feedbackType?: number;
+
+		/**
+		 * 反馈内容
+		 */
+		content?: string;
+
+		/**
+		 * 影视id
+		 */
+		videoId?: number;
+
+		/**
+		 * 影视名
+		 */
+		videoName?: string;
+
+		/**
+		 * 资源
+		 */
+		videoUrl?: string;
+
+		/**
+		 * 资源id
+		 */
+		playLineId?: number;
+
+		/**
+		 * 创建时间
+		 */
+		createTime?: string;
+
+		/**
+		 * 更新时间
+		 */
+		updateTime?: string;
+
+		/**
+		 * 任意键值
+		 */
+		[key: string]: any;
+	}
+
 	interface NoticeInfoEntity {
 		/**
 		 * ID
@@ -2630,16 +2692,6 @@ declare namespace Eps {
 		file?: string;
 
 		/**
-		 * 收费模式 1免费 2vip免费 3金币点播
-		 */
-		charging_mode?: BigInt;
-
-		/**
-		 * 金币数量
-		 */
-		currency?: BigInt;
-
-		/**
 		 * 副标题
 		 */
 		sub_title?: string;
@@ -2648,11 +2700,6 @@ declare namespace Eps {
 		 * 状态
 		 */
 		status?: number;
-
-		/**
-		 * 是否是直播源1-是 0-否
-		 */
-		live_source?: number;
 
 		/**
 		 * 排序
@@ -3395,6 +3442,11 @@ declare namespace Eps {
 		[key: string]: any;
 	}
 
+	interface ApplicationFeedbackInfoPageResponse {
+		pagination: PagePagination;
+		list: FeedbackInfoEntity[];
+	}
+
 	interface ApplicationNoticeInfoPageResponse {
 		pagination: PagePagination;
 		list: NoticeInfoEntity[];
@@ -3578,6 +3630,51 @@ declare namespace Eps {
 	interface VideoWeek_videoPageResponse {
 		pagination: PagePagination;
 		list: VideoWeekEntity[];
+	}
+
+	interface ApplicationFeedbackInfo {
+		/**
+		 * 删除
+		 */
+		delete(data?: any): Promise<any>;
+
+		/**
+		 * 修改
+		 */
+		update(data?: any): Promise<any>;
+
+		/**
+		 * 分页查询
+		 */
+		page(data?: any): Promise<ApplicationFeedbackInfoPageResponse>;
+
+		/**
+		 * 单个信息
+		 */
+		info(data?: any): Promise<FeedbackInfoEntity>;
+
+		/**
+		 * 新增
+		 */
+		add(data?: any): Promise<any>;
+
+		/**
+		 * 权限标识
+		 */
+		permission: { delete: string; update: string; page: string; info: string; add: string };
+
+		/**
+		 * 权限状态
+		 */
+		_permission: {
+			delete: boolean;
+			update: boolean;
+			page: boolean;
+			info: boolean;
+			add: boolean;
+		};
+
+		request: Request;
 	}
 
 	interface ApplicationNoticeInfo {
@@ -6051,12 +6148,13 @@ declare namespace Eps {
 		| "area"
 		| "language"
 		| "video_category"
-		| "notice_type";
+		| "notice_type"
+		| "feedback_type";
 
 	type Service = {
 		request: Request;
 
-		application: { noticeInfo: ApplicationNoticeInfo };
+		application: { feedbackInfo: ApplicationFeedbackInfo; noticeInfo: ApplicationNoticeInfo };
 		base: {
 			coding: BaseCoding;
 			comm: BaseComm;

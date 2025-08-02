@@ -166,8 +166,13 @@ const Upsert = useUpsert({
 			label: '状态',
 			prop: 'status',
 			component: {
-				name: 'cl-switch'
+				name: 'cl-switch',
+				props: {
+					activeValue: 1,
+					inactiveValue: 2
+				}
 			},
+			value: 1,
 			required: true
 		}
 	],
@@ -217,6 +222,7 @@ const Table = useTable({
 			component: {
 				name: 'cl-switch'
 			},
+
 			minWidth: 200
 		},
 		{

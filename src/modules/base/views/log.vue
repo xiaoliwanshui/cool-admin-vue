@@ -14,9 +14,9 @@
 			<cl-filter :label="$t('日志保存天数')">
 				<el-input-number
 					v-model="day"
-					controls-position="right"
 					:max="10000"
 					:min="1"
+					controls-position="right"
 					@change="saveDay"
 				/>
 			</cl-filter>
@@ -86,6 +86,17 @@ const Table = useTable({
 		{
 			prop: 'params',
 			label: t('参数'),
+			minWidth: 200,
+			component: {
+				name: 'cl-code-json',
+				props: {
+					popover: true
+				}
+			}
+		},
+		{
+			prop: 'headers',
+			label: t('头部信息'),
 			minWidth: 200,
 			component: {
 				name: 'cl-code-json',

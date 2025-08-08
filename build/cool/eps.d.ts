@@ -207,6 +207,11 @@ declare namespace Eps {
 		params?: any;
 
 		/**
+		 * 头部信息
+		 */
+		headers?: any;
+
+		/**
 		 * 创建时间
 		 */
 		createTime?: string;
@@ -3130,29 +3135,109 @@ declare namespace Eps {
 		updateUserId?: number;
 
 		/**
-		 * 标题
-		 */
-		title?: string;
-
-		/**
 		 * 星期几 0-6
 		 */
 		week?: number;
 
 		/**
-		 * 封面地址
+		 * 影视ID
+		 */
+		videoId?: number;
+
+		/**
+		 * 备注
+		 */
+		remarks?: string;
+
+		/**
+		 * 时间
+		 */
+		time?: string;
+
+		/**
+		 * 排序
+		 */
+		sort?: number;
+
+		/**
+		 * 创建时间
+		 */
+		createTime?: string;
+
+		/**
+		 * 更新时间
+		 */
+		updateTime?: string;
+
+		/**
+		 * 影片标题
+		 */
+		title?: string;
+
+		/**
+		 * 分类
+		 */
+		category_id?: number;
+
+		/**
+		 * 父级分类
+		 */
+		category_pid?: number;
+
+		/**
+		 * 影片封面图
 		 */
 		surface_plot?: string;
 
 		/**
-		 * 是否推荐 1是 2否
+		 * 是否轮播 1是 2否
 		 */
-		recommend?: BigInt;
+		cycle?: BigInt;
+
+		/**
+		 * 轮播图片
+		 */
+		cycle_img?: string;
+
+		/**
+		 * 导演
+		 */
+		directors?: string;
+
+		/**
+		 * 演员
+		 */
+		actors?: string;
+
+		/**
+		 * imd评分.百分制
+		 */
+		imdb_score?: BigInt;
+
+		/**
+		 * iimd评分ID
+		 */
+		imdb_score_id?: string;
+
+		/**
+		 * 豆瓣评分.百分制
+		 */
+		douban_score?: number;
+
+		/**
+		 * 豆瓣评分ID
+		 */
+		douban_score_id?: string;
 
 		/**
 		 * 简介
 		 */
 		introduce?: string;
+
+		/**
+		 * 总人气
+		 */
+		popularity?: BigInt;
 
 		/**
 		 * 日人气
@@ -3175,39 +3260,129 @@ declare namespace Eps {
 		popularity_sum?: BigInt;
 
 		/**
-		 * 备注
+		 * 连载状态
 		 */
 		note?: string;
 
 		/**
-		 * 排序
+		 * 年份
 		 */
-		sort?: number;
+		year?: number;
 
 		/**
-		 * create_at
+		 * 状态
 		 */
-		create_at?: BigInt;
+		status?: BigInt;
 
 		/**
-		 * update_at
+		 * 时长(单位s)
 		 */
-		update_at?: BigInt;
+		duration?: BigInt;
 
 		/**
-		 * update_at
+		 * 自定义地区
 		 */
-		site_id?: number;
+		region?: number;
 
 		/**
-		 * 创建时间
+		 * 自定义语言
 		 */
-		createTime?: string;
+		language?: number;
 
 		/**
-		 * 更新时间
+		 * 总集数
 		 */
-		updateTime?: string;
+		number?: BigInt;
+
+		/**
+		 * 更新集数
+		 */
+		total?: BigInt;
+
+		/**
+		 * 横屏海报
+		 */
+		horizontal_poster?: string;
+
+		/**
+		 * 竖屏海报
+		 */
+		vertical_poster?: string;
+
+		/**
+		 * 发行商
+		 */
+		publish?: string;
+
+		/**
+		 * 上映日期
+		 */
+		pubdate?: string;
+
+		/**
+		 * 序列号
+		 */
+		serial_number?: string;
+
+		/**
+		 * 截屏
+		 */
+		screenshot?: string;
+
+		/**
+		 * 是否连载完毕 0,1
+		 */
+		end?: number;
+
+		/**
+		 * 单位
+		 */
+		unit?: string;
+
+		/**
+		 * 采集的源地址
+		 */
+		play_url?: longtext;
+
+		/**
+		 * 播放地址是否入库1-1已经入库 0未入库
+		 */
+		play_url_put_in?: number;
+
+		/**
+		 * 资源id
+		 */
+		collection_id?: number;
+
+		/**
+		 * 顶数
+		 */
+		up?: number;
+
+		/**
+		 * 踩数
+		 */
+		down?: number;
+
+		/**
+		 * 资源名称
+		 */
+		collection_name?: string;
+
+		/**
+		 * 影片副标题
+		 */
+		sub_title?: string;
+
+		/**
+		 * 影片标签
+		 */
+		video_tag?: string;
+
+		/**
+		 * 影片类型
+		 */
+		video_class?: string;
 
 		/**
 		 * 任意键值

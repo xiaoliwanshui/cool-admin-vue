@@ -2,29 +2,31 @@
 	<div class="count-paid">
 		<div class="card">
 			<div class="card__header">
-				<span class="label">{{ $t('付款笔数') }}</span>
-				<cl-svg name="order" class="icon" />
+				<span class="label">{{ $t('异常链接数') }}</span>
+				<cl-svg class="icon" name="order" />
 			</div>
 
 			<div class="card__container">
-				<cl-number :value="num" class="num" suffix="笔" />
+				<cl-number :value="playLine.fail" class="num" suffix="笔" />
 			</div>
 
 			<div class="card__footer">
-				<span class="mr-2">{{ $t('转化率') }}</span>
-				<span>60%</span>
+				<span class="mr-2">{{ $t('占有率') }}</span>
+				<span>{{ playLine.percent }}%</span>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script lang="ts" setup>
-import { random } from 'lodash-es';
-import { onMounted, ref } from 'vue';
+import { toRefs } from 'vue';
 
-const num = ref(0);
-
-onMounted(() => {
-	num.value = random(10000);
-});
+const props = defineProps<{
+	playLine: {
+		fail: number;
+		success: number;
+		percent: number;
+	};
+}>();
+const { playLine } = toRefs(props);
 </script>

@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, reactive, toRefs } from 'vue';
+import { computed, nextTick, onMounted, reactive, toRefs } from 'vue';
 import { useDark } from '@vueuse/core';
 import { useI18n } from 'vue-i18n';
 import { useTheme } from '/#/theme';
@@ -128,8 +128,11 @@ function onChange(key: string) {
 
 onMounted(() => {
 	setTimeout(() => {
-		refresh('create');
-	}, 1000);
+		//vue强制刷新页面
+		nextTick(() => {
+			refresh('create');
+		});
+	}, 1500);
 });
 </script>
 

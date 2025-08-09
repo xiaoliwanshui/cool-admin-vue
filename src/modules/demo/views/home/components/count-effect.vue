@@ -2,13 +2,15 @@
 	<div class="count-effect">
 		<div class="card">
 			<div class="card__header">
-				<span class="label">{{ $t('总销售额') }}</span>
+				<span class="label">{{ $t('反馈预览') }}</span>
 
-				<cl-svg name="amount" class="icon" />
+				<el-icon class="icon">
+					<chat-round />
+				</el-icon>
 			</div>
 
 			<div class="card__container">
-				<cl-number :value="num" class="num" type="amount" suffix="元" />
+				<cl-number :value="feedback.sum" class="num" suffix="条" type="amount" />
 			</div>
 
 			<div class="card__footer">
@@ -21,7 +23,7 @@
 								<bottom-right />
 							</el-icon>
 
-							<span>-4%</span>
+							<span>{{ feedback.week }}%</span>
 						</div>
 					</li>
 
@@ -33,7 +35,7 @@
 								<top-right />
 							</el-icon>
 
-							<span>+7%</span>
+							<span>{{ feedback.day }}%</span>
 						</div>
 					</li>
 				</ul>
@@ -43,17 +45,17 @@
 </template>
 
 <script lang="ts" setup>
-import { BottomRight, TopRight } from '@element-plus/icons-vue';
-import { random } from 'lodash-es';
-import { onMounted, ref } from 'vue';
+import { BottomRight, ChatRound, TopRight } from '@element-plus/icons-vue';
+import { toRefs } from 'vue';
 
-const rate = ref(0);
-const num = ref(0);
-
-onMounted(() => {
-	rate.value = Math.random() * 30 + 30;
-	num.value = random(10000000);
-});
+const props = defineProps<{
+	feedback: {
+		week: number;
+		day: number;
+		sum: number;
+	};
+}>();
+const { feedback } = toRefs(props);
 </script>
 
 <style lang="scss" scoped>

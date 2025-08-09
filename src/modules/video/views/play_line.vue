@@ -9,7 +9,26 @@
 			<cl-multi-delete-btn />
 			<cl-flex1 />
 			<!-- 关键字搜索 -->
-			<cl-search ref="Search" />
+			<cl-filter label="状态">
+				<cl-select
+					:options="[
+						{
+							label: '正常',
+							value: 1
+						},
+						{
+							label: '异常',
+							value: 0
+						}
+					]"
+					:width="140"
+					check-strictly
+					prop="status"
+					tree
+				/>
+			</cl-filter>
+			<!-- 关键字搜索 -->
+			<cl-search-key />
 		</cl-row>
 
 		<cl-row>

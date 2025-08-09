@@ -9,10 +9,10 @@
 					<count-views :visit="data.visit" />
 				</el-col>
 				<el-col :lg="6" :md="12" :xs="24">
-					<count-paid />
+					<count-paid :play-line="data.playLine" />
 				</el-col>
 				<el-col :lg="6" :md="12" :xs="24">
-					<count-effect />
+					<count-effect :feedback="data.feedback" />
 				</el-col>
 			</el-row>
 
@@ -76,7 +76,17 @@ const data = ref({
 			params: {},
 			count: '0'
 		}
-	]
+	],
+	playLine: {
+		fail: 0,
+		success: 0,
+		percent: 0
+	},
+	feedback: {
+		week: 0,
+		day: 0,
+		sum: 0
+	}
 });
 
 const getData = async () => {

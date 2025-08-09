@@ -9,26 +9,32 @@
 			<cl-multi-delete-btn />
 			<cl-flex1 />
 			<!-- 关键字搜索 -->
-			<cl-filter label="状态">
-				<cl-select
-					:options="[
-						{
-							label: '正常',
-							value: 1
-						},
-						{
-							label: '异常',
-							value: 0
-						}
-					]"
-					:width="140"
-					check-strictly
-					prop="status"
-					tree
-				/>
-			</cl-filter>
+			<!--			<cl-filter label="状态">-->
+			<!--				<cl-select-->
+			<!--					:options="[-->
+			<!--						{-->
+			<!--							label: '正常',-->
+			<!--							value: 1-->
+			<!--						},-->
+			<!--						{-->
+			<!--							label: '异常',-->
+			<!--							value: 0-->
+			<!--						}-->
+			<!--					]"-->
+			<!--					:width="140"-->
+			<!--					check-strictly-->
+			<!--					prop="status"-->
+			<!--					tree-->
+			<!--				/>-->
+			<!--			</cl-filter>-->
+			<!--			<cl-filter label="资源名">-->
+			<!--				<cl-input prop="collection_name" />-->
+			<!--			</cl-filter>-->
+			<!--			<cl-filter label="资源ID">-->
+			<!--				<el-input prop="collection_id" />-->
+			<!--			</cl-filter>-->
 			<!-- 关键字搜索 -->
-			<cl-search-key />
+			<cl-search ref="Search" />
 		</cl-row>
 
 		<cl-row>
@@ -206,7 +212,8 @@ const Table = useTable({
 	columns: [
 		{ type: 'selection' },
 		{ label: '影视名称', prop: 'video_name', minWidth: 140 },
-		{ label: '线路名', prop: 'collection_name', minWidth: 140 },
+		{ label: '资源名', prop: 'collection_name', minWidth: 140 },
+		{ label: '资源ID', prop: 'collection_id', minWidth: 140 },
 		{ label: '副标题', prop: 'sub_title', minWidth: 140 },
 		{ label: '名称', prop: 'name', minWidth: 140 },
 		{

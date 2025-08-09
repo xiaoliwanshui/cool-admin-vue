@@ -9,30 +9,6 @@
 			<cl-multi-delete-btn />
 			<cl-flex1 />
 			<!-- 关键字搜索 -->
-			<!--			<cl-filter label="状态">-->
-			<!--				<cl-select-->
-			<!--					:options="[-->
-			<!--						{-->
-			<!--							label: '正常',-->
-			<!--							value: 1-->
-			<!--						},-->
-			<!--						{-->
-			<!--							label: '异常',-->
-			<!--							value: 0-->
-			<!--						}-->
-			<!--					]"-->
-			<!--					:width="140"-->
-			<!--					check-strictly-->
-			<!--					prop="status"-->
-			<!--					tree-->
-			<!--				/>-->
-			<!--			</cl-filter>-->
-			<!--			<cl-filter label="资源名">-->
-			<!--				<cl-input prop="collection_name" />-->
-			<!--			</cl-filter>-->
-			<!--			<cl-filter label="资源ID">-->
-			<!--				<el-input prop="collection_id" />-->
-			<!--			</cl-filter>-->
 			<!-- 关键字搜索 -->
 			<cl-search ref="Search" />
 		</cl-row>
@@ -78,6 +54,25 @@ const handleError = (error: Error) => {
 
 const Search = useSearch({
 	items: [
+		{
+			label: '状态',
+			prop: 'status',
+			component: {
+				name: 'cl-select',
+				props: {
+					options: [
+						{
+							label: '正常',
+							value: 1
+						},
+						{
+							label: '异常',
+							value: 0
+						}
+					]
+				}
+			}
+		},
 		{
 			label: '视频ID',
 			prop: 'video_id',

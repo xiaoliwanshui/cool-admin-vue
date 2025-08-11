@@ -9,6 +9,15 @@
 			<cl-multi-delete-btn />
 			<cl-flex1 />
 			<!-- 关键字搜索 -->
+			<cl-filter label="日期">
+				<cl-select
+					:options="dict.get('week')"
+					:width="140"
+					check-strictly
+					prop="week"
+					tree
+				/>
+			</cl-filter>
 			<cl-search-key />
 		</cl-row>
 

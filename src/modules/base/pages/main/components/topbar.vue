@@ -1,8 +1,8 @@
 <template>
 	<div class="app-topbar">
 		<div class="cl-comm__icon mr-[10px]" @click="app.fold()">
-			<cl-svg name="fold" v-if="app.isFold" />
-			<cl-svg name="expand" v-else />
+			<cl-svg v-if="app.isFold" name="fold" />
+			<cl-svg v-else name="expand" />
 		</div>
 
 		<!-- 路由导航 -->
@@ -21,9 +21,9 @@
 		<!-- 用户信息 -->
 		<template v-if="user.info">
 			<el-dropdown
+				:popper-options="{}"
 				hide-on-click
 				popper-class="app-topbar__user-popper"
-				:popper-options="{}"
 				@command="onCommand"
 			>
 				<div class="app-topbar__user">
@@ -70,6 +70,7 @@ import { ElMessageBox } from 'element-plus';
 import { useI18n } from 'vue-i18n';
 import RouteNav from './route-nav.vue';
 import AMenu from './amenu.vue';
+import { isDev } from '/@/config';
 
 const { router, service, browser } = useCool();
 const { user, app } = useBase();
@@ -118,6 +119,11 @@ const toolbar = reactive({
 					}
 				})
 		);
+		//读取当前环境是开发环境还是生产环境
+		console.log(!isDev);
+		if (!isDev) {
+			this.list.splice(0, 2);
+		}
 	}
 });
 

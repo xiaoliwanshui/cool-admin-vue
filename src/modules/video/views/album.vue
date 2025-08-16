@@ -87,6 +87,7 @@ const Upsert = useUpsert({
 		{
 			label: '分类',
 			prop: 'category_id',
+			span: 12,
 			component: {
 				name: 'el-tree-select',
 				props: {
@@ -100,12 +101,14 @@ const Upsert = useUpsert({
 			prop: 'popularity_day',
 			hook: 'number',
 			component: { name: 'el-input-number' },
+			span: 12,
 			required: true,
 			value: _.random(1000, 3000)
 		},
 		{
 			label: '周人气',
 			prop: 'popularity_week',
+			span: 12,
 			hook: 'number',
 			component: { name: 'el-input-number' },
 			required: true,
@@ -115,6 +118,7 @@ const Upsert = useUpsert({
 			label: '月人气',
 			prop: 'popularity_month',
 			hook: 'number',
+			span: 12,
 			component: { name: 'el-input-number' },
 			required: true,
 			value: _.random(1000, 3000)
@@ -122,6 +126,7 @@ const Upsert = useUpsert({
 		{
 			label: '总人气',
 			prop: 'popularity_sum',
+			span: 12,
 			hook: 'number',
 			component: { name: 'el-input-number' },
 			required: true,
@@ -130,6 +135,7 @@ const Upsert = useUpsert({
 		{
 			label: '排序',
 			prop: 'sort',
+			span: 12,
 			hook: 'number',
 			component: { name: 'el-input-number' },
 			required: true,
@@ -144,6 +150,7 @@ const Upsert = useUpsert({
 			label: '状态',
 			prop: 'status',
 			flex: false,
+			span: 12,
 			component: {
 				name: 'cl-switch',
 				props: {
@@ -157,6 +164,7 @@ const Upsert = useUpsert({
 		{
 			label: '推荐',
 			prop: 'recommend',
+			span: 12,
 			flex: false,
 			component: {
 				name: 'cl-switch',

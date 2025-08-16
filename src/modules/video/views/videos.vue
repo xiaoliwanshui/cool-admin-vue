@@ -21,16 +21,19 @@
 			<cl-filter label="地区">
 				<cl-select :options="dict.get('area')" :width="140" check-strictly prop="region" />
 			</cl-filter>
-			<cl-filter label="语言">
-				<cl-select
-					:options="dict.get('language')"
-					:width="140"
-					check-strictly
-					prop="language"
-				/>
-			</cl-filter>
+			<!--			<cl-filter label="语言">-->
+			<!--				<cl-select-->
+			<!--					:options="dict.get('language')"-->
+			<!--					:width="140"-->
+			<!--					check-strictly-->
+			<!--					prop="language"-->
+			<!--				/>-->
+			<!--			</cl-filter>-->
 			<cl-filter label="入库">
 				<cl-select :options="play_url_put_inDict" :width="140" prop="play_url_put_in" />
+			</cl-filter>
+			<cl-filter label="搜索榜单分类">
+				<cl-select :options="dict.get('search_type')" :width="140" prop="play_url_put_in" />
 			</cl-filter>
 			<!-- 关键字搜索 -->
 			<cl-search-key />
@@ -67,86 +70,95 @@ const play_url_put_inDict = [
 const Upsert = useUpsert({
 	items: [
 		{
+			type: 'tabs',
+			props: {
+				labels: [
+					{
+						label: '基础信息',
+						value: 'base'
+					},
+					{
+						label: '评分',
+						value: 'score'
+					},
+					{
+						label: '图片',
+						value: 'image'
+					}
+				]
+			}
+		},
+		{
 			label: '影片标题',
 			prop: 'title',
-			component: { name: 'el-input', props: { clearable: true } }
+			component: { name: 'el-input', props: { clearable: true } },
+			group: 'base'
 		},
 		{
 			label: '影片副标题',
 			prop: 'sub_title',
-			component: { name: 'el-input', props: { clearable: true } }
+			component: { name: 'el-input', props: { clearable: true } },
+			group: 'base'
+		},
+		{
+			label: '影片封面图',
+			prop: 'surface_plot',
+			component: { name: 'cl-upload' },
+			group: 'image'
+		},
+		{
+			label: '是否推荐',
+			prop: 'recommend',
+			flex: false,
+			component: { name: 'cl-switch' },
+			span: 12,
+			group: 'base'
+		},
+		{
+			label: '是否轮播',
+			prop: 'cycle',
+			flex: false,
+			component: { name: 'cl-switch' },
+			span: 12,
+			group: 'base'
+		},
+
+		{
+			label: '影片分类',
+			prop: 'video_class',
+			component: { name: 'el-input', props: { clearable: true } },
+			span: 12,
+			group: 'base'
 		},
 		{
 			label: '影片标签',
 			prop: 'video_tag',
-			component: { name: 'el-input', props: { clearable: true } }
-		},
-		{
-			label: '影片分类',
-			prop: 'video_class',
-			component: { name: 'el-input', props: { clearable: true } }
+			component: { name: 'el-input', props: { clearable: true } },
+			span: 12,
+			group: 'base'
 		},
 		{
 			label: '分类',
 			prop: 'category_id',
+			span: 12,
 			component: {
 				name: 'el-tree-select',
 				props: {
 					data: dict.get('video_category'),
 					checkStrictly: true
 				}
-			}
-		},
-		{ label: '影片封面图', prop: 'surface_plot', component: { name: 'cl-upload' } },
-		{ label: '是否推荐', prop: 'recommend', flex: false, component: { name: 'cl-switch' } },
-		{ label: '是否轮播', prop: 'cycle', flex: false, component: { name: 'cl-switch' } },
-		{ label: '轮播图片', prop: 'cycle_img', component: { name: 'cl-upload' } },
-		{
-			label: '导演',
-			prop: 'directors',
-			component: { name: 'el-input', props: { type: 'textarea', rows: 4 } }
-		},
-		{
-			label: '演员',
-			prop: 'actors',
-			component: { name: 'el-input', props: { type: 'textarea', rows: 4 } }
-		},
-		{
-			label: '简介',
-			prop: 'introduce',
-			component: { name: 'el-input', props: { type: 'textarea', rows: 4 } }
-		},
-		{
-			label: '日人气',
-			prop: 'popularity_day',
-			hook: 'number',
-			component: { name: 'el-input-number' }
-		},
-		{
-			label: '周人气',
-			prop: 'popularity_week',
-			hook: 'number',
-			component: { name: 'el-input-number' }
-		},
-		{
-			label: '月人气',
-			prop: 'popularity_month',
-			hook: 'number',
-			component: { name: 'el-input-number' }
-		},
-		{
-			label: '总人气',
-			prop: 'popularity_sum',
-			hook: 'number',
-			component: { name: 'el-input-number' }
+			},
+			group: 'base'
 		},
 		{
 			label: '地区',
 			prop: 'region',
+			span: 12,
 			component: {
 				name: 'el-select',
 				options: dict.get('area')
-			}
+			},
+			group: 'base'
 		},
 		{
 			label: '语言',
@@ -154,36 +166,98 @@ const Upsert = useUpsert({
 			component: {
 				name: 'el-select',
 				options: dict.get('language')
-			}
+			},
+			span: 12,
+			group: 'base'
 		},
-		{ label: '总集数', prop: 'number', hook: 'number', component: { name: 'el-input-number' } },
+		{
+			label: '搜索榜单分类',
+			prop: 'searchRecommendType',
+			span: 12,
+			component: {
+				name: 'el-select',
+				options: dict.get('search_type')
+			},
+			group: 'base'
+		},
+		{ label: '轮播图片', prop: 'cycle_img', component: { name: 'cl-upload' }, group: 'image' },
+		{
+			label: '日人气',
+			prop: 'popularity_day',
+			hook: 'number',
+			component: { name: 'el-input-number' },
+			group: 'score'
+		},
+		{
+			label: '周人气',
+			prop: 'popularity_week',
+			hook: 'number',
+			component: { name: 'el-input-number' },
+			group: 'score'
+		},
+		{
+			label: '月人气',
+			prop: 'popularity_month',
+			hook: 'number',
+			component: { name: 'el-input-number' },
+			group: 'score'
+		},
+		{
+			label: '总人气',
+			prop: 'popularity_sum',
+			hook: 'number',
+			component: { name: 'el-input-number' },
+			group: 'score'
+		},
+
+		{
+			label: '总集数',
+			prop: 'number',
+			hook: 'number',
+			component: { name: 'el-input-number' },
+			span: 12,
+			group: 'base'
+		},
 		{
 			label: '更新集数',
 			prop: 'total',
 			hook: 'number',
-			component: { name: 'el-input-number' }
-		},
-		{ label: '横屏海报', prop: 'horizontal_poster', component: { name: 'cl-upload' } },
-		{ label: '竖屏海报', prop: 'vertical_poster', component: { name: 'cl-upload' } },
-		{
-			label: '片头时间',
-			prop: 'titles_time',
-			hook: 'number',
 			component: { name: 'el-input-number' },
-			required: true
+			span: 12,
+			group: 'base'
 		},
 		{
-			label: '片尾时间',
-			prop: 'trailer_time',
-			hook: 'number',
-			component: { name: 'el-input-number' },
-			required: true
+			label: '横屏海报',
+			prop: 'horizontal_poster',
+			component: { name: 'cl-upload' },
+			group: 'image'
 		},
+		{
+			label: '竖屏海报',
+			prop: 'vertical_poster',
+			component: { name: 'cl-upload' },
+			group: 'image'
+		},
+
 		{
 			label: '采集的源地址',
 			prop: 'play_url',
-			component: { name: 'el-input', props: { type: 'textarea', rows: 10 } },
-			required: true
+			component: { name: 'el-input', props: { type: 'textarea', rows: 4 } },
+			required: true,
+			group: 'base'
+		},
+		{
+			label: '简介',
+			prop: 'introduce',
+			component: { name: 'el-input', props: { type: 'textarea', rows: 4 } },
+			group: 'base'
+		},
+		{
+			label: '排序',
+			prop: 'sort',
+			hook: 'number',
+			component: { name: 'el-input-number' },
+			group: 'score'
 		}
 	]
 });
@@ -200,16 +274,6 @@ const Table = useTable({
 			minWidth: 140
 		},
 		{
-			label: '影片分类',
-			prop: 'video_class',
-			minWidth: 140
-		},
-		{
-			label: '影片标签',
-			prop: 'video_tag',
-			minWidth: 140
-		},
-		{
 			label: '分类',
 			prop: 'category_id',
 			dict: dict.get('video_category'),
@@ -218,15 +282,9 @@ const Table = useTable({
 			dictAllLevels: true // 显示所有等级
 		},
 		{
-			label: '影片封面图',
-			prop: 'surface_plot',
-			minWidth: 100,
-			component: { name: 'cl-image', props: { size: 60 } }
-		},
-		{
-			label: '地区',
-			prop: 'region',
-			dict: dict.get('area'),
+			label: '搜索榜单分类',
+			prop: 'searchRecommendType',
+			dict: dict.get('search_type'),
 			dictColor: true,
 			minWidth: 150,
 			dictAllLevels: true // 显示所有等级
@@ -239,8 +297,30 @@ const Table = useTable({
 			minWidth: 150,
 			dictAllLevels: true // 显示所有等级
 		},
-		{ label: '导演', prop: 'directors', showOverflowTooltip: true, minWidth: 200 },
-		{ label: '演员', prop: 'actors', showOverflowTooltip: true, minWidth: 200 },
+		{
+			label: '地区',
+			prop: 'region',
+			dict: dict.get('area'),
+			dictColor: true,
+			minWidth: 150,
+			dictAllLevels: true // 显示所有等级
+		},
+		{
+			label: '影片标签',
+			prop: 'video_tag',
+			minWidth: 140
+		},
+		{
+			label: '影片分类',
+			prop: 'video_class',
+			minWidth: 140
+		},
+		{
+			label: '影片封面图',
+			prop: 'surface_plot',
+			minWidth: 100,
+			component: { name: 'cl-image', props: { size: 60 } }
+		},
 		{
 			label: 'imd评分',
 			prop: 'imdb_score',

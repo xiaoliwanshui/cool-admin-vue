@@ -701,6 +701,11 @@ declare namespace Eps {
 		status?: number;
 
 		/**
+		 * 颜色
+		 */
+		color?: string;
+
+		/**
 		 * 备注
 		 */
 		remark?: string;
@@ -2408,6 +2413,58 @@ declare namespace Eps {
 		[key: string]: any;
 	}
 
+	interface VideoHostKeyWordEntity {
+		/**
+		 * ID
+		 */
+		id?: number;
+
+		/**
+		 * 创建用户ID
+		 */
+		createUserId?: number;
+
+		/**
+		 * 更新用户ID
+		 */
+		updateUserId?: number;
+
+		/**
+		 * 标题
+		 */
+		keyWord?: string;
+
+		/**
+		 * 分类
+		 */
+		category_id?: number;
+
+		/**
+		 * 标签
+		 */
+		tag?: string;
+
+		/**
+		 * 颜色
+		 */
+		color?: string;
+
+		/**
+		 * 创建时间
+		 */
+		createTime?: string;
+
+		/**
+		 * 更新时间
+		 */
+		updateTime?: string;
+
+		/**
+		 * 任意键值
+		 */
+		[key: string]: any;
+	}
+
 	interface UserLiveEntity {
 		/**
 		 * ID
@@ -3747,6 +3804,11 @@ declare namespace Eps {
 	interface VideoWeek_videoPageResponse {
 		pagination: PagePagination;
 		list: VideoWeekEntity[];
+	}
+
+	interface VideoHot_keyWordPageResponse {
+		pagination: PagePagination;
+		list: VideoHostKeyWordEntity[];
 	}
 
 	interface ApplicationAds {
@@ -6304,6 +6366,64 @@ declare namespace Eps {
 		request: Request;
 	}
 
+	interface VideoHot_keyWord {
+		/**
+		 * 删除
+		 */
+		delete(data?: any): Promise<any>;
+
+		/**
+		 * 修改
+		 */
+		update(data?: any): Promise<any>;
+
+		/**
+		 * 单个信息
+		 */
+		info(data?: any): Promise<VideoHostKeyWordEntity>;
+
+		/**
+		 * 列表查询
+		 */
+		list(data?: any): Promise<VideoHostKeyWordEntity[]>;
+
+		/**
+		 * 分页查询
+		 */
+		page(data?: any): Promise<VideoHot_keyWordPageResponse>;
+
+		/**
+		 * 新增
+		 */
+		add(data?: any): Promise<any>;
+
+		/**
+		 * 权限标识
+		 */
+		permission: {
+			delete: string;
+			update: string;
+			info: string;
+			list: string;
+			page: string;
+			add: string;
+		};
+
+		/**
+		 * 权限状态
+		 */
+		_permission: {
+			delete: boolean;
+			update: boolean;
+			info: boolean;
+			list: boolean;
+			page: boolean;
+			add: boolean;
+		};
+
+		request: Request;
+	}
+
 	interface RequestOptions {
 		url: string;
 		method?: "OPTIONS" | "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "TRACE" | "CONNECT";
@@ -6383,6 +6503,7 @@ declare namespace Eps {
 			video_line: VideoVideo_line;
 			week: VideoWeek;
 			week_video: VideoWeek_video;
+			hot_keyWord: VideoHot_keyWord;
 		};
 	};
 }

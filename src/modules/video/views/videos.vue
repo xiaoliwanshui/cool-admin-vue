@@ -33,7 +33,11 @@
 				<cl-select :options="play_url_put_inDict" :width="140" prop="play_url_put_in" />
 			</cl-filter>
 			<cl-filter label="搜索榜单分类">
-				<cl-select :options="dict.get('search_type')" :width="140" prop="play_url_put_in" />
+				<cl-select
+					:options="dict.get('search_type')"
+					:width="140"
+					prop="searchRecommendType"
+				/>
 			</cl-filter>
 			<!-- 关键字搜索 -->
 			<cl-search-key />
@@ -138,7 +142,7 @@ const Upsert = useUpsert({
 			group: 'base'
 		},
 		{
-			label: '分类',
+			label: '影视分类',
 			prop: 'category_id',
 			span: 12,
 			component: {
@@ -176,7 +180,10 @@ const Upsert = useUpsert({
 			span: 12,
 			component: {
 				name: 'el-select',
-				options: dict.get('search_type')
+				options: dict.get('search_type'),
+				props: {
+					clearable: true
+				}
 			},
 			group: 'base'
 		},

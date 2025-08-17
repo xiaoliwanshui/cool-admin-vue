@@ -18,7 +18,13 @@
 
 				<cl-row>
 					<!-- 数据表格 -->
-					<cl-table ref="Table" />
+					<cl-table ref="Table">
+						<template #column-color="{ scope }">
+							<el-tag :color="scope.row.color"
+								>{{ scope.row.color ?? '暂无颜色' }}
+							</el-tag>
+						</template>
+					</cl-table>
 				</cl-row>
 
 				<cl-row>
@@ -174,6 +180,14 @@ const Upsert = useUpsert({
 			},
 			value: 1,
 			required: true
+		},
+		{
+			label: '颜色',
+			prop: 'color',
+			component: {
+				name: 'el-color-picker'
+			},
+			required: true
 		}
 	],
 	onSubmit(data, { next }) {
@@ -223,6 +237,11 @@ const Table = useTable({
 				name: 'cl-switch'
 			},
 
+			minWidth: 200
+		},
+		{
+			label: '颜色',
+			prop: 'color',
 			minWidth: 200
 		},
 		{

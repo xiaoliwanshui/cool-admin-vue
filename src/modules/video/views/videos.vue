@@ -21,14 +21,6 @@
 			<cl-filter label="地区">
 				<cl-select :options="dict.get('area')" :width="140" check-strictly prop="region" />
 			</cl-filter>
-			<!--			<cl-filter label="语言">-->
-			<!--				<cl-select-->
-			<!--					:options="dict.get('language')"-->
-			<!--					:width="140"-->
-			<!--					check-strictly-->
-			<!--					prop="language"-->
-			<!--				/>-->
-			<!--			</cl-filter>-->
 			<cl-filter label="入库">
 				<cl-select :options="play_url_put_inDict" :width="140" prop="play_url_put_in" />
 			</cl-filter>

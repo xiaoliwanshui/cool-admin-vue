@@ -2445,9 +2445,14 @@ declare namespace Eps {
 		tag?: string;
 
 		/**
-		 * 颜色
+		 * 背景颜色
 		 */
-		color?: string;
+		bgColor?: string;
+
+		/**
+		 * 字体颜色
+		 */
+		fontColor?: string;
 
 		/**
 		 * 创建时间
@@ -3146,7 +3151,7 @@ declare namespace Eps {
 		/**
 		 * 时间
 		 */
-		time?: string;
+		time?: time;
 
 		/**
 		 * 排序
@@ -3766,6 +3771,11 @@ declare namespace Eps {
 		list: CollectionTaskTaskEntity[];
 	}
 
+	interface VideoHot_keyWordPageResponse {
+		pagination: PagePagination;
+		list: VideoHostKeyWordEntity[];
+	}
+
 	interface VideoLivePageResponse {
 		pagination: PagePagination;
 		list: UserLiveEntity[];
@@ -3804,11 +3814,6 @@ declare namespace Eps {
 	interface VideoWeek_videoPageResponse {
 		pagination: PagePagination;
 		list: VideoWeekEntity[];
-	}
-
-	interface VideoHot_keyWordPageResponse {
-		pagination: PagePagination;
-		list: VideoHostKeyWordEntity[];
 	}
 
 	interface ApplicationAds {
@@ -5888,6 +5893,64 @@ declare namespace Eps {
 		request: Request;
 	}
 
+	interface VideoHot_keyWord {
+		/**
+		 * 删除
+		 */
+		delete(data?: any): Promise<any>;
+
+		/**
+		 * 修改
+		 */
+		update(data?: any): Promise<any>;
+
+		/**
+		 * 单个信息
+		 */
+		info(data?: any): Promise<VideoHostKeyWordEntity>;
+
+		/**
+		 * 列表查询
+		 */
+		list(data?: any): Promise<VideoHostKeyWordEntity[]>;
+
+		/**
+		 * 分页查询
+		 */
+		page(data?: any): Promise<VideoHot_keyWordPageResponse>;
+
+		/**
+		 * 新增
+		 */
+		add(data?: any): Promise<any>;
+
+		/**
+		 * 权限标识
+		 */
+		permission: {
+			delete: string;
+			update: string;
+			info: string;
+			list: string;
+			page: string;
+			add: string;
+		};
+
+		/**
+		 * 权限状态
+		 */
+		_permission: {
+			delete: boolean;
+			update: boolean;
+			info: boolean;
+			list: boolean;
+			page: boolean;
+			add: boolean;
+		};
+
+		request: Request;
+	}
+
 	interface VideoLive {
 		/**
 		 * 删除
@@ -6366,64 +6429,6 @@ declare namespace Eps {
 		request: Request;
 	}
 
-	interface VideoHot_keyWord {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<VideoHostKeyWordEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<VideoHostKeyWordEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<VideoHot_keyWordPageResponse>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Request;
-	}
-
 	interface RequestOptions {
 		url: string;
 		method?: "OPTIONS" | "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "TRACE" | "CONNECT";
@@ -6495,6 +6500,7 @@ declare namespace Eps {
 			collection: VideoCollection;
 			collection_category: VideoCollection_category;
 			collection_task: VideoCollection_task;
+			hot_keyWord: VideoHot_keyWord;
 			live: VideoLive;
 			player: VideoPlayer;
 			play_line: VideoPlay_line;
@@ -6503,7 +6509,6 @@ declare namespace Eps {
 			video_line: VideoVideo_line;
 			week: VideoWeek;
 			week_video: VideoWeek_video;
-			hot_keyWord: VideoHot_keyWord;
 		};
 	};
 }

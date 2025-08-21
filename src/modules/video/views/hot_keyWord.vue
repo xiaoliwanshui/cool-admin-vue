@@ -15,11 +15,15 @@
 		<cl-row>
 			<!-- 数据表格 -->
 			<cl-table ref="Table">
-				<template #column-tag="{ scope }">
-					<el-tag>{{ scope.row.tag }}</el-tag>
+				<template #column-bgColor="{ scope }">
+					<el-tag v-if="scope.row.bgColor" :color="scope.row.bgColor"
+						>{{ scope.row.bgColor ?? '暂无颜色' }}
+					</el-tag>
 				</template>
-				<template #column-color="{ scope }">
-					<el-tag :color="scope.row.color">{{ scope.row.color ?? '暂无颜色' }}</el-tag>
+				<template #column-fontColor="{ scope }">
+					<el-tag v-if="scope.row.fontColor" :color="scope.row.fontColor"
+						>{{ scope.row.fontColor ?? '暂无颜色' }}
+					</el-tag>
 				</template>
 			</cl-table>
 		</cl-row>
@@ -65,7 +69,8 @@ const Upsert = useUpsert({
 				props: {
 					options: dict.get('video_category').value
 				}
-			}
+			},
+			required: true
 		},
 		{
 			label: t('标签'),
@@ -73,12 +78,18 @@ const Upsert = useUpsert({
 			component: { name: 'el-input', props: { clearable: true } }
 		},
 		{
-			label: '颜色',
-			prop: 'color',
+			label: '背景颜色',
+			prop: 'bgColor',
 			component: {
 				name: 'el-color-picker'
-			},
-			required: true
+			}
+		},
+		{
+			label: '字体颜色',
+			prop: 'fontColor',
+			component: {
+				name: 'el-color-picker'
+			}
 		}
 	]
 });
@@ -96,13 +107,18 @@ const Table = useTable({
 			dictColor: true
 		},
 		{
-			label: t('标签'),
+			label: t('标签文本'),
 			prop: 'tag',
 			minWidth: 120
 		},
 		{
-			label: t('颜色'),
-			prop: 'color',
+			label: t('背景颜色'),
+			prop: 'bgColor',
+			minWidth: 120
+		},
+		{
+			label: t('字体颜色'),
+			prop: 'fontColor',
 			minWidth: 120
 		},
 		{ label: t('创建用户ID'), prop: 'createUserId', minWidth: 120 },

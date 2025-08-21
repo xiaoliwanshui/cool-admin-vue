@@ -33,7 +33,8 @@
 		</cl-row>
 
 		<!-- 新增、编辑 -->
-		<cl-form ref="Form" />
+		<!--		<cl-form ref="Form" />-->
+		<cl-upsert ref="Upsert" />
 	</cl-crud>
 	<cl-dialog v-model="visible" :before-close="beforeClose" height="auto" title="视频列表">
 		<videos
@@ -62,7 +63,7 @@
 </template>
 
 <script lang="ts" name="video-weekId" setup>
-import { useCrud, useForm, useTable } from '@cool-vue/crud';
+import { useCrud, useForm, useTable, useUpsert } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
 import videos from '/$/video/components/videos.vue';
 import { ref } from 'vue';
@@ -88,66 +89,56 @@ const Crud = useCrud(
 		app.refresh();
 	}
 );
-
-function open() {
-	Form.value.open({
-		items: [
-			{
-				label: '视频',
-				prop: 'videoId',
-				component: {
-					vm: WeekFrom
-				},
-				required: true
+const Upsert = useUpsert({
+	items: [
+		{
+			label: '视频',
+			prop: 'videoId',
+			component: {
+				vm: WeekFrom
 			},
-			{
-				label: '日期',
-				prop: 'week',
-				component: {
-					name: 'cl-select',
-					props: {
-						tree: true,
-						checkStrictly: true,
-						options: dict.get('week')
-					}
-				},
-				required: true
+			required: true
+		},
+		{
+			label: '日期',
+			prop: 'week',
+			component: {
+				name: 'cl-select',
+				props: {
+					tree: true,
+					checkStrictly: true,
+					options: dict.get('week')
+				}
 			},
-			{
-				label: '时间',
-				prop: 'time',
-				component: {
-					name: 'el-time-select',
-					props: {
-						start: '00:00',
-						end: '23:59',
-						step: '00:10'
-					}
-				},
-				required: true
+			required: true
+		},
+		{
+			label: '时间',
+			prop: 'time',
+			component: {
+				name: 'el-time-select',
+				props: {
+					start: '00:00',
+					end: '23:59',
+					step: '00:01'
+				}
 			},
-			{
-				label: '备注',
-				prop: 'remarks',
-				component: { name: 'el-input', props: { type: 'textarea', rows: 4 } }
-			},
-			{
-				label: '排序',
-				prop: 'sort',
-				hook: 'number',
-				value: 0,
-				component: { name: 'el-input-number' }
-			}
-		],
-		on: {
-			async submit(data, { close, done }) {
-				await service.video.week.add(data);
-				close();
-				Crud.value.refresh();
-			}
+			required: true
+		},
+		{
+			label: '备注',
+			prop: 'remarks',
+			component: { name: 'el-input', props: { type: 'textarea', rows: 4 } }
+		},
+		{
+			label: '排序',
+			prop: 'sort',
+			hook: 'number',
+			value: 0,
+			component: { name: 'el-input-number' }
 		}
-	});
-}
+	]
+});
 
 // cl-table
 const Table = useTable({
@@ -200,7 +191,7 @@ const Table = useTable({
 		{
 			type: 'op',
 			width: 200,
-			buttons: ['delete']
+			buttons: ['delete', 'edit']
 		}
 	]
 });

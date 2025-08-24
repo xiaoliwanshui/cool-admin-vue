@@ -158,7 +158,7 @@ const Search = useSearch();
 // cl-crud
 const Crud = useCrud(
 	{
-		service: service.video.hot_keyWord
+		service: service.video.hot_keyword
 	},
 	app => {
 		app.refresh();

@@ -3776,7 +3776,7 @@ declare namespace Eps {
 		list: CollectionTaskTaskEntity[];
 	}
 
-	interface VideoHot_keyWordPageResponse {
+	interface VideoHot_keywordPageResponse {
 		pagination: PagePagination;
 		list: VideoHostKeyWordEntity[];
 	}
@@ -5898,7 +5898,7 @@ declare namespace Eps {
 		request: Request;
 	}
 
-	interface VideoHot_keyWord {
+	interface VideoHot_keyword {
 		/**
 		 * 删除
 		 */
@@ -5922,7 +5922,7 @@ declare namespace Eps {
 		/**
 		 * 分页查询
 		 */
-		page(data?: any): Promise<VideoHot_keyWordPageResponse>;
+		page(data?: any): Promise<VideoHot_keywordPageResponse>;
 
 		/**
 		 * 新增
@@ -6505,7 +6505,7 @@ declare namespace Eps {
 			collection: VideoCollection;
 			collection_category: VideoCollection_category;
 			collection_task: VideoCollection_task;
-			hot_keyWord: VideoHot_keyWord;
+			hot_keyword: VideoHot_keyword;
 			live: VideoLive;
 			player: VideoPlayer;
 			play_line: VideoPlay_line;

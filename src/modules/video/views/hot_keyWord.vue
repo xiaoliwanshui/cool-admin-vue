@@ -78,6 +78,12 @@ const Upsert = useUpsert({
 			component: { name: 'el-input', props: { clearable: true } }
 		},
 		{
+			label: t('排序'),
+			prop: 'sort',
+			component: { name: 'el-input-number' },
+			value: 0
+		},
+		{
 			label: '背景颜色',
 			prop: 'bgColor',
 			component: {
@@ -119,6 +125,11 @@ const Table = useTable({
 		{
 			label: t('字体颜色'),
 			prop: 'fontColor',
+			minWidth: 120
+		},
+		{
+			label: t('排序'),
+			prop: 'sort',
 			minWidth: 120
 		},
 		{ label: t('创建用户ID'), prop: 'createUserId', minWidth: 120 },

@@ -2455,6 +2455,11 @@ declare namespace Eps {
 		fontColor?: string;
 
 		/**
+		 * 排序
+		 */
+		sort?: number;
+
+		/**
 		 * 创建时间
 		 */
 		createTime?: string;

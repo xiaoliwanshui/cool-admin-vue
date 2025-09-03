@@ -150,6 +150,16 @@ declare namespace Eps {
 		status?: number;
 
 		/**
+		 * app版本号
+		 */
+		appVersion?: string;
+
+		/**
+		 * app下载地址
+		 */
+		appUrl?: string;
+
+		/**
 		 * 创建时间
 		 */
 		createTime?: string;

@@ -1,6 +1,6 @@
 <template>
 	<div class="cl-menu-file">
-		<el-tooltip :content="$t('自定义输入')">
+		<el-tooltip :content="t('自定义输入')">
 			<div
 				class="cl-menu-file__icon"
 				:class="{
@@ -15,7 +15,7 @@
 		<template v-if="isEdit">
 			<el-input
 				v-model="text"
-				:placeholder="$t('请输入')"
+				:placeholder="t('请输入')"
 				@change="onTextChange"
 				:ref="setRefs('input')"
 			/>
@@ -41,6 +41,9 @@ defineOptions({
 import { nextTick, ref, watch } from 'vue';
 import { deepPaths } from '/@/cool/utils';
 import { useCool } from '/@/cool';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const props = defineProps({
 	modelValue: {
@@ -49,7 +52,7 @@ const props = defineProps({
 	}
 });
 
-const emit = defineEmits(['update:modelValue', 'change']);
+const emit = defineEmits(['update:modelValue']);
 
 const { refs, setRefs } = useCool();
 

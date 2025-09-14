@@ -59,6 +59,17 @@ const Upsert = useUpsert({
 			required: true
 		},
 		{
+			label: t('展示页面'),
+			prop: 'adsPage',
+			component: {
+				name: 'el-tree-select',
+				props: {
+					data: dict.get('ads_page')
+				}
+			},
+			span: 24
+		},
+		{
 			label: t('广告类型'),
 			prop: 'type',
 			component: {
@@ -68,6 +79,16 @@ const Upsert = useUpsert({
 				}
 			},
 			span: 24,
+			required: true
+		},
+		{
+			label: t('状态'),
+			prop: 'status',
+			component: {
+				name: 'cl-switch'
+			},
+			span: 24,
+			defaultValue: 1,
 			required: true
 		}
 	]
@@ -80,8 +101,15 @@ const Table = useTable({
 		{ label: t('广告类型'), prop: 'type', minWidth: 240, dict: dict.get('ads_type') },
 		{ label: t('应用ID'), prop: 'appId', minWidth: 240 },
 		{ label: t('广告ID'), prop: 'adsId', minWidth: 240 },
-		{ label: t('创建用户ID'), prop: 'createUserId', minWidth: 240 },
-		{ label: t('更新用户ID'), prop: 'updateUserId', minWidth: 240 },
+		{ label: t('广告页面'), prop: 'adsPage', minWidth: 240, dict: dict.get('ads_page') },
+		{
+			label: t('状态'),
+			prop: 'status',
+			minWidth: 120,
+			component: {
+				name: 'cl-switch'
+			}
+		},
 		{
 			label: t('创建时间'),
 			prop: 'createTime',
@@ -96,6 +124,8 @@ const Table = useTable({
 			sortable: 'custom',
 			component: { name: 'cl-date-text' }
 		},
+		{ label: t('创建用户ID'), prop: 'createUserId', minWidth: 240 },
+		{ label: t('更新用户ID'), prop: 'updateUserId', minWidth: 240 },
 		{ type: 'op', buttons: ['edit', 'delete'] }
 	]
 });

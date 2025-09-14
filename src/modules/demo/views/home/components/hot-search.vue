@@ -1,7 +1,7 @@
 <template>
 	<div class="hot-search card">
 		<div class="card__header">
-			<span class="year">热搜排行榜</span>
+			<span class="year">{{ $t('热搜排行榜') }}</span>
 		</div>
 
 		<div class="hot-search__container">
@@ -10,7 +10,7 @@
 					<div class="block">
 						<div class="count">
 							<div class="number">
-								<span>搜索用户数</span>
+								<span>{{ $t('搜索用户数') }}</span>
 								<span>{{ count }}</span>
 							</div>
 							<div class="rise">
@@ -37,6 +37,9 @@
 import * as echarts from 'echarts';
 import { useCrud, useTable } from '@cool-vue/crud';
 import { computed, reactive, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const props = defineProps<{
 	keyWord: Array<{
@@ -61,15 +64,15 @@ const tab = reactive({
 	active: 'today',
 	list: [
 		{
-			label: '日热搜',
+			label: t('日热搜'),
 			value: 'today'
 		},
 		{
-			label: '周热搜',
+			label: t('周热搜'),
 			value: 'week'
 		},
 		{
-			label: '月热搜',
+			label: t('月热搜'),
 			value: 'month'
 		}
 	]
@@ -84,7 +87,7 @@ const chartOptions = ref({
 	},
 	xAxis: {
 		type: 'category',
-		data: [],
+		data: [] as string[],
 		boundaryGap: false
 	},
 	yAxis: {
@@ -104,13 +107,13 @@ const chartOptions = ref({
 	},
 	series: [
 		{
-			name: '总访问量',
+			name: t('总访问量'),
 			type: 'line',
 			smooth: true,
 			showSymbol: false,
 			symbol: 'circle',
 			symbolSize: 6,
-			data: [],
+			data: [] as number[],
 			areaStyle: {
 				color: new echarts.graphic.LinearGradient(
 					0,
@@ -147,12 +150,12 @@ function initChartData() {
 		series: [
 			{
 				...chartOptions.value.series[0],
-				data: keyWord.value.map(item => item.count)
+				data: keyWord.value.map(item => parseInt(item.count || '0'))
 			}
 		],
 		xAxis: {
 			...chartOptions.value.xAxis,
-			data: Array.from({ length: 12 }, (_, i) => `${i + 1}月`)
+			data: Array.from({ length: 12 }, (_, i) => t('{i}月', { i: i + 1 }))
 		}
 	};
 }
@@ -192,17 +195,17 @@ const Table = useTable({
 	contextMenu: [],
 	columns: [
 		{
-			label: '排名',
+			label: t('排名'),
 			type: 'index',
 			width: 60
 		},
 		{
-			label: '搜索关键词',
+			label: t('搜索关键词'),
 			prop: 'keyWord',
 			minWidth: 100
 		},
 		{
-			label: '用户数',
+			label: t('用户数'),
 			prop: 'count',
 			minWidth: 100
 		}

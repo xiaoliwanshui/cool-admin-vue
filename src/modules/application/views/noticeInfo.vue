@@ -9,7 +9,7 @@
 			<cl-multi-delete-btn />
 			<cl-flex1 />
 			<!-- 条件搜索 -->
-			<cl-filter label="类型">
+			<cl-filter :label="t('类型')">
 				<cl-select
 					:options="dict.get('notice_type')"
 					:width="140"

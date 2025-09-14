@@ -84,7 +84,7 @@ const Table = useTable({
 			minWidth: 150
 		},
 		{
-			label: '数据',
+			label: t('数据'),
 			prop: 'data',
 			minWidth: 200,
 			component: {

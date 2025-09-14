@@ -23,6 +23,9 @@ defineOptions({
 import { onMounted, ref, watch, reactive } from 'vue';
 import { useCool } from '/@/cool';
 import { deepPaths } from '/@/cool/utils';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const props = defineProps({
 	modelValue: {

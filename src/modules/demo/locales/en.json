@@ -50,5 +50,18 @@
   "商品金额": "Product Amount",
   "下单次数": "Order Placed Times",
   "日涨幅": "Daily Increase",
-  "上架时间": "Listing Time"
+  "上架时间": "Listing Time",
+  "热搜排行榜": "Hot Search Ranking",
+  "搜索用户数": "Search Users",
+  "搜索关键词": "Search Keywords",
+  "用户数": "User Count",
+  "日热搜": "Daily Hot Search",
+  "周热搜": "Weekly Hot Search",
+  "月热搜": "Monthly Hot Search",
+  "总访问量": "Total Visits",
+  "日新增": "Daily New",
+  "日更新": "Daily Update",
+  "异常链接数": "Abnormal Links",
+  "占有率": "Occupancy Rate",
+  "反馈预览": "Feedback Preview"
 }

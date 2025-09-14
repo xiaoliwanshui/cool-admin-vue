@@ -4,7 +4,7 @@
 			<cl-svg :name="modelValue" />
 		</div>
 
-		<el-select v-model="value" filterable fit-input-width clearable>
+		<el-select v-model="value" filterable :placeholder="t('请选择图标')" fit-input-width clearable>
 			<div class="cl-menu-icon__list">
 				<el-option v-for="item in list" :key="item" :value="item">
 					<cl-svg :name="item" />
@@ -21,6 +21,9 @@ defineOptions({
 
 import { ref, useModel } from 'vue';
 import { svgIcons } from 'virtual:svg-icons';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const props = defineProps({
 	modelValue: {
@@ -49,36 +52,9 @@ const value = useModel(props, 'modelValue');
 		align-items: center;
 		justify-content: center;
 		margin-right: 5px;
-		border: 1px solid var(--el-border-color);
-		height: 32px;
-		width: 32px;
-		border-radius: var(--el-border-radius-base);
-		box-sizing: border-box;
-		flex-shrink: 0;
-
-		.cl-svg {
-			font-size: 16px;
-		}
-	}
-
-	&__list {
-		display: flex;
-		flex-wrap: wrap;
-		padding-left: 5px;
-
-		.el-select-dropdown__item {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			padding: 0;
-			height: 50px;
-			width: 50px;
-			border-radius: 4px;
-		}
-
-		.cl-svg {
-			font-size: 18px;
-		}
+		height: 20px;
+		width: 20px;
+		font-size: 20px;
 	}
 }
 </style>

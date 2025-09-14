@@ -64,7 +64,7 @@ const Table = useTable({
 	columns: [
 		{
 			type: 'index',
-			label: '#',
+			label: t('#'),
 			width: 60
 		},
 		{
@@ -107,7 +107,7 @@ const Table = useTable({
 		},
 		{
 			prop: 'ip',
-			label: 'ip',
+			label: t('IP地址'),
 			minWidth: 150,
 			dict: [],
 			dictColor: true,

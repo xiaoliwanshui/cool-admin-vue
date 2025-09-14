@@ -31,6 +31,16 @@ declare namespace Eps {
 		adsId?: string;
 
 		/**
+		 * 状态
+		 */
+		status?: number;
+
+		/**
+		 * 展示页面
+		 */
+		adsPage?: string;
+
+		/**
 		 * 创建时间
 		 */
 		createTime?: string;
@@ -6467,7 +6477,8 @@ declare namespace Eps {
 		| "feedback_type"
 		| "ads_type"
 		| "search_type"
-		| "video_tag";
+		| "video_tag"
+		| "ads_page";
 
 	type Service = {
 		request: Request;

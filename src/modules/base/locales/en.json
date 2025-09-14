@@ -19,7 +19,7 @@
   "请填写排序号": "Please fill in the sorting number",
   "导入": "Import",
   "如遇到问题无法导入菜单，请检查文件并尝试重新导入。": "If you encounter problems importing the menu, please check the file and try to import again.",
-  "角色标签": "Character Tag",
+  "角色标签": "Role Label",
   "请填写新密码": "Please fill in the new password",
   "保存修改": "Save Changes",
   "修改成功": "Modification Successful",
@@ -139,5 +139,9 @@
   "文件": "File",
   "请输入Key": "Please enter Key",
   "类型": "Type",
-  "数据": "Data"
+  "数据": "Data",
+  "请选择图标": "Please select icon",
+  "#": "#",
+  "IP地址": "IP Address",
+  "头部信息": "Header Information"
 }

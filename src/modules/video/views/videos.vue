@@ -9,7 +9,7 @@
 			<cl-multi-delete-btn />
 			<cl-flex1 />
 			<!-- 字典 -->
-			<cl-filter label="分类">
+			<cl-filter :label="t('分类')">
 				<cl-select
 					:options="dict.get('video_category')"
 					:width="140"
@@ -18,13 +18,13 @@
 					tree
 				/>
 			</cl-filter>
-			<cl-filter label="地区">
+			<cl-filter :label="t('地区')">
 				<cl-select :options="dict.get('area')" :width="140" check-strictly prop="region" />
 			</cl-filter>
-			<cl-filter label="入库">
+			<cl-filter :label="t('入库')">
 				<cl-select :options="play_url_put_inDict" :width="140" prop="play_url_put_in" />
 			</cl-filter>
-			<cl-filter label="搜索榜单分类">
+			<cl-filter :label="t('搜索榜单分类')">
 				<cl-select
 					:options="dict.get('search_type')"
 					:width="140"
@@ -55,12 +55,15 @@
 import { useCrud, useTable, useUpsert } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
 import { useDict } from '/$/dict';
+import { useI18n } from 'vue-i18n';
 
 const { service } = useCool();
 const { dict } = useDict();
+const { t } = useI18n();
+
 const play_url_put_inDict = [
-	{ value: 1, label: '已入库' },
-	{ value: 0, label: '未入库' }
+	{ value: 1, label: t('已入库') },
+	{ value: 0, label: t('未入库') }
 ];
 // cl-upsert
 const Upsert = useUpsert({
@@ -70,40 +73,40 @@ const Upsert = useUpsert({
 			props: {
 				labels: [
 					{
-						label: '基础信息',
+						label: t('基础信息'),
 						value: 'base'
 					},
 					{
-						label: '评分',
+						label: t('评分'),
 						value: 'score'
 					},
 					{
-						label: '图片',
+						label: t('图片'),
 						value: 'image'
 					}
 				]
 			}
 		},
 		{
-			label: '影片标题',
+			label: t('影片标题'),
 			prop: 'title',
 			component: { name: 'el-input', props: { clearable: true } },
 			group: 'base'
 		},
 		{
-			label: '影片副标题',
+			label: t('影片副标题'),
 			prop: 'sub_title',
 			component: { name: 'el-input', props: { clearable: true } },
 			group: 'base'
 		},
 		{
-			label: '影片封面图',
+			label: t('影片封面图'),
 			prop: 'surface_plot',
 			component: { name: 'cl-upload' },
 			group: 'image'
 		},
 		{
-			label: '是否推荐',
+			label: t('是否推荐'),
 			prop: 'recommend',
 			flex: false,
 			component: { name: 'cl-switch' },
@@ -111,7 +114,7 @@ const Upsert = useUpsert({
 			group: 'base'
 		},
 		{
-			label: '是否轮播',
+			label: t('是否轮播'),
 			prop: 'cycle',
 			flex: false,
 			component: { name: 'cl-switch' },
@@ -120,21 +123,21 @@ const Upsert = useUpsert({
 		},
 
 		{
-			label: '影片分类',
+			label: t('影片分类'),
 			prop: 'video_class',
 			component: { name: 'el-input', props: { clearable: true } },
 			span: 12,
 			group: 'base'
 		},
 		{
-			label: '影片标签',
+			label: t('影片标签'),
 			prop: 'video_tag',
 			component: { name: 'el-input', props: { clearable: true } },
 			span: 12,
 			group: 'base'
 		},
 		{
-			label: '影视分类',
+			label: t('影视分类'),
 			prop: 'category_id',
 			span: 12,
 			component: {
@@ -147,7 +150,7 @@ const Upsert = useUpsert({
 			group: 'base'
 		},
 		{
-			label: '地区',
+			label: t('地区'),
 			prop: 'region',
 			span: 12,
 			component: {
@@ -157,7 +160,7 @@ const Upsert = useUpsert({
 			group: 'base'
 		},
 		{
-			label: '语言',
+			label: t('语言'),
 			prop: 'language',
 			component: {
 				name: 'el-select',
@@ -167,7 +170,7 @@ const Upsert = useUpsert({
 			group: 'base'
 		},
 		{
-			label: '搜索榜单分类',
+			label: t('搜索榜单分类'),
 			prop: 'searchRecommendType',
 			span: 12,
 			component: {
@@ -179,30 +182,30 @@ const Upsert = useUpsert({
 			},
 			group: 'base'
 		},
-		{ label: '轮播图片', prop: 'cycle_img', component: { name: 'cl-upload' }, group: 'image' },
+		{ label: t('轮播图片'), prop: 'cycle_img', component: { name: 'cl-upload' }, group: 'image' },
 		{
-			label: '日人气',
+			label: t('日人气'),
 			prop: 'popularity_day',
 			hook: 'number',
 			component: { name: 'el-input-number' },
 			group: 'score'
 		},
 		{
-			label: '周人气',
+			label: t('周人气'),
 			prop: 'popularity_week',
 			hook: 'number',
 			component: { name: 'el-input-number' },
 			group: 'score'
 		},
 		{
-			label: '月人气',
+			label: t('月人气'),
 			prop: 'popularity_month',
 			hook: 'number',
 			component: { name: 'el-input-number' },
 			group: 'score'
 		},
 		{
-			label: '总人气',
+			label: t('总人气'),
 			prop: 'popularity_sum',
 			hook: 'number',
 			component: { name: 'el-input-number' },
@@ -210,7 +213,7 @@ const Upsert = useUpsert({
 		},
 
 		{
-			label: '总集数',
+			label: t('总集数'),
 			prop: 'number',
 			hook: 'number',
 			component: { name: 'el-input-number' },
@@ -218,7 +221,7 @@ const Upsert = useUpsert({
 			group: 'base'
 		},
 		{
-			label: '更新集数',
+			label: t('更新集数'),
 			prop: 'total',
 			hook: 'number',
 			component: { name: 'el-input-number' },
@@ -226,33 +229,33 @@ const Upsert = useUpsert({
 			group: 'base'
 		},
 		{
-			label: '横屏海报',
+			label: t('横屏海报'),
 			prop: 'horizontal_poster',
 			component: { name: 'cl-upload' },
 			group: 'image'
 		},
 		{
-			label: '竖屏海报',
+			label: t('竖屏海报'),
 			prop: 'vertical_poster',
 			component: { name: 'cl-upload' },
 			group: 'image'
 		},
 
 		{
-			label: '采集的源地址',
+			label: t('采集的源地址'),
 			prop: 'play_url',
 			component: { name: 'el-input', props: { type: 'textarea', rows: 4 } },
 			required: true,
 			group: 'base'
 		},
 		{
-			label: '简介',
+			label: t('简介'),
 			prop: 'introduce',
 			component: { name: 'el-input', props: { type: 'textarea', rows: 4 } },
 			group: 'base'
 		},
 		{
-			label: '排序',
+			label: t('排序'),
 			prop: 'sort',
 			hook: 'number',
 			component: { name: 'el-input-number' },
@@ -265,15 +268,15 @@ const Upsert = useUpsert({
 const Table = useTable({
 	columns: [
 		{ type: 'selection' },
-		{ label: 'ID', prop: 'id', minWidth: 140 },
-		{ label: '影片标题', prop: 'title', minWidth: 140 },
+		{ label: t('ID'), prop: 'id', minWidth: 140 },
+		{ label: t('影片标题'), prop: 'title', minWidth: 140 },
 		{
-			label: '影片副标题',
+			label: t('影片副标题'),
 			prop: 'sub_title',
 			minWidth: 140
 		},
 		{
-			label: '分类',
+			label: t('分类'),
 			prop: 'category_id',
 			dict: dict.get('video_category'),
 			dictColor: true,
@@ -281,7 +284,7 @@ const Table = useTable({
 			dictAllLevels: true // 显示所有等级
 		},
 		{
-			label: '搜索榜单分类',
+			label: t('搜索榜单分类'),
 			prop: 'searchRecommendType',
 			dict: dict.get('search_type'),
 			dictColor: true,
@@ -289,7 +292,7 @@ const Table = useTable({
 			dictAllLevels: true // 显示所有等级
 		},
 		{
-			label: '语言',
+			label: t('语言'),
 			prop: 'language',
 			dict: dict.get('language'),
 			dictColor: true,
@@ -297,7 +300,7 @@ const Table = useTable({
 			dictAllLevels: true // 显示所有等级
 		},
 		{
-			label: '地区',
+			label: t('地区'),
 			prop: 'region',
 			dict: dict.get('area'),
 			dictColor: true,
@@ -305,43 +308,43 @@ const Table = useTable({
 			dictAllLevels: true // 显示所有等级
 		},
 		{
-			label: '影片标签',
+			label: t('影片标签'),
 			prop: 'video_tag',
 			minWidth: 140
 		},
 		{
-			label: '影片分类',
+			label: t('影片分类'),
 			prop: 'video_class',
 			minWidth: 140
 		},
 		{
-			label: '影片封面图',
+			label: t('影片封面图'),
 			prop: 'surface_plot',
 			minWidth: 100,
 			component: { name: 'cl-image', props: { size: 60 } }
 		},
 		{
-			label: 'imd评分',
+			label: t('imd评分'),
 			prop: 'imdb_score',
 			minWidth: 150,
 			component: { name: 'el-rate', props: { disabled: true } }
 		},
-		{ label: 'iimdID', prop: 'imdb_score_id', minWidth: 140 },
+		{ label: t('iimdID'), prop: 'imdb_score_id', minWidth: 140 },
 		{
-			label: '豆瓣评分.百分制',
+			label: t('豆瓣评分.百分制'),
 			prop: 'douban_score',
 			minWidth: 150,
 			component: { name: 'el-rate', props: { disabled: true } }
 		},
-		{ label: '豆瓣ID', prop: 'douban_score_id', minWidth: 140 },
-		{ label: '简介', prop: 'introduce', showOverflowTooltip: true, minWidth: 200 },
-		{ label: '日人气', prop: 'popularity_day', minWidth: 140 },
-		{ label: '周人气', prop: 'popularity_week', minWidth: 140 },
-		{ label: '月人气', prop: 'popularity_month', minWidth: 140 },
-		{ label: '总人气', prop: 'popularity', minWidth: 140 },
-		{ label: '上映日期', prop: 'pubdate', minWidth: 140 },
+		{ label: t('豆瓣ID'), prop: 'douban_score_id', minWidth: 140 },
+		{ label: t('简介'), prop: 'introduce', showOverflowTooltip: true, minWidth: 200 },
+		{ label: t('日人气'), prop: 'popularity_day', minWidth: 140 },
+		{ label: t('周人气'), prop: 'popularity_week', minWidth: 140 },
+		{ label: t('月人气'), prop: 'popularity_month', minWidth: 140 },
+		{ label: t('总人气'), prop: 'popularity', minWidth: 140 },
+		{ label: t('上映日期'), prop: 'pubdate', minWidth: 140 },
 		{
-			label: '状态',
+			label: t('状态'),
 			prop: 'status',
 			minWidth: 100,
 			component: {
@@ -354,7 +357,7 @@ const Table = useTable({
 		},
 		// 播放地址是否入库1-1已经入库 0未入库
 		{
-			label: '资源是否入库',
+			label: t('资源是否入库'),
 			prop: 'play_url_put_in',
 			dict: play_url_put_inDict,
 			dictColor: true,
@@ -362,22 +365,22 @@ const Table = useTable({
 			dictAllLevels: true // 显示所有等级
 		},
 
-		{ label: '采集的源地址', prop: 'play_url', showOverflowTooltip: true, minWidth: 200 },
+		{ label: t('采集的源地址'), prop: 'play_url', showOverflowTooltip: true, minWidth: 200 },
 		{
-			label: '创建时间',
+			label: t('创建时间'),
 			prop: 'createTime',
 			minWidth: 160,
 			component: { name: 'cl-date-text' }
 		},
 		{
-			label: '更新时间',
+			label: t('更新时间'),
 			prop: 'updateTime',
 			minWidth: 160,
 			component: { name: 'cl-date-text' }
 		},
 		{ type: 'op', buttons: ['edit', 'delete'] },
-		{ label: '创建人', prop: 'createUserId', minWidth: 140 },
-		{ label: '修改人', prop: 'updateUserId', minWidth: 140 }
+		{ label: t('创建人'), prop: 'createUserId', minWidth: 140 },
+		{ label: t('修改人'), prop: 'updateUserId', minWidth: 140 }
 	]
 });
 

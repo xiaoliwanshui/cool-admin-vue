@@ -9,7 +9,7 @@
 			<cl-multi-delete-btn />
 			<cl-flex1 />
 			<!-- 关键字搜索 -->
-			<cl-filter label="日期">
+			<cl-filter :label="t('日期')">
 				<cl-select
 					:options="dict.get('week')"
 					:width="140"
@@ -36,7 +36,7 @@
 		<!--		<cl-form ref="Form" />-->
 		<cl-upsert ref="Upsert" />
 	</cl-crud>
-	<cl-dialog v-model="visible" :before-close="beforeClose" height="auto" title="视频列表">
+	<cl-dialog v-model="visible" :before-close="beforeClose" :title="t('视频列表')" height="auto">
 		<videos
 			:modelValue="modelValue"
 			:weekId="weekId"
@@ -44,20 +44,20 @@
 			@update:model-value="value => (modelValue = value)"
 		></videos>
 		<template #footer>
-			<el-button @click="visible = false">取消</el-button>
-			<el-button type="primary" @click="submit">确定</el-button>
+			<el-button @click="visible = false">{{ t('取消') }}</el-button>
+			<el-button type="primary" @click="submit">{{ t('确定') }}</el-button>
 		</template>
 	</cl-dialog>
 	<cl-dialog
 		v-model="videoAlbumVisible"
 		:before-close="beforeClose"
+		:title="t('视频列表')"
 		height="auto"
-		title="视频列表"
 	>
 		<videos-week :weekId="weekId" style="height: 600px"></videos-week>
 		<template #footer>
-			<el-button @click="visible = false">取消</el-button>
-			<el-button type="primary" @click="submit">确定</el-button>
+			<el-button @click="visible = false">{{ t('取消') }}</el-button>
+			<el-button type="primary" @click="submit">{{ t('确定') }}</el-button>
 		</template>
 	</cl-dialog>
 </template>
@@ -70,6 +70,7 @@ import { ref } from 'vue';
 import videosWeek from '/$/video/components/videos-week.vue';
 import { useDict } from '/$/dict';
 import WeekFrom from '/$/video/components/week-from.vue';
+import { useI18n } from 'vue-i18n';
 
 const { service } = useCool();
 const visible = ref<boolean>(false);
@@ -77,6 +78,7 @@ const modelValue = ref<Array<any>>([]);
 const weekId = ref<number>(0);
 const videoAlbumVisible = ref<boolean>(false);
 const { dict } = useDict();
+const { t } = useI18n();
 
 const Form = useForm();
 
@@ -92,7 +94,7 @@ const Crud = useCrud(
 const Upsert = useUpsert({
 	items: [
 		{
-			label: '视频',
+			label: t('视频'),
 			prop: 'videoId',
 			component: {
 				vm: WeekFrom
@@ -100,7 +102,7 @@ const Upsert = useUpsert({
 			required: true
 		},
 		{
-			label: '日期',
+			label: t('日期'),
 			prop: 'week',
 			component: {
 				name: 'cl-select',
@@ -113,7 +115,7 @@ const Upsert = useUpsert({
 			required: true
 		},
 		{
-			label: '时间',
+			label: t('时间'),
 			prop: 'time',
 			component: {
 				name: 'el-time-select',
@@ -126,12 +128,12 @@ const Upsert = useUpsert({
 			required: true
 		},
 		{
-			label: '备注',
+			label: t('备注'),
 			prop: 'remarks',
 			component: { name: 'el-input', props: { type: 'textarea', rows: 4 } }
 		},
 		{
-			label: '排序',
+			label: t('排序'),
 			prop: 'sort',
 			hook: 'number',
 			value: 0,
@@ -145,20 +147,20 @@ const Table = useTable({
 	columns: [
 		{ type: 'selection' },
 		{
-			label: '日期',
+			label: t('日期'),
 			prop: 'week',
 			dict: dict.get('week'),
 			dictColor: true,
 			minWidth: 120
 		},
 		{
-			label: '时间',
+			label: t('时间'),
 			prop: 'time',
 			minWidth: 120
 		},
-		{ label: '影片标题', prop: 'title', minWidth: 140 },
+		{ label: t('影片标题'), prop: 'title', minWidth: 140 },
 		{
-			label: '分类',
+			label: t('分类'),
 			prop: 'category_id',
 			dict: dict.get('video_category'),
 			dictColor: true,
@@ -166,33 +168,29 @@ const Table = useTable({
 			dictAllLevels: true // 显示所有等级
 		},
 		{
-			label: '影片封面图',
+			label: t('影片封面图'),
 			prop: 'surface_plot',
 			minWidth: 100,
 			component: { name: 'cl-image', props: { size: 60 } }
 		},
-		{ label: '备注', prop: 'remarks', showOverflowTooltip: true, minWidth: 200 },
-		{ label: '排序', prop: 'sort', minWidth: 140 },
+		{ label: t('备注'), prop: 'remarks', showOverflowTooltip: true, minWidth: 200 },
+		{ label: t('排序'), prop: 'sort', minWidth: 140 },
 
 		{
-			label: '创建时间',
+			label: t('创建时间'),
 			prop: 'createTime',
 			minWidth: 160,
 			component: { name: 'cl-date-text' }
 		},
 		{
-			label: '更新时间',
+			label: t('更新时间'),
 			prop: 'updateTime',
 			minWidth: 160,
 			component: { name: 'cl-date-text' }
 		},
-		{ label: '创建人', prop: 'createUserId', minWidth: 140 },
-		{ label: '修改人', prop: 'updateUserId', minWidth: 140 },
-		{
-			type: 'op',
-			width: 200,
-			buttons: ['delete', 'edit']
-		}
+		{ label: t('创建人'), prop: 'createUserId', minWidth: 140 },
+		{ label: t('修改人'), prop: 'updateUserId', minWidth: 140 },
+		{ type: 'op', width: 250, buttons: ['info', 'edit', 'delete'] }
 	]
 });
 </script>

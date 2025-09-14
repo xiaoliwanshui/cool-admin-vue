@@ -16,5 +16,20 @@
   "状态": "Status",
   "创建时间": "Creation Time",
   "选择用户": "Select User",
-  "姓名": "Name"
+  "姓名": "Name",
+  "联系人名称": "Contact Name",
+  "创建用户ID": "Create User ID",
+  "更新用户ID": "Update User ID",
+  "更新时间": "Update Time",
+  "选择创建用户": "Select Create User",
+  "选择更新用户": "Select Update User",
+  "标题": "Title",
+  "分类": "Category",
+  "选择关联": "Select Association",
+  "封面": "Cover",
+  "观看时长": "Viewing Duration",
+  "视频索引": "Video Index",
+  "视频时长": "Video Duration",
+  "APP": "APP",
+  "密码": "Password"
 }

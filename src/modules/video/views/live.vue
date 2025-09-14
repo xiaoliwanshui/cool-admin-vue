@@ -8,7 +8,7 @@
 			<!-- 删除按钮 -->
 			<cl-multi-delete-btn />
 			<cl-flex1 />
-			<cl-filter label="分类">
+			<cl-filter :label="t('分类')">
 				<cl-select
 					:options="dict.get('live_category')"
 					:width="140"
@@ -41,16 +41,18 @@
 import { useCrud, useTable, useUpsert } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
 import { useDict } from '/$/dict';
+import { useI18n } from 'vue-i18n';
 
 const { service } = useCool();
 const { dict } = useDict();
+const { t } = useI18n();
 const image: string = `https://cool-file-1300398902.cos.ap-nanjing.myqcloud.com/app%2Fbase%2F693631ad5c0d48ea95c4db3cadbea02e_%E7%94%B5%E8%A7%86%E5%8F%B0%E5%9B%BE%E6%A0%87%402x%20(2).png`;
 // cl-upsert
 const Upsert = useUpsert({
 	items: [
-		{ label: '标题', prop: 'title', required: true, component: { name: 'el-input' } },
+		{ label: t('标题'), prop: 'title', required: true, component: { name: 'el-input' } },
 		{
-			label: '分类',
+			label: t('分类'),
 			prop: 'category_id',
 			required: true,
 			component: {
@@ -59,7 +61,7 @@ const Upsert = useUpsert({
 			}
 		},
 		{
-			label: '状态',
+			label: t('状态'),
 			prop: 'status',
 			required: true,
 			component: {
@@ -69,18 +71,18 @@ const Upsert = useUpsert({
 			value: 368
 		},
 		{
-			label: '图片',
+			label: t('图片'),
 			prop: 'image',
 			required: true,
 			component: {
 				name: 'cl-upload',
 				props: {
-					text: '选择图片'
+					text: t('选择图片')
 				}
 			},
 			value: image
 		},
-		{ label: '拉流地址', prop: 'pullUrl', component: { name: 'el-input' } }
+		{ label: t('拉流地址'), prop: 'pullUrl', component: { name: 'el-input' } }
 	]
 });
 
@@ -88,32 +90,32 @@ const Upsert = useUpsert({
 const Table = useTable({
 	columns: [
 		{ type: 'selection' },
-		{ label: 'ID', prop: 'id' },
-		{ label: '房间号', prop: 'roomId' },
-		{ label: '标题', prop: 'title' },
-		{ label: '分类', prop: 'category_id', dict: dict.get('live_category') },
-		{ label: '图片', prop: 'image', component: { name: 'cl-image' } },
-		{ label: '状态', prop: 'status', dict: dict.get('liveStatus') },
+		{ label: t('ID'), prop: 'id' },
+		{ label: t('房间号'), prop: 'roomId' },
+		{ label: t('标题'), prop: 'title' },
+		{ label: t('分类'), prop: 'category_id', dict: dict.get('live_category') },
+		{ label: t('图片'), prop: 'image', component: { name: 'cl-image' } },
+		{ label: t('状态'), prop: 'status', dict: dict.get('liveStatus') },
 		() => {
 			return {
-				label: '推流服务器',
+				label: t('推流服务器'),
 				prop: 'pushUrl'
 			};
 		},
 		() => {
 			return {
-				label: '推流码',
+				label: t('推流码'),
 				prop: 'pushCode'
 			};
 		},
 		() => {
 			return {
-				label: '拉流地址',
+				label: t('拉流地址'),
 				prop: 'pullUrl'
 			};
 		},
-		{ label: '创建时间', prop: 'createTime' },
-		{ label: '更新时间', prop: 'updateTime' },
+		{ label: t('创建时间'), prop: 'createTime' },
+		{ label: t('更新时间'), prop: 'updateTime' },
 		{ type: 'op', width: 250, buttons: ['info', 'edit', 'delete'] }
 	]
 });

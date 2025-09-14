@@ -9,7 +9,7 @@
 			<cl-multi-delete-btn />
 			<cl-flex1 />
 			<!-- 关键字搜索 -->
-			<cl-filter label="类型">
+			<cl-filter :label="t('类型')">
 				<cl-select
 					:options="dict.get('video_category')"
 					:width="140"
@@ -35,7 +35,7 @@
 		<!-- 新增、编辑 -->
 		<cl-upsert ref="Upsert" />
 	</cl-crud>
-	<cl-dialog v-model="visible" :before-close="beforeClose" height="auto" title="视频列表">
+	<cl-dialog v-model="visible" :before-close="beforeClose" :title="t('视频列表')" height="auto">
 		<videos
 			:albumId="albumId"
 			:modelValue="modelValue"
@@ -43,15 +43,15 @@
 			@update:model-value="value => (modelValue = value)"
 		></videos>
 		<template #footer>
-			<el-button @click="visible = false">取消</el-button>
-			<el-button type="primary" @click="submit">确定</el-button>
+			<el-button @click="visible = false">{{ t('取消') }}</el-button>
+			<el-button type="primary" @click="submit">{{ t('确定') }}</el-button>
 		</template>
 	</cl-dialog>
 	<cl-dialog
 		v-model="videoAlbumVisible"
 		:before-close="beforeClose"
+		:title="t('视频列表')"
 		height="auto"
-		title="视频列表"
 	>
 		<videos-album :albumId="albumId" style="height: 600px"></videos-album>
 	</cl-dialog>
@@ -66,6 +66,7 @@ import videos from '/$/video/components/videos.vue';
 import videosAlbum from '/$/video/components/videos-album.vue';
 import _ from 'lodash';
 import { useDict } from '/$/dict';
+import { useI18n } from 'vue-i18n';
 
 const { service } = useCool();
 const visible = ref<boolean>(false);
@@ -74,18 +75,24 @@ const albumId = ref<number>(0);
 const videoAlbumVisible = ref<boolean>(false);
 const addListForm = useForm();
 const { dict } = useDict();
+const { t } = useI18n();
 
 const Upsert = useUpsert({
 	items: [
 		{
-			label: '标题',
+			label: t('标题'),
 			prop: 'title',
 			component: { name: 'el-input', props: { clearable: true } },
 			required: true
 		},
-		{ label: '图片', prop: 'surface_plot', component: { name: 'cl-upload' }, required: true },
 		{
-			label: '分类',
+			label: t('图片'),
+			prop: 'surface_plot',
+			component: { name: 'cl-upload' },
+			required: true
+		},
+		{
+			label: t('分类'),
 			prop: 'category_id',
 			span: 12,
 			component: {
@@ -97,7 +104,7 @@ const Upsert = useUpsert({
 			}
 		},
 		{
-			label: '日人气',
+			label: t('日人气'),
 			prop: 'popularity_day',
 			hook: 'number',
 			component: { name: 'el-input-number' },
@@ -106,7 +113,7 @@ const Upsert = useUpsert({
 			value: _.random(1000, 3000)
 		},
 		{
-			label: '周人气',
+			label: t('周人气'),
 			prop: 'popularity_week',
 			span: 12,
 			hook: 'number',
@@ -115,7 +122,7 @@ const Upsert = useUpsert({
 			value: _.random(1000, 3000)
 		},
 		{
-			label: '月人气',
+			label: t('月人气'),
 			prop: 'popularity_month',
 			hook: 'number',
 			span: 12,
@@ -124,7 +131,7 @@ const Upsert = useUpsert({
 			value: _.random(1000, 3000)
 		},
 		{
-			label: '总人气',
+			label: t('总人气'),
 			prop: 'popularity_sum',
 			span: 12,
 			hook: 'number',
@@ -133,7 +140,7 @@ const Upsert = useUpsert({
 			value: _.random(3000, 6000)
 		},
 		{
-			label: '排序',
+			label: t('排序'),
 			prop: 'sort',
 			span: 12,
 			hook: 'number',
@@ -142,12 +149,12 @@ const Upsert = useUpsert({
 			value: 0
 		},
 		{
-			label: '内容',
+			label: t('内容'),
 			prop: 'introduce',
 			component: { name: 'el-input', props: { type: 'textarea', rows: 4 } }
 		},
 		{
-			label: '状态',
+			label: t('状态'),
 			prop: 'status',
 			flex: false,
 			span: 12,
@@ -162,7 +169,7 @@ const Upsert = useUpsert({
 			value: 1
 		},
 		{
-			label: '推荐',
+			label: t('推荐'),
 			prop: 'recommend',
 			span: 12,
 			flex: false,
@@ -181,10 +188,10 @@ const Upsert = useUpsert({
 
 function addListFormOpen(scope) {
 	addListForm.value?.open({
-		title: '批量添加视频',
+		title: t('批量添加视频'),
 		items: [
 			{
-				label: '视频标题',
+				label: t('视频标题'),
 				prop: 'title',
 				required: true,
 				component: {
@@ -193,7 +200,7 @@ function addListFormOpen(scope) {
 						type: 'textarea',
 						rows: 4,
 						clearable: true,
-						placeholder: '举例(用英文逗号分割):恐怖游轮 死神来了'
+						placeholder: t('举例(用英文逗号分割):恐怖游轮 死神来了')
 					}
 				}
 			}
@@ -225,41 +232,41 @@ function addListFormOpen(scope) {
 const Table = useTable({
 	columns: [
 		{ type: 'selection' },
-		{ label: 'ID', prop: 'id', minWidth: 140 },
-		{ label: '标题', prop: 'title', minWidth: 140 },
+		{ label: t('ID'), prop: 'id', minWidth: 140 },
+		{ label: t('标题'), prop: 'title', minWidth: 140 },
 		{
-			label: '图片',
+			label: t('图片'),
 			prop: 'surface_plot',
 			minWidth: 100,
 			component: { name: 'cl-image', props: { size: 60 } }
 		},
 		{
-			label: '类型',
+			label: t('类型'),
 			prop: 'category_id',
 			dict: dict.get('video_category'),
 			dictColor: true,
 			minWidth: 140
 		},
 		{
-			label: '日人气',
+			label: t('日人气'),
 			prop: 'popularity_day'
 		},
 		{
-			label: '周人气',
+			label: t('周人气'),
 			prop: 'popularity_week'
 		},
 		{
-			label: '月人气',
+			label: t('月人气'),
 			prop: 'popularity_month'
 		},
 		{
-			label: '总人气',
+			label: t('总人气'),
 			prop: 'popularity_sum'
 		},
-		{ label: '排序', prop: 'sort', minWidth: 140 },
-		{ label: '内容', prop: 'introduce', showOverflowTooltip: true, minWidth: 200 },
+		{ label: t('排序'), prop: 'sort', minWidth: 140 },
+		{ label: t('内容'), prop: 'introduce', showOverflowTooltip: true, minWidth: 200 },
 		{
-			label: '状态',
+			label: t('状态'),
 			prop: 'status',
 			minWidth: 100,
 			component: {
@@ -271,7 +278,7 @@ const Table = useTable({
 			}
 		},
 		{
-			label: '推荐',
+			label: t('推荐'),
 			prop: 'recommend',
 			minWidth: 140,
 			component: {
@@ -283,13 +290,13 @@ const Table = useTable({
 			}
 		},
 		{
-			label: '创建时间',
+			label: t('创建时间'),
 			prop: 'createTime',
 			minWidth: 160,
 			component: { name: 'cl-date-text' }
 		},
 		{
-			label: '更新时间',
+			label: t('更新时间'),
 			prop: 'updateTime',
 			minWidth: 160,
 			component: { name: 'cl-date-text' }
@@ -298,23 +305,23 @@ const Table = useTable({
 			type: 'op',
 			width: 600,
 			buttons: [
-				'edit',
-				'delete',
+				t('edit'),
+				t('delete'),
 				{
-					label: '快速添加',
+					label: t('快速添加'),
 					async onClick({ scope }) {
 						addListFormOpen(scope);
 					}
 				},
 				{
-					label: '绑定数据',
+					label: t('绑定数据'),
 					async onClick({ scope }) {
 						albumId.value = scope.row.id;
 						visible.value = !visible.value;
 					}
 				},
 				{
-					label: '数据预览',
+					label: t('数据预览'),
 					async onClick({ scope }) {
 						albumId.value = scope.row.id;
 						videoAlbumVisible.value = !videoAlbumVisible.value;

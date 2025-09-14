@@ -187,7 +187,7 @@ const Upsert = useUpsert({
 			component: {
 				name: 'el-color-picker'
 			},
-			required: true
+			defaultValue: '#ffffff'
 		}
 	],
 	onSubmit(data, { next }) {

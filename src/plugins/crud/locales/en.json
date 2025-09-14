@@ -31,5 +31,9 @@
   "提示": "Tip",
   "添加": "Add",
   "移除": "Remove",
-  "全选": "Select all"
+  "全选": "Select all",
+  "关闭": "Close",
+  "回到顶部": "Back to Top",
+  "加载中": "Loading",
+  "没有更多了": "No More"
 }

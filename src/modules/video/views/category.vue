@@ -38,8 +38,10 @@ import {useCrud, useTable, useUpsert} from "@cool-vue/crud";
 import {useCool} from "/@/cool";
 import {useViewGroup} from "/@/plugins/view";
 import {ref} from "vue";
+import { useI18n } from 'vue-i18n';
 
 const {service} = useCool();
+const { t } = useI18n();
 
 // 刷新
 function refresh(params?: any) {
@@ -48,8 +50,8 @@ function refresh(params?: any) {
 
 const parent_id = ref<number>(0);
 const {ViewGroup} = useViewGroup({
-	label: "类型",
-	title: "字典列表",
+	label: t("类型"),
+	title: t("字典列表"),
 	data: {parent_id: 0},
 	onSelect(item) {
 		parent_id.value = item.id;
@@ -67,36 +69,36 @@ const {ViewGroup} = useViewGroup({
 			},
 			items: [
 				{
-					label: "名称",
+					label: t("名称"),
 					prop: "name",
 					component: {name: "el-input", props: {clearable: true}}
 				},
 				{
-					label: "排序",
+					label: t("排序"),
 					prop: "sort",
 					hook: "number",
 					component: {name: "el-input-number"}
 				},
 				{
-					label: "竖屏",
+					label: t("竖屏"),
 					prop: "is_vertical",
 					flex: false,
 					component: {name: "cl-switch"}
 				},
 				{
-					label: "纯文字",
+					label: t("纯文字"),
 					prop: "is_font",
 					flex: false,
 					component: {name: "cl-switch"}
 				},
 				{
-					label: "站点id",
+					label: t("站点id"),
 					prop: "site_id",
 					hook: "number",
 					component: {name: "el-input-number"}
 				},
 				{
-					label: "status",
+					label: t("状态"),
 					prop: "status",
 					component: {name: "cl-switch"}
 				}
@@ -108,38 +110,43 @@ const {ViewGroup} = useViewGroup({
 const Upsert = useUpsert({
 	items: [
 		{
-			label: "类型",
+			label: t("类型"),
 			prop: "type",
 			component: {
 				name: "el-radio-group",
 				options: [
-					{value: "1", label: "视频"},
-					{value: "2", label: "名人"},
-					{value: "3", label: "文章"}
+					{value: "1", label: t("视频")},
+					{value: "2", label: t("名人")},
+					{value: "3", label: t("文章")}
 				]
 			},
 			value: "1影片"
 		},
 		{
-			label: "名称",
+			label: t("名称"),
 			prop: "name",
 			component: {name: "el-input", props: {clearable: true}}
 		},
-		{label: "排序", prop: "sort", hook: "number", component: {name: "el-input-number"}},
 		{
-			label: "竖屏",
+			label: t("排序"),
+			prop: "sort",
+			hook: "number",
+			component: {name: "el-input-number"}
+		},
+		{
+			label: t("竖屏"),
 			prop: "is_vertical",
 			flex: false,
 			component: {name: "cl-switch"}
 		},
 		{
-			label: "纯文字",
+			label: t("纯文字"),
 			prop: "is_font",
 			flex: false,
 			component: {name: "cl-switch"}
 		},
 		{
-			label: "status",
+			label: t("状态"),
 			prop: "status",
 			component: {name: "cl-switch"}
 		}
@@ -156,46 +163,46 @@ const Upsert = useUpsert({
 const Table = useTable({
 	columns: [
 		{type: "selection"},
-		{label: "ID", prop: "id", minWidth: 140},
-		{label: "父id", prop: "parent_id", minWidth: 140},
+		{label: t("ID"), prop: "id", minWidth: 140},
+		{label: t("父id"), prop: "parent_id", minWidth: 140},
 		{
-			label: "类型",
+			label: t("类型"),
 			prop: "type",
 			dict: [{value: "1影片"}, {value: "2名人"}, {value: "3文章"}],
 			dictColor: true,
 			minWidth: 120
 		},
-		{label: "分类名称", prop: "name", minWidth: 140},
-		{label: "排序", prop: "sort", minWidth: 140},
+		{label: t("分类名称"), prop: "name", minWidth: 140},
+		{label: t("排序"), prop: "sort", minWidth: 140},
 		{
-			label: "是否是竖屏，1-是，0-否",
+			label: t("是否是竖屏，1-是，0-否"),
 			prop: "is_vertical",
 			minWidth: 100,
 			component: {name: "cl-switch"}
 		},
 		{
-			label: "是否是纯文字，1-是，0-否",
+			label: t("是否是纯文字，1-是，0-否"),
 			prop: "is_font",
 			minWidth: 100,
 			component: {name: "cl-switch"}
 		},
-		{label: "站点id", prop: "site_id", minWidth: 140},
-		{label: "status", prop: "status", dict: [], dictColor: true, minWidth: 120},
+		{label: t("站点id"), prop: "site_id", minWidth: 140},
+		{label: t("状态"), prop: "status", dict: [], dictColor: true, minWidth: 120},
 		{
-			label: "创建时间",
+			label: t("创建时间"),
 			prop: "createTime",
 			minWidth: 160,
 			component: {name: "cl-date-text"}
 		},
 		{
-			label: "更新时间",
+			label: t("更新时间"),
 			prop: "updateTime",
 			minWidth: 160,
 			component: {name: "cl-date-text"}
 		},
-		{label: "创建人", prop: "createUserId", minWidth: 140},
-		{label: "修改人", prop: "updateUserId", minWidth: 140},
-		{type: "op", buttons: ["edit", "delete"]}
+		{label: t("创建人"), prop: "createUserId", minWidth: 140},
+		{label: t("修改人"), prop: "updateUserId", minWidth: 140},
+		{type: "op", buttons: [t("edit"), t("delete")]}
 	]
 });
 

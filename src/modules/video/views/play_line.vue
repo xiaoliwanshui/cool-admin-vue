@@ -27,7 +27,7 @@
 		<!-- 新增、编辑 -->
 		<cl-upsert ref="Upsert" />
 	</cl-crud>
-	<cl-dialog v-model="visible" :before-close="beforeClose" height="auto" title="视频预览">
+	<cl-dialog v-model="visible" :before-close="beforeClose" height="auto" :title="t('视频预览')">
 		<div id="playerRefDom"></div>
 	</cl-dialog>
 </template>
@@ -39,9 +39,12 @@ import { nextTick, ref } from 'vue';
 import Artplayer from 'artplayer';
 import artplayerPluginHlsQuality from 'artplayer-plugin-hls-quality';
 import Hls from 'hls.js';
+import { useI18n } from 'vue-i18n';
 
 const ArtplayerContainer = ref<Artplayer>();
 const { service } = useCool();
+const { t } = useI18n();
+
 const visible = ref<boolean>(false);
 const beforeClose = done => {
 	ArtplayerContainer.value.destroy();
@@ -55,18 +58,18 @@ const handleError = (error: Error) => {
 const Search = useSearch({
 	items: [
 		{
-			label: '状态',
+			label: t('状态'),
 			prop: 'status',
 			component: {
 				name: 'cl-select',
 				props: {
 					options: [
 						{
-							label: '正常',
+							label: t('正常'),
 							value: 1
 						},
 						{
-							label: '异常',
+							label: t('异常'),
 							value: 0
 						}
 					]
@@ -74,7 +77,7 @@ const Search = useSearch({
 			}
 		},
 		{
-			label: '视频ID',
+			label: t('视频ID'),
 			prop: 'video_id',
 			component: {
 				name: 'el-input',
@@ -84,7 +87,7 @@ const Search = useSearch({
 			}
 		},
 		{
-			label: '视频名称',
+			label: t('视频名称'),
 			prop: 'video_name',
 			component: {
 				name: 'el-input',
@@ -94,7 +97,7 @@ const Search = useSearch({
 			}
 		},
 		{
-			label: '资源ID',
+			label: t('资源ID'),
 			prop: 'collection_id',
 			component: {
 				name: 'el-input',
@@ -104,7 +107,7 @@ const Search = useSearch({
 			}
 		},
 		{
-			label: '资源名称',
+			label: t('资源名称'),
 			prop: 'collection_name',
 			component: {
 				name: 'el-input',
@@ -119,7 +122,7 @@ const play = async (url: string) => {
 	await nextTick();
 	visible.value = true;
 	if (!url) {
-		handleError(new Error('URL为空，无法播放视频。'));
+		handleError(new Error(t('URL为空，无法播放视频。')));
 		return;
 	}
 	setTimeout(() => {
@@ -140,8 +143,8 @@ const play = async (url: string) => {
 						getResolution: level => level.height + 'P',
 
 						// I18n
-						title: 'Quality',
-						auto: 'Auto'
+						title: t('Quality'),
+						auto: t('Auto')
 					})
 				],
 				customType: {
@@ -156,7 +159,7 @@ const play = async (url: string) => {
 						} else if (video.canPlayType('application/vnd.apple.mpegurl')) {
 							video.src = url;
 						} else {
-							art.notice.show = 'Unsupported playback format: m3u8';
+							art.notice.show = t('Unsupported playback format: m3u8');
 						}
 					}
 				}
@@ -170,35 +173,35 @@ const play = async (url: string) => {
 const Upsert = useUpsert({
 	items: [
 		{
-			label: '影视ID',
+			label: t('影视ID'),
 			prop: 'video_id',
 			hook: 'number',
 			component: { name: 'el-input-number' }
 		},
 		{
-			label: '资源ID',
+			label: t('资源ID'),
 			prop: 'video_line_id',
 			hook: 'number',
 			component: { name: 'el-input-number' }
 		},
 		{
-			label: '名称',
+			label: t('名称'),
 			prop: 'name',
 			component: { name: 'el-input', props: { clearable: true } },
 			required: true
 		},
 		{
-			label: '文件地址',
+			label: t('文件地址'),
 			prop: 'file',
 			component: { name: 'el-input', props: { type: 'textarea', rows: 4 } }
 		},
 		{
-			label: '副标题',
+			label: t('副标题'),
 			prop: 'sub_title',
 			component: { name: 'el-input', props: { clearable: true } }
 		},
-		{ label: '排序', prop: 'sort', hook: 'number', component: { name: 'el-input-number' } },
-		{ label: '标识', prop: 'tag', component: { name: 'el-input', props: { clearable: true } } }
+		{ label: t('排序'), prop: 'sort', hook: 'number', component: { name: 'el-input-number' } },
+		{ label: t('标识'), prop: 'tag', component: { name: 'el-input', props: { clearable: true } } }
 	]
 });
 
@@ -206,37 +209,37 @@ const Upsert = useUpsert({
 const Table = useTable({
 	columns: [
 		{ type: 'selection' },
-		{ label: '影视名称', prop: 'video_name', minWidth: 140 },
-		{ label: '资源名', prop: 'collection_name', minWidth: 140 },
-		{ label: '资源ID', prop: 'collection_id', minWidth: 140 },
-		{ label: '副标题', prop: 'sub_title', minWidth: 140 },
-		{ label: '名称', prop: 'name', minWidth: 140 },
+		{ label: t('影视名称'), prop: 'video_name', minWidth: 140 },
+		{ label: t('资源名'), prop: 'collection_name', minWidth: 140 },
+		{ label: t('资源ID'), prop: 'collection_id', minWidth: 140 },
+		{ label: t('副标题'), prop: 'sub_title', minWidth: 140 },
+		{ label: t('名称'), prop: 'name', minWidth: 140 },
 		{
-			label: '状态',
+			label: t('状态'),
 			prop: 'status',
 			minWidth: 140,
 			dict: [
-				{ value: 1, label: '正常' },
-				{ value: 0, label: '异常' }
+				{ value: 1, label: t('正常') },
+				{ value: 0, label: t('异常') }
 			]
 		},
-		{ label: '文件地址', prop: 'file', showOverflowTooltip: true, minWidth: 200 },
-		{ label: '排序', prop: 'sort', minWidth: 140 },
-		{ label: '标识', prop: 'tag', minWidth: 140 },
+		{ label: t('文件地址'), prop: 'file', showOverflowTooltip: true, minWidth: 200 },
+		{ label: t('排序'), prop: 'sort', minWidth: 140 },
+		{ label: t('标识'), prop: 'tag', minWidth: 140 },
 		{
-			label: '创建时间',
+			label: t('创建时间'),
 			prop: 'createTime',
 			minWidth: 160,
 			component: { name: 'cl-date-text' }
 		},
 		{
-			label: '更新时间',
+			label: t('更新时间'),
 			prop: 'updateTime',
 			minWidth: 160,
 			component: { name: 'cl-date-text' }
 		},
-		{ label: '创建人', prop: 'createUserId', minWidth: 140 },
-		{ label: '修改人', prop: 'updateUserId', minWidth: 140 },
+		{ label: t('创建人'), prop: 'createUserId', minWidth: 140 },
+		{ label: t('修改人'), prop: 'updateUserId', minWidth: 140 },
 		{
 			type: 'op',
 			width: 300,
@@ -244,7 +247,7 @@ const Table = useTable({
 				'edit',
 				'delete',
 				{
-					label: '播放',
+					label: t('播放'),
 					async onClick({ scope }) {
 						play(scope.row.file);
 					}

@@ -9,7 +9,7 @@
 			<cl-multi-delete-btn />
 			<cl-flex1 />
 			<!-- 条件搜索 -->
-			<cl-filter label="分类">
+			<cl-filter :label="t('分类')">
 				<cl-select
 					:options="dict.get('video_category')"
 					:width="140"
@@ -18,7 +18,7 @@
 					tree
 				/>
 			</cl-filter>
-			<cl-search-key placeholder="搜索关键字"/>
+			<cl-search-key :placeholder="t('搜索关键字')" />
 		</cl-row>
 
 		<cl-row>
@@ -91,7 +91,7 @@ const Upsert = useUpsert({
 			component: { name: 'el-input', props: { clearable: true } }
 		},
 		{
-			label: '状态',
+			label: t('状态'),
 			prop: 'status',
 			flex: false,
 			component: {
@@ -121,7 +121,7 @@ const Table = useTable({
 			}
 		},
 		{
-			label: '分类',
+			label: t('分类'),
 			prop: 'category',
 			dict: dict.get('video_category'),
 			dictColor: true,
@@ -148,7 +148,7 @@ const Table = useTable({
 			sortable: 'custom',
 			component: { name: 'cl-date-text' }
 		},
-		{ type: 'op', buttons: ['edit', 'delete'] }
+		{ type: 'op', width: 250, buttons: ['info', 'edit', 'delete'] }
 	]
 });
 
@@ -158,12 +158,10 @@ const Search = useSearch();
 // cl-crud
 const Crud = useCrud(
 	{
-		service: service.video.swiper,
+		service: service.video.swiper
 	},
 	app => {
 		app.refresh();
 	}
 );
-
-
 </script>

@@ -38,7 +38,12 @@ declare namespace Eps {
 		/**
 		 * 展示页面
 		 */
-		adsPage?: string;
+		adsPage?: number;
+
+		/**
+		 * 积分
+		 */
+		score?: number;
 
 		/**
 		 * 创建时间
@@ -793,6 +798,187 @@ declare namespace Eps {
 		[key: string]: any;
 	}
 
+	interface MemberEntity {
+		/**
+		 * ID
+		 */
+		id?: number;
+
+		/**
+		 * 创建用户ID
+		 */
+		createUserId?: number;
+
+		/**
+		 * 更新用户ID
+		 */
+		updateUserId?: number;
+
+		/**
+		 * 积分
+		 */
+		score?: number;
+
+		/**
+		 * 余额
+		 */
+		balance?: number;
+
+		/**
+		 * 会员等级
+		 */
+		level?: number;
+
+		/**
+		 * 状态
+		 */
+		status?: number;
+
+		/**
+		 * 开始时间
+		 */
+		startTime?: Date;
+
+		/**
+		 * 结束时间
+		 */
+		endTime?: Date;
+
+		/**
+		 * 创建时间
+		 */
+		createTime?: string;
+
+		/**
+		 * 更新时间
+		 */
+		updateTime?: string;
+
+		/**
+		 * 任意键值
+		 */
+		[key: string]: any;
+	}
+
+	interface MemberExchangeConfigEntity {
+		/**
+		 * ID
+		 */
+		id?: number;
+
+		/**
+		 * 创建用户ID
+		 */
+		createUserId?: number;
+
+		/**
+		 * 更新用户ID
+		 */
+		updateUserId?: number;
+
+		/**
+		 * 兑换名称
+		 */
+		exchangeName?: string;
+
+		/**
+		 * 所需积分
+		 */
+		requiredScore?: number;
+
+		/**
+		 * 兑换天数
+		 */
+		days?: number;
+
+		/**
+		 * 是否启用
+		 */
+		enabled?: number;
+
+		/**
+		 * 排序
+		 */
+		sort?: number;
+
+		/**
+		 * 备注
+		 */
+		remark?: string;
+
+		/**
+		 * 创建时间
+		 */
+		createTime?: string;
+
+		/**
+		 * 更新时间
+		 */
+		updateTime?: string;
+
+		/**
+		 * 任意键值
+		 */
+		[key: string]: any;
+	}
+
+	interface ScoreEntity {
+		/**
+		 * ID
+		 */
+		id?: number;
+
+		/**
+		 * 创建用户ID
+		 */
+		createUserId?: number;
+
+		/**
+		 * 更新用户ID
+		 */
+		updateUserId?: number;
+
+		/**
+		 * 积分变化数量
+		 */
+		score?: number;
+
+		/**
+		 * 变更原因
+		 */
+		reason?: string;
+
+		/**
+		 * 变更类型 1:增加 2:减少
+		 */
+		type?: number;
+
+		/**
+		 * 关联业务ID
+		 */
+		businessId?: number;
+
+		/**
+		 * 关联业务类型
+		 */
+		businessType?: string;
+
+		/**
+		 * 创建时间
+		 */
+		createTime?: string;
+
+		/**
+		 * 更新时间
+		 */
+		updateTime?: string;
+
+		/**
+		 * 任意键值
+		 */
+		[key: string]: any;
+	}
+
 	interface PluginInfoEntity {
 		/**
 		 * ID
@@ -1466,48 +1652,6 @@ declare namespace Eps {
 		 * 封面
 		 */
 		cover?: string;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface MemberEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 开始时间
-		 */
-		startTime?: Date;
-
-		/**
-		 * 结束时间
-		 */
-		endTime?: Date;
 
 		/**
 		 * 创建时间
@@ -3696,6 +3840,21 @@ declare namespace Eps {
 		list: DictTypeEntity[];
 	}
 
+	interface MemberMemberPageResponse {
+		pagination: PagePagination;
+		list: MemberEntity[];
+	}
+
+	interface MemberMemberExchangeConfigPageResponse {
+		pagination: PagePagination;
+		list: MemberExchangeConfigEntity[];
+	}
+
+	interface MemberScorePageResponse {
+		pagination: PagePagination;
+		list: ScoreEntity[];
+	}
+
 	interface PluginInfoPageResponse {
 		pagination: PagePagination;
 		list: PluginInfoEntity[];
@@ -3744,11 +3903,6 @@ declare namespace Eps {
 	interface UserLikePageResponse {
 		pagination: PagePagination;
 		list: LikeEntity[];
-	}
-
-	interface UserMemberPageResponse {
-		pagination: PagePagination;
-		list: MemberEntity[];
 	}
 
 	interface UserSharePageResponse {
@@ -4724,6 +4878,208 @@ declare namespace Eps {
 		request: Request;
 	}
 
+	interface MemberMember {
+		/**
+		 * 删除
+		 */
+		delete(data?: any): Promise<any>;
+
+		/**
+		 * 修改
+		 */
+		update(data?: any): Promise<any>;
+
+		/**
+		 * 单个信息
+		 */
+		info(data?: any): Promise<MemberEntity>;
+
+		/**
+		 * 列表查询
+		 */
+		list(data?: any): Promise<MemberEntity[]>;
+
+		/**
+		 * 分页查询
+		 */
+		page(data?: any): Promise<MemberMemberPageResponse>;
+
+		/**
+		 * 新增
+		 */
+		add(data?: any): Promise<any>;
+
+		/**
+		 * 权限标识
+		 */
+		permission: {
+			delete: string;
+			update: string;
+			info: string;
+			list: string;
+			page: string;
+			add: string;
+		};
+
+		/**
+		 * 权限状态
+		 */
+		_permission: {
+			delete: boolean;
+			update: boolean;
+			info: boolean;
+			list: boolean;
+			page: boolean;
+			add: boolean;
+		};
+
+		request: Request;
+	}
+
+	interface MemberMemberExchangeConfig {
+		/**
+		 * 删除
+		 */
+		delete(data?: any): Promise<any>;
+
+		/**
+		 * 修改
+		 */
+		update(data?: any): Promise<any>;
+
+		/**
+		 * 单个信息
+		 */
+		info(data?: any): Promise<MemberExchangeConfigEntity>;
+
+		/**
+		 * 列表查询
+		 */
+		list(data?: any): Promise<MemberExchangeConfigEntity[]>;
+
+		/**
+		 * 分页查询
+		 */
+		page(data?: any): Promise<MemberMemberExchangeConfigPageResponse>;
+
+		/**
+		 * 新增
+		 */
+		add(data?: any): Promise<any>;
+
+		/**
+		 * 权限标识
+		 */
+		permission: {
+			delete: string;
+			update: string;
+			info: string;
+			list: string;
+			page: string;
+			add: string;
+		};
+
+		/**
+		 * 权限状态
+		 */
+		_permission: {
+			delete: boolean;
+			update: boolean;
+			info: boolean;
+			list: boolean;
+			page: boolean;
+			add: boolean;
+		};
+
+		request: Request;
+	}
+
+	interface MemberScore {
+		/**
+		 * reduceScore
+		 */
+		reduceScore(data?: any): Promise<any>;
+
+		/**
+		 * addScore
+		 */
+		addScore(data?: any): Promise<any>;
+
+		/**
+		 * records
+		 */
+		records(data?: any): Promise<any>;
+
+		/**
+		 * 删除
+		 */
+		delete(data?: any): Promise<any>;
+
+		/**
+		 * 修改
+		 */
+		update(data?: any): Promise<any>;
+
+		/**
+		 * total
+		 */
+		total(data?: any): Promise<any>;
+
+		/**
+		 * 单个信息
+		 */
+		info(data?: any): Promise<ScoreEntity>;
+
+		/**
+		 * 列表查询
+		 */
+		list(data?: any): Promise<ScoreEntity[]>;
+
+		/**
+		 * 分页查询
+		 */
+		page(data?: any): Promise<MemberScorePageResponse>;
+
+		/**
+		 * 新增
+		 */
+		add(data?: any): Promise<any>;
+
+		/**
+		 * 权限标识
+		 */
+		permission: {
+			reduceScore: string;
+			addScore: string;
+			records: string;
+			delete: string;
+			update: string;
+			total: string;
+			info: string;
+			list: string;
+			page: string;
+			add: string;
+		};
+
+		/**
+		 * 权限状态
+		 */
+		_permission: {
+			reduceScore: boolean;
+			addScore: boolean;
+			records: boolean;
+			delete: boolean;
+			update: boolean;
+			total: boolean;
+			info: boolean;
+			list: boolean;
+			page: boolean;
+			add: boolean;
+		};
+
+		request: Request;
+	}
+
 	interface PluginInfo {
 		/**
 		 * 安装插件
@@ -5270,64 +5626,6 @@ declare namespace Eps {
 		 * 分页查询
 		 */
 		page(data?: any): Promise<UserLikePageResponse>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Request;
-	}
-
-	interface UserMember {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<MemberEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<MemberEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<UserMemberPageResponse>;
 
 		/**
 		 * 新增
@@ -6504,6 +6802,11 @@ declare namespace Eps {
 		demo: { goods: DemoGoods; tenant: DemoTenant };
 		dict: { info: DictInfo; type: DictType };
 		echart: { echart: EchartEchart };
+		member: {
+			member: MemberMember;
+			memberExchangeConfig: MemberMemberExchangeConfig;
+			score: MemberScore;
+		};
 		plugin: { info: PluginInfo };
 		recycle: { data: RecycleData };
 		space: { info: SpaceInfo; type: SpaceType };
@@ -6514,7 +6817,6 @@ declare namespace Eps {
 			contacts: UserContacts;
 			info: UserInfo;
 			like: UserLike;
-			member: UserMember;
 			share: UserShare;
 			views: UserViews;
 		};

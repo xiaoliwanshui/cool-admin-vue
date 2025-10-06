@@ -166,6 +166,12 @@ watch(
 	newVal => {
 		keyWord.value = newVal;
 		initChartData();
+		// 更新表格数据
+		setTimeout(() => {
+			if (Crud.value?.refresh) {
+				Crud.value.refresh();
+			}
+		}, 0);
 	},
 	{ immediate: true }
 );

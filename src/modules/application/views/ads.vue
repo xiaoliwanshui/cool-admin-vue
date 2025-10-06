@@ -82,6 +82,12 @@ const Upsert = useUpsert({
 			required: true
 		},
 		{
+			label: t('积分'),
+			prop: 'score',
+			component: { name: 'el-input-number' },
+			span: 24
+		},
+		{
 			label: t('状态'),
 			prop: 'status',
 			component: {
@@ -102,6 +108,7 @@ const Table = useTable({
 		{ label: t('应用ID'), prop: 'appId', minWidth: 240 },
 		{ label: t('广告ID'), prop: 'adsId', minWidth: 240 },
 		{ label: t('广告页面'), prop: 'adsPage', minWidth: 240, dict: dict.get('ads_page') },
+		{ label: t('积分'), prop: 'score', minWidth: 120 },
 		{
 			label: t('状态'),
 			prop: 'status',

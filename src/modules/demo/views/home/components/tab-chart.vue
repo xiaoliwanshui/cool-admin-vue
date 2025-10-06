@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, nextTick, onMounted, reactive, toRefs } from 'vue';
+import { computed, nextTick, onMounted, reactive, toRefs, watch } from 'vue';
 import { useDark } from '@vueuse/core';
 import { useI18n } from 'vue-i18n';
 import { useTheme } from '/#/theme';
@@ -126,11 +126,26 @@ function onChange(key: string) {
 	refresh(key);
 }
 
+// 监听 videoCreateTime 数据变化，一旦有数据就刷新图表
+watch(
+	videoCreateTime,
+	newVal => {
+		if (newVal && newVal.create && newVal.create.length > 0) {
+			nextTick(() => {
+				refresh(tab.active);
+			});
+		}
+	},
+	{ immediate: true }
+);
+
+// 保留原有的 onMounted 逻辑作为后备方案
 onMounted(() => {
 	setTimeout(() => {
-		//vue强制刷新页面
 		nextTick(() => {
-			refresh('create');
+			if (videoCreateTime.value.create && videoCreateTime.value.create.length > 0) {
+				refresh('create');
+			}
 		});
 	}, 1500);
 });

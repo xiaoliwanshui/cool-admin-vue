@@ -7,6 +7,8 @@
 			<cl-add-btn />
 			<!-- 删除按钮 -->
 			<cl-multi-delete-btn />
+			<!-- 导出按钮 -->
+			<cl-export-btn :columns="Table?.columns" />
 			<cl-flex1 />
 			<!-- 关键字搜索 -->
 			<!-- 关键字搜索 -->
@@ -35,19 +37,22 @@
 <script lang="ts" name="video-play_line" setup>
 import { useCrud, useSearch, useTable, useUpsert } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
-import { nextTick, ref } from 'vue';
+import { nextTick, ref, watch } from 'vue';
 import Artplayer from 'artplayer';
 import artplayerPluginHlsQuality from 'artplayer-plugin-hls-quality';
 import Hls from 'hls.js';
 import { useI18n } from 'vue-i18n';
+import collectionSelect from '../components/collection-select.vue';
 
 const ArtplayerContainer = ref<Artplayer>();
 const { service } = useCool();
 const { t } = useI18n();
 
 const visible = ref<boolean>(false);
-const beforeClose = done => {
-	ArtplayerContainer.value.destroy();
+const beforeClose = (done: () => void) => {
+	if (ArtplayerContainer.value) {
+		ArtplayerContainer.value.destroy();
+	}
 	done();
 };
 const handleError = (error: Error) => {
@@ -57,6 +62,13 @@ const handleError = (error: Error) => {
 
 const Search = useSearch({
 	items: [
+		{
+			label: t('资源名称'),
+			prop: 'collection_id',
+			component: {
+				vm: collectionSelect,
+			}
+		},
 		{
 			label: t('状态'),
 			prop: 'status',
@@ -96,26 +108,6 @@ const Search = useSearch({
 				}
 			}
 		},
-		{
-			label: t('资源ID'),
-			prop: 'collection_id',
-			component: {
-				name: 'el-input',
-				props: {
-					clearable: true
-				}
-			}
-		},
-		{
-			label: t('资源名称'),
-			prop: 'collection_name',
-			component: {
-				name: 'el-input',
-				props: {
-					clearable: true
-				}
-			}
-		}
 	]
 });
 const play = async (url: string) => {
@@ -164,8 +156,8 @@ const play = async (url: string) => {
 					}
 				}
 			});
-		} catch (error) {
-			handleError(error);
+		} catch (error: unknown) {
+			handleError(error as Error);
 		}
 	}, 0);
 };
@@ -201,7 +193,11 @@ const Upsert = useUpsert({
 			component: { name: 'el-input', props: { clearable: true } }
 		},
 		{ label: t('排序'), prop: 'sort', hook: 'number', component: { name: 'el-input-number' } },
-		{ label: t('标识'), prop: 'tag', component: { name: 'el-input', props: { clearable: true } } }
+		{
+			label: t('标识'),
+			prop: 'tag',
+			component: { name: 'el-input', props: { clearable: true } }
+		}
 	]
 });
 

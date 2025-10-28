@@ -922,6 +922,63 @@ declare namespace Eps {
 		[key: string]: any;
 	}
 
+	interface MonthlyCheckinConfigEntity {
+		/**
+		 * ID
+		 */
+		id?: number;
+
+		/**
+		 * 创建用户ID
+		 */
+		createUserId?: number;
+
+		/**
+		 * 更新用户ID
+		 */
+		updateUserId?: number;
+
+		/**
+		 * 月份 (1-12)
+		 */
+		month?: number;
+
+		/**
+		 * 日期 (1-31)
+		 */
+		day?: number;
+
+		/**
+		 * 签到获得的积分数额
+		 */
+		score?: number;
+
+		/**
+		 * 是否启用
+		 */
+		enabled?: number;
+
+		/**
+		 * 备注
+		 */
+		remark?: string;
+
+		/**
+		 * 创建时间
+		 */
+		createTime?: string;
+
+		/**
+		 * 更新时间
+		 */
+		updateTime?: string;
+
+		/**
+		 * 任意键值
+		 */
+		[key: string]: any;
+	}
+
 	interface ScoreEntity {
 		/**
 		 * ID
@@ -961,7 +1018,7 @@ declare namespace Eps {
 		/**
 		 * 关联业务类型
 		 */
-		businessType?: string;
+		businessType?: number;
 
 		/**
 		 * 创建时间
@@ -1942,7 +1999,7 @@ declare namespace Eps {
 		surface_plot?: string;
 
 		/**
-		 * 是否轮播 1是 2否
+		 * 是否轮播
 		 */
 		cycle?: BigInt;
 
@@ -2087,7 +2144,7 @@ declare namespace Eps {
 		screenshot?: string;
 
 		/**
-		 * 是否连载完毕 0,1
+		 * 是否连载完毕
 		 */
 		end?: number;
 
@@ -2102,7 +2159,7 @@ declare namespace Eps {
 		play_url?: longtext;
 
 		/**
-		 * 播放地址是否入库1-1已经入库 0未入库
+		 * 是否入库
 		 */
 		play_url_put_in?: number;
 
@@ -2984,6 +3041,11 @@ declare namespace Eps {
 		sub_title?: string;
 
 		/**
+		 * 是否vip
+		 */
+		vip?: number;
+
+		/**
 		 * 影片标签
 		 */
 		video_tag?: string;
@@ -3009,7 +3071,7 @@ declare namespace Eps {
 		surface_plot?: string;
 
 		/**
-		 * 是否轮播 1是 2否
+		 * 是否轮播
 		 */
 		cycle?: BigInt;
 
@@ -3154,7 +3216,7 @@ declare namespace Eps {
 		screenshot?: string;
 
 		/**
-		 * 是否连载完毕 0,1
+		 * 是否连载完毕
 		 */
 		end?: number;
 
@@ -3169,7 +3231,7 @@ declare namespace Eps {
 		play_url?: longtext;
 
 		/**
-		 * 播放地址是否入库1-1已经入库 0未入库
+		 * 是否入库
 		 */
 		play_url_put_in?: number;
 
@@ -3286,6 +3348,58 @@ declare namespace Eps {
 		[key: string]: any;
 	}
 
+	interface VideoRulesEntity {
+		/**
+		 * ID
+		 */
+		id?: number;
+
+		/**
+		 * 创建用户ID
+		 */
+		createUserId?: number;
+
+		/**
+		 * 更新用户ID
+		 */
+		updateUserId?: number;
+
+		/**
+		 * 资源id
+		 */
+		collection_id?: number;
+
+		/**
+		 * 规则
+		 */
+		updateRules?: any;
+
+		/**
+		 * 排序
+		 */
+		sort?: number;
+
+		/**
+		 * 创建时间
+		 */
+		createTime?: string;
+
+		/**
+		 * 更新时间
+		 */
+		updateTime?: string;
+
+		/**
+		 * 名称
+		 */
+		collection_name?: string;
+
+		/**
+		 * 任意键值
+		 */
+		[key: string]: any;
+	}
+
 	interface WeekEntity {
 		/**
 		 * ID
@@ -3358,7 +3472,7 @@ declare namespace Eps {
 		surface_plot?: string;
 
 		/**
-		 * 是否轮播 1是 2否
+		 * 是否轮播
 		 */
 		cycle?: BigInt;
 
@@ -3498,7 +3612,7 @@ declare namespace Eps {
 		screenshot?: string;
 
 		/**
-		 * 是否连载完毕 0,1
+		 * 是否连载完毕
 		 */
 		end?: number;
 
@@ -3513,7 +3627,7 @@ declare namespace Eps {
 		play_url?: longtext;
 
 		/**
-		 * 播放地址是否入库1-1已经入库 0未入库
+		 * 是否入库
 		 */
 		play_url_put_in?: number;
 
@@ -3625,7 +3739,7 @@ declare namespace Eps {
 		surface_plot?: string;
 
 		/**
-		 * 是否轮播 1是 2否
+		 * 是否轮播
 		 */
 		cycle?: BigInt;
 
@@ -3735,7 +3849,7 @@ declare namespace Eps {
 		play_url?: longtext;
 
 		/**
-		 * 播放地址是否入库1-1已经入库 0未入库
+		 * 是否入库
 		 */
 		play_url_put_in?: number;
 
@@ -3848,6 +3962,11 @@ declare namespace Eps {
 	interface MemberMemberExchangeConfigPageResponse {
 		pagination: PagePagination;
 		list: MemberExchangeConfigEntity[];
+	}
+
+	interface MemberMonthlyCheckinConfigPageResponse {
+		pagination: PagePagination;
+		list: MonthlyCheckinConfigEntity[];
 	}
 
 	interface MemberScorePageResponse {
@@ -3983,6 +4102,11 @@ declare namespace Eps {
 	interface VideoVideo_linePageResponse {
 		pagination: PagePagination;
 		list: VideoLineEntity[];
+	}
+
+	interface VideoVideo_rulesPageResponse {
+		pagination: PagePagination;
+		list: VideoRulesEntity[];
 	}
 
 	interface VideoWeekPageResponse {
@@ -4994,12 +5118,86 @@ declare namespace Eps {
 		request: Request;
 	}
 
-	interface MemberScore {
+	interface MemberMonthlyCheckinConfig {
 		/**
-		 * reduceScore
+		 * batchUpdate
 		 */
-		reduceScore(data?: any): Promise<any>;
+		batchUpdate(data?: any): Promise<any>;
 
+		/**
+		 * initDefault
+		 */
+		initDefault(data?: any): Promise<any>;
+
+		/**
+		 * getByMonth
+		 */
+		getByMonth(data?: any): Promise<any>;
+
+		/**
+		 * 删除
+		 */
+		delete(data?: any): Promise<any>;
+
+		/**
+		 * 修改
+		 */
+		update(data?: any): Promise<any>;
+
+		/**
+		 * 单个信息
+		 */
+		info(data?: any): Promise<MonthlyCheckinConfigEntity>;
+
+		/**
+		 * 列表查询
+		 */
+		list(data?: any): Promise<MonthlyCheckinConfigEntity[]>;
+
+		/**
+		 * 分页查询
+		 */
+		page(data?: any): Promise<MemberMonthlyCheckinConfigPageResponse>;
+
+		/**
+		 * 新增
+		 */
+		add(data?: any): Promise<any>;
+
+		/**
+		 * 权限标识
+		 */
+		permission: {
+			batchUpdate: string;
+			initDefault: string;
+			getByMonth: string;
+			delete: string;
+			update: string;
+			info: string;
+			list: string;
+			page: string;
+			add: string;
+		};
+
+		/**
+		 * 权限状态
+		 */
+		_permission: {
+			batchUpdate: boolean;
+			initDefault: boolean;
+			getByMonth: boolean;
+			delete: boolean;
+			update: boolean;
+			info: boolean;
+			list: boolean;
+			page: boolean;
+			add: boolean;
+		};
+
+		request: Request;
+	}
+
+	interface MemberScore {
 		/**
 		 * addScore
 		 */
@@ -5049,7 +5247,6 @@ declare namespace Eps {
 		 * 权限标识
 		 */
 		permission: {
-			reduceScore: string;
 			addScore: string;
 			records: string;
 			delete: string;
@@ -5065,7 +5262,6 @@ declare namespace Eps {
 		 * 权限状态
 		 */
 		_permission: {
-			reduceScore: boolean;
 			addScore: boolean;
 			records: boolean;
 			delete: boolean;
@@ -6508,6 +6704,11 @@ declare namespace Eps {
 
 	interface VideoVideos {
 		/**
+		 * 获取视频字段信息
+		 */
+		videoEntity(data?: any): Promise<any>;
+
+		/**
 		 * 删除
 		 */
 		delete(data?: any): Promise<any>;
@@ -6551,6 +6752,7 @@ declare namespace Eps {
 		 * 权限标识
 		 */
 		permission: {
+			videoEntity: string;
 			delete: string;
 			update: string;
 			sort: string;
@@ -6565,6 +6767,7 @@ declare namespace Eps {
 		 * 权限状态
 		 */
 		_permission: {
+			videoEntity: boolean;
 			delete: boolean;
 			update: boolean;
 			sort: boolean;
@@ -6603,6 +6806,64 @@ declare namespace Eps {
 		 * 分页查询
 		 */
 		page(data?: any): Promise<VideoVideo_linePageResponse>;
+
+		/**
+		 * 新增
+		 */
+		add(data?: any): Promise<any>;
+
+		/**
+		 * 权限标识
+		 */
+		permission: {
+			delete: string;
+			update: string;
+			info: string;
+			list: string;
+			page: string;
+			add: string;
+		};
+
+		/**
+		 * 权限状态
+		 */
+		_permission: {
+			delete: boolean;
+			update: boolean;
+			info: boolean;
+			list: boolean;
+			page: boolean;
+			add: boolean;
+		};
+
+		request: Request;
+	}
+
+	interface VideoVideo_rules {
+		/**
+		 * 删除
+		 */
+		delete(data?: any): Promise<any>;
+
+		/**
+		 * 修改
+		 */
+		update(data?: any): Promise<any>;
+
+		/**
+		 * 单个信息
+		 */
+		info(data?: any): Promise<VideoRulesEntity>;
+
+		/**
+		 * 列表查询
+		 */
+		list(data?: any): Promise<VideoRulesEntity[]>;
+
+		/**
+		 * 分页查询
+		 */
+		page(data?: any): Promise<VideoVideo_rulesPageResponse>;
 
 		/**
 		 * 新增
@@ -6805,6 +7066,7 @@ declare namespace Eps {
 		member: {
 			member: MemberMember;
 			memberExchangeConfig: MemberMemberExchangeConfig;
+			monthlyCheckinConfig: MemberMonthlyCheckinConfig;
 			score: MemberScore;
 		};
 		plugin: { info: PluginInfo };
@@ -6835,6 +7097,7 @@ declare namespace Eps {
 			swiper: VideoSwiper;
 			videos: VideoVideos;
 			video_line: VideoVideo_line;
+			video_rules: VideoVideo_rules;
 			week: VideoWeek;
 			week_video: VideoWeek_video;
 		};

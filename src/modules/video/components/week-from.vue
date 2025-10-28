@@ -48,7 +48,7 @@ const { dict } = useDict();
 const loading = ref(false);
 const Form = useForm();
 const { service } = useCool();
-const options = ref([]);
+const options = ref<Array<{ label: string; value: number; remarks?: string }>>([]);
 const getOptions = (videoId: number) => {
 	loading.value = true;
 	service.video.videos
@@ -59,8 +59,8 @@ const getOptions = (videoId: number) => {
 			loading.value = false;
 			options.value = [
 				{
-					label: data.title,
-					value: data.id,
+					label: data.title || '',
+					value: data.id || 0,
 					remarks: data.remarks
 				}
 			];
@@ -94,8 +94,8 @@ const remoteMethod = (query: string) => {
 				loading.value = false;
 				options.value = data.list.map(item => {
 					return {
-						label: item.title,
-						value: item.id,
+						label: item.title || '',
+						value: item.id || 0,
 						remarks: item.remarks
 					};
 				});

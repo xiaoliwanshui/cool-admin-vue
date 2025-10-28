@@ -7,6 +7,8 @@
 			<cl-add-btn />
 			<!-- 删除按钮 -->
 			<cl-multi-delete-btn />
+			<!-- 导出按钮 -->
+			<cl-export-btn :columns="Table?.columns" />
 			<cl-flex1 />
 			<!-- 字典 -->
 			<cl-filter :label="t('分类')">
@@ -106,11 +108,19 @@ const Upsert = useUpsert({
 			group: 'image'
 		},
 		{
+			label: t('vip'),
+			prop: 'vip',
+			flex: false,
+			component: { name: 'cl-switch' },
+			span: 8,
+			group: 'base'
+		},
+		{
 			label: t('是否推荐'),
 			prop: 'recommend',
 			flex: false,
 			component: { name: 'cl-switch' },
-			span: 12,
+			span: 8,
 			group: 'base'
 		},
 		{
@@ -118,7 +128,7 @@ const Upsert = useUpsert({
 			prop: 'cycle',
 			flex: false,
 			component: { name: 'cl-switch' },
-			span: 12,
+			span: 8,
 			group: 'base'
 		},
 
@@ -182,7 +192,12 @@ const Upsert = useUpsert({
 			},
 			group: 'base'
 		},
-		{ label: t('轮播图片'), prop: 'cycle_img', component: { name: 'cl-upload' }, group: 'image' },
+		{
+			label: t('轮播图片'),
+			prop: 'cycle_img',
+			component: { name: 'cl-upload' },
+			group: 'image'
+		},
 		{
 			label: t('日人气'),
 			prop: 'popularity_day',
@@ -270,6 +285,14 @@ const Table = useTable({
 		{ type: 'selection' },
 		{ label: t('ID'), prop: 'id', minWidth: 140 },
 		{ label: t('影片标题'), prop: 'title', minWidth: 140 },
+		{
+			label: t('vip'),
+			prop: 'vip',
+			minWidth: 100,
+			component: {
+				name: 'cl-switch'
+			}
+		},
 		{
 			label: t('影片副标题'),
 			prop: 'sub_title',

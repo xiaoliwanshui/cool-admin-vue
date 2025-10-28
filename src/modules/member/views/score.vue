@@ -46,46 +46,48 @@ const Upsert = useUpsert({
 		{
 			label: t('积分变化数量'),
 			prop: 'score',
-			component: { name: 'el-input', props: { clearable: true } },
-			span: 12,
+			component: { name: 'el-input-number', props: { clearable: true } },
 			required: true
 		},
 		{
 			label: t('变更类型'),
 			prop: 'type',
-			component: { name: 'el-input', props: { clearable: true } },
-			span: 12,
+			component: {
+				name: 'cl-select',
+				props: {
+					clearable: true,
+					options: [
+						{ label: '增加', value: 1 },
+						{ label: '减少', value: 0 }
+					]
+				}
+			},
 			required: true
 		},
 		{
 			label: t('变更原因'),
 			prop: 'reason',
-			component: { name: 'el-input', props: { clearable: true } },
-			span: 12
+			component: { name: 'el-input', props: { clearable: true } }
 		},
 		{
 			label: t('关联业务类型'),
 			prop: 'businessType',
-			component: { name: 'el-input', props: { clearable: true } },
-			span: 12
+			component: { name: 'el-input', props: { clearable: true } }
 		},
 		{
 			label: t('选择关联业务'),
 			prop: 'businessId',
-			component: { name: 'el-input', props: { clearable: true } },
-			span: 12
+			component: { name: 'el-input', props: { clearable: true } }
 		},
 		{
 			label: t('选择创建用户'),
 			prop: 'createUserId',
-			component: { name: 'el-input', props: { clearable: true } },
-			span: 12
+			component: { name: 'el-input', props: { clearable: true } }
 		},
 		{
 			label: t('选择更新用户'),
 			prop: 'updateUserId',
-			component: { name: 'el-input', props: { clearable: true } },
-			span: 12
+			component: { name: 'el-input', props: { clearable: true } }
 		}
 	]
 });
@@ -95,7 +97,15 @@ const Table = useTable({
 	columns: [
 		{ type: 'selection' },
 		{ label: t('积分变化数量'), prop: 'score', minWidth: 120 },
-		{ label: t('变更类型'), prop: 'type', minWidth: 120 },
+		{
+			label: t('变更类型'),
+			prop: 'type',
+			dict: [
+				{ label: '增加', value: 1 },
+				{ label: '减少', value: 0 }
+			],
+			minWidth: 120
+		},
 		{ label: t('变更原因'), prop: 'reason', minWidth: 120 },
 		{ label: t('关联业务类型'), prop: 'businessType', minWidth: 120 },
 		{ label: t('关联业务ID'), prop: 'businessId', minWidth: 120 },

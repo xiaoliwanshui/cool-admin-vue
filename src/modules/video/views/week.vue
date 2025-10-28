@@ -4,9 +4,11 @@
 			<!-- 刷新按钮 -->
 			<cl-refresh-btn />
 			<!-- 新增按钮 -->
-			<cl-add-btn @click="open" />
+			<cl-add-btn />
 			<!-- 删除按钮 -->
 			<cl-multi-delete-btn />
+			<!-- 导出按钮 -->
+			<cl-export-btn :columns="Table?.columns" />
 			<cl-flex1 />
 			<!-- 关键字搜索 -->
 			<cl-filter :label="t('日期')">
@@ -36,38 +38,12 @@
 		<!--		<cl-form ref="Form" />-->
 		<cl-upsert ref="Upsert" />
 	</cl-crud>
-	<cl-dialog v-model="visible" :before-close="beforeClose" :title="t('视频列表')" height="auto">
-		<videos
-			:modelValue="modelValue"
-			:weekId="weekId"
-			style="height: 600px"
-			@update:model-value="value => (modelValue = value)"
-		></videos>
-		<template #footer>
-			<el-button @click="visible = false">{{ t('取消') }}</el-button>
-			<el-button type="primary" @click="submit">{{ t('确定') }}</el-button>
-		</template>
-	</cl-dialog>
-	<cl-dialog
-		v-model="videoAlbumVisible"
-		:before-close="beforeClose"
-		:title="t('视频列表')"
-		height="auto"
-	>
-		<videos-week :weekId="weekId" style="height: 600px"></videos-week>
-		<template #footer>
-			<el-button @click="visible = false">{{ t('取消') }}</el-button>
-			<el-button type="primary" @click="submit">{{ t('确定') }}</el-button>
-		</template>
-	</cl-dialog>
 </template>
 
 <script lang="ts" name="video-weekId" setup>
 import { useCrud, useForm, useTable, useUpsert } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
-import videos from '/$/video/components/videos.vue';
 import { ref } from 'vue';
-import videosWeek from '/$/video/components/videos-week.vue';
 import { useDict } from '/$/dict';
 import WeekFrom from '/$/video/components/week-from.vue';
 import { useI18n } from 'vue-i18n';

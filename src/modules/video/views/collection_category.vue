@@ -3,10 +3,14 @@
 		<cl-row>
 			<!-- 刷新按钮 -->
 			<cl-refresh-btn />
+			<!-- 删除按钮 -->
+					<cl-multi-delete-btn/>
 			<!--快速绑定分类-->
 			<el-button @click="matchCategory">{{ t('快速绑定分类') }}</el-button>
 			<!-- 删除按钮 -->
 			<cl-multi-delete-btn />
+			<!-- 导出按钮 -->
+			<cl-export-btn :columns="Table?.columns" />
 
 			<cl-flex1 />
 			<!-- 关键字搜索 -->

@@ -7,6 +7,8 @@
 			<cl-add-btn />
 			<!-- 删除按钮 -->
 			<cl-multi-delete-btn />
+			<!-- 导出按钮 -->
+			<cl-export-btn :columns="Table?.columns" />
 			<cl-flex1 />
 			<cl-filter :label="t('分类')">
 				<cl-select

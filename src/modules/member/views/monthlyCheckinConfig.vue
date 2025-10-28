@@ -7,6 +7,7 @@
 			<cl-add-btn />
 			<!-- 删除按钮 -->
 			<cl-multi-delete-btn />
+			<el-button @click="init">{{ t('初始化') }}</el-button>
 			<cl-flex1 />
 			<!-- 条件搜索 -->
 			<cl-search ref="Search" />
@@ -29,59 +30,76 @@
 </template>
 
 <script lang="ts" setup>
-defineOptions({
-	name: 'user-member'
-});
-
+import { ElMessage } from 'element-plus';
 import { useCrud, useTable, useUpsert, useSearch } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
 import { useI18n } from 'vue-i18n';
-
 const { service } = useCool();
 const { t } = useI18n();
 
+//初始化
+function init() {
+	service.member.monthlyCheckinConfig.initDefault().then(data => {
+		if (data.status) {
+			ElMessage.success(t('初始化成功'));
+		} else {
+			ElMessage.error(t('初始化失败'));
+		}
+		refresh();
+	});
+}
 // cl-upsert
 const Upsert = useUpsert({
 	items: [
 		{
-			label: t('积分'),
-			prop: 'score',
-			component: { name: 'el-input-number', props: { clearable: true } },
-			required: true
-		},
-		{
-			label: t('余额'),
-			prop: 'balance',
-			component: { name: 'el-input-number', props: { clearable: true } },
-			required: true
-		},
-		{
-			label: t('会员等级'),
-			prop: 'level',
-			component: { name: 'el-input-number', props: { clearable: true } },
-
-			required: true
-		},
-		{
-			label: t('状态'),
-			prop: 'status',
-			component: { name: 'cl-switch' },
-			required: true
-		},
-
-		{
-			label: t('时间范围'),
-			prop: 'time',
+			label: t('月份'),
+			prop: 'month',
 			component: {
-				name: 'el-date-picker',
+				name: 'el-input-number',
+				props: { clearable: true, min: 1, max: 12, step: 1, 'step-strictly': true }
+			},
+			value: 1,
+			required: true
+		},
+		{
+			label: t('日期'),
+			prop: 'day',
+			component: {
+				name: 'el-input-number',
 				props: {
-					type: 'datetimerange',
-					valueFormat: 'YYYY-MM-DD HH:mm:ss',
-					defaultTime: ['2000-01-31T16:00:00.000Z', '2000-02-01T15:59:59.000Z']
+					clearable: true,
+					min: 1,
+					// max:获取当前月份的天数
+					max: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate(),
+					step: 1,
+					'step-strictly': true
 				}
 			},
-			span: 12,
-			hook: 'datetimeRange'
+			value: 1,
+			required: true
+		},
+		{
+			label: t('签到获得的积分数额'),
+			prop: 'score',
+			component: {
+				name: 'el-input-number',
+				props: { clearable: true, min: 1, max: 12, step: 1, 'step-strictly': true }
+			},
+			required: true
+		},
+		{
+			label: t('是否启用'),
+			prop: 'enabled',
+			value: 1,
+			component: {
+				name: 'cl-switch'
+			},
+			required: true
+		},
+		{
+			label: t('备注'),
+			prop: 'remark',
+			component: { name: 'el-input', props: { clearable: true } }
 		}
 	]
 });
@@ -90,24 +108,12 @@ const Upsert = useUpsert({
 const Table = useTable({
 	columns: [
 		{ type: 'selection' },
-		{ label: t('积分'), prop: 'score', minWidth: 120 },
-		{ label: t('余额'), prop: 'balance', minWidth: 120 },
-		{ label: t('会员等级'), prop: 'level', minWidth: 120 },
-		{ label: t('状态'), prop: 'status', minWidth: 120 },
-		{
-			label: t('开始时间'),
-			prop: 'startTime',
-			minWidth: 170,
-			sortable: 'custom',
-			component: { name: 'cl-date-text' }
-		},
-		{
-			label: t('结束时间'),
-			prop: 'endTime',
-			minWidth: 170,
-			sortable: 'custom',
-			component: { name: 'cl-date-text' }
-		},
+
+		{ label: t('月份'), prop: 'month', minWidth: 120 },
+		{ label: t('日期'), prop: 'day', minWidth: 120 },
+		{ label: t('签到获得的积分数额'), prop: 'score', minWidth: 120 },
+		{ label: t('是否启用'), prop: 'enabled', minWidth: 120 },
+		{ label: t('备注'), prop: 'remark', minWidth: 120 },
 		{ label: t('创建用户ID'), prop: 'createUserId', minWidth: 120 },
 		{ label: t('更新用户ID'), prop: 'updateUserId', minWidth: 120 },
 		{
@@ -134,7 +140,7 @@ const Search = useSearch();
 // cl-crud
 const Crud = useCrud(
 	{
-		service: service.member.member
+		service: service.member.monthlyCheckinConfig
 	},
 	app => {
 		app.refresh();

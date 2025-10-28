@@ -7,6 +7,8 @@
 			<cl-add-btn />
 			<!-- 删除按钮 -->
 			<cl-multi-delete-btn />
+			<!-- 导出按钮 -->
+			<cl-export-btn :columns="Table?.columns" />
 			<cl-flex1 />
 			<!-- 条件搜索 -->
 			<cl-search ref="Search" />
@@ -30,12 +32,14 @@
 
 <script lang="ts" setup>
 defineOptions({
-	name: 'user-member'
+	name: 'video-video-rules'
 });
 
 import { useCrud, useTable, useUpsert, useSearch } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
 import { useI18n } from 'vue-i18n';
+import UpdateRules from '/$/video/components/update-rules.vue';
+import collectionSelect from '/$/video/components/collection-select.vue';
 
 const { service } = useCool();
 const { t } = useI18n();
@@ -44,44 +48,27 @@ const { t } = useI18n();
 const Upsert = useUpsert({
 	items: [
 		{
-			label: t('积分'),
-			prop: 'score',
-			component: { name: 'el-input-number', props: { clearable: true } },
-			required: true
-		},
-		{
-			label: t('余额'),
-			prop: 'balance',
-			component: { name: 'el-input-number', props: { clearable: true } },
-			required: true
-		},
-		{
-			label: t('会员等级'),
-			prop: 'level',
-			component: { name: 'el-input-number', props: { clearable: true } },
-
-			required: true
-		},
-		{
-			label: t('状态'),
-			prop: 'status',
-			component: { name: 'cl-switch' },
-			required: true
-		},
-
-		{
-			label: t('时间范围'),
-			prop: 'time',
+			label: t('资源名称'),
+			prop: 'collection_id',
 			component: {
-				name: 'el-date-picker',
-				props: {
-					type: 'datetimerange',
-					valueFormat: 'YYYY-MM-DD HH:mm:ss',
-					defaultTime: ['2000-01-31T16:00:00.000Z', '2000-02-01T15:59:59.000Z']
-				}
+				vm: collectionSelect
 			},
-			span: 12,
-			hook: 'datetimeRange'
+			required: true
+		},
+		{
+			label: t('更新规则'),
+			prop: 'updateRules',
+			component: {
+				vm: UpdateRules
+			},
+			required: true
+		},
+		{
+			label: t('排序'),
+			prop: 'sort',
+			component: { name: 'el-input', props: { clearable: true } },
+
+			required: true
 		}
 	]
 });
@@ -90,24 +77,11 @@ const Upsert = useUpsert({
 const Table = useTable({
 	columns: [
 		{ type: 'selection' },
-		{ label: t('积分'), prop: 'score', minWidth: 120 },
-		{ label: t('余额'), prop: 'balance', minWidth: 120 },
-		{ label: t('会员等级'), prop: 'level', minWidth: 120 },
-		{ label: t('状态'), prop: 'status', minWidth: 120 },
-		{
-			label: t('开始时间'),
-			prop: 'startTime',
-			minWidth: 170,
-			sortable: 'custom',
-			component: { name: 'cl-date-text' }
-		},
-		{
-			label: t('结束时间'),
-			prop: 'endTime',
-			minWidth: 170,
-			sortable: 'custom',
-			component: { name: 'cl-date-text' }
-		},
+		{ label: t('资源id'), prop: 'collection_id', minWidth: 120 },
+		{ label: t('资源名称'), prop: 'collection_name', minWidth: 120 },
+		{ label: t('规则'), prop: 'updateRules', minWidth: 120 },
+
+		{ label: t('排序'), prop: 'sort', minWidth: 120 },
 		{ label: t('创建用户ID'), prop: 'createUserId', minWidth: 120 },
 		{ label: t('更新用户ID'), prop: 'updateUserId', minWidth: 120 },
 		{
@@ -134,7 +108,7 @@ const Search = useSearch();
 // cl-crud
 const Crud = useCrud(
 	{
-		service: service.member.member
+		service: service.video.video_rules
 	},
 	app => {
 		app.refresh();

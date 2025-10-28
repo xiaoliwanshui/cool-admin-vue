@@ -30,5 +30,10 @@
 	"变更类型": "Change Type",
 	"变更原因": "Change Reason",
 	"关联业务类型": "Business Type",
-	"关联业务ID": "Business ID"
+	"关联业务ID": "Business ID",
+	"月份": "Month",
+	"日期": "Date",
+	"签到获得的积分数额": "Score Amount",
+	"初始化成功": "Initialization successful",
+	"初始化失败": "Initialization failed"
 }

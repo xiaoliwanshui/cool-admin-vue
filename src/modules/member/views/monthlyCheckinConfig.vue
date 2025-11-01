@@ -83,7 +83,7 @@ const Upsert = useUpsert({
 			prop: 'score',
 			component: {
 				name: 'el-input-number',
-				props: { clearable: true, min: 1, max: 12, step: 1, 'step-strictly': true }
+				props: { clearable: true, min: 1, step: 1, 'step-strictly': true }
 			},
 			required: true
 		},
@@ -135,7 +135,20 @@ const Table = useTable({
 });
 
 // cl-search
-const Search = useSearch();
+const Search = useSearch({
+	items: [
+		{
+			label: t('月份'),
+			prop: 'month',
+			component: {
+				name: 'el-input-number',
+				props: { clearable: true, min: 1, max: 12, step: 1, 'step-strictly': true }
+			},
+			value: 1,
+			required: true
+		},
+	]
+});
 
 // cl-crud
 const Crud = useCrud(

@@ -5130,7 +5130,7 @@ declare namespace Eps {
 		initDefault(data?: any): Promise<any>;
 
 		/**
-		 * getByMonth
+		 * 获取指定月份的签到配置
 		 */
 		getByMonth(data?: any): Promise<any>;
 

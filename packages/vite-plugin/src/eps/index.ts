@@ -130,10 +130,9 @@ async function formatCode(text: string): Promise<string | null> {
 			printWidth: 100,
 			trailingComma: "none",
 		})
-		.catch(() => {
-			error(
-				`[cool-eps] Failed to format /build/cool/eps.d.ts. Please delete the file and try again`,
-			);
+		.catch((err) => {
+			console.log(err);
+			error(`[cool-eps] File format error, please try again`);
 			return null;
 		});
 }
@@ -182,7 +181,7 @@ async function getData() {
 	});
 
 	if (config.type == "uniapp-x" || config.type == "app") {
-		list = list.filter((e) => e.prefix.startsWith("/app"));
+		list = list.filter((e) => e.prefix.startsWith("/app") || e.prefix.startsWith("/admin"));
 	}
 }
 
@@ -191,24 +190,26 @@ async function getData() {
  * @returns {boolean} 是否有更新
  */
 function createJson(): boolean {
-	if (config.type == "uniapp-x") {
-		return false;
+	let data: any[] = [];
+
+	if (config.type != "uniapp-x") {
+		data = list.map((e) => {
+			return {
+				prefix: e.prefix,
+				name: e.name || "",
+				api: e.api.map((apiItem) => ({
+					name: apiItem.name,
+					method: apiItem.method,
+					path: apiItem.path,
+				})),
+				search: e.search,
+			};
+		});
+	} else {
+		data = list;
 	}
 
-	const arr = list.map((e) => {
-		return {
-			prefix: e.prefix,
-			name: e.name || "",
-			api: e.api.map((apiItem) => ({
-				name: apiItem.name,
-				method: apiItem.method,
-				path: apiItem.path,
-			})),
-			search: e.search,
-		};
-	});
-
-	const content = JSON.stringify(arr);
+	const content = JSON.stringify(data);
 	const local_content = readFile(getEpsPath("eps.json"));
 
 	// 判断是否需要更新
@@ -237,6 +238,10 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 
 		for (const item of list) {
 			if (!checkName(item.name)) continue;
+
+			if (formatName(item.name) == "BusinessInterface") {
+				console.log(111);
+			}
 
 			let t = `interface ${formatName(item.name)} {`;
 
@@ -377,12 +382,21 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 									}
 
 									// 方法描述
-									t += `
-										/**
-										 * ${a.summary || n}
-										 */
-										${n}(data${q.length == 1 ? "?" : ""}: ${q.join("")}): Promise<${res}>;
-									`;
+									if (config.type == "uniapp-x") {
+										t += `
+											/**
+											 * ${a.summary || n}
+											 */
+											${n}(data${q.length == 1 ? "?" : ""}: ${q.join("")}): Promise<any>;
+										`;
+									} else {
+										t += `
+											/**
+											 * ${a.summary || n}
+											 */
+											${n}(data${q.length == 1 ? "?" : ""}: ${q.join("")}): Promise<${res}>;
+										`;
+									}
 
 									if (!permission.includes(n)) {
 										permission.push(n);
@@ -431,6 +445,8 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 		return `
 			type json = any;
 
+			${await createDict()}
+
 			interface PagePagination {
 				size: number;
 				page: number;
@@ -459,8 +475,6 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 			}`)}
 
 			${noUniappX("type Request = (options: RequestOptions) => Promise<any>;")}
-
-			${await createDict()}
 
 			type Service = {
 				${noUniappX("request: Request;")}
@@ -656,35 +670,13 @@ function createServiceCode(): { content: string; types: string[] } {
 									types.push(item.name);
 								}
 
-								// 返回类型
-								let res = "";
-
-								// 实体名
-								const en = item.name || "any";
-
-								switch (a.path) {
-									case "/page":
-										res = `${name}PageResponse`;
-										types.push(res);
-										break;
-									case "/list":
-										res = `${en}[]`;
-										break;
-									case "/info":
-										res = en;
-										break;
-									default:
-										res = "any";
-										break;
-								}
-
 								// 方法描述
 								t += `
 									/**
 									 * ${a.summary || n}
 									 */
-									${n}(data${q.length == 1 ? "?" : ""}: ${q.join("")})${noUniappX(`: Promise<${res}>`)} {
-										return request<${res}>({
+									${n}(data?: any): Promise<any> {
+										return request({
 											url: "/${d[i].namespace}${a.path}",
 											method: "${(a.method || "get").toLocaleUpperCase()}",
 											data,

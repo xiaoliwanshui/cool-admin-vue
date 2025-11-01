@@ -94,7 +94,7 @@ export declare namespace Config {
 		// 应用类型
 		type: Type;
 		// 代理配置
-		proxy: any;
+		proxy?: any;
 		// Eps
 		eps?: Partial<Config.Eps>;
 		// 是否开启演示模式
@@ -119,5 +119,11 @@ export declare namespace Config {
 			// 暗黑模式文本类名
 			darkTextClass?: string;
 		};
+		// uniapp X
+		uniapp?: {
+			isPlugin?: boolean;
+		};
+		// 是否纯净版
+		clean?: boolean;
 	}
 }

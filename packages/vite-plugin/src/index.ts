@@ -14,6 +14,16 @@ export function cool(options: Config.Options) {
 	// 请求地址
 	config.reqUrl = getProxyTarget(options.proxy);
 
+	if (config.type == "uniapp-x") {
+		// 是否纯净版
+		config.clean = options.clean ?? true;
+
+		if (config.clean) {
+			// 默认设置为测试地址
+			config.reqUrl = "https://show.cool-admin.com/api";
+		}
+	}
+
 	// 是否开启名称标签
 	config.nameTag = options.nameTag ?? true;
 
@@ -43,6 +53,16 @@ export function cool(options: Config.Options) {
 		if (mapping) {
 			merge(config.eps.mapping, mapping);
 		}
+	}
+
+	// 如果类型为 uniapp-x，则关闭 eps
+	if (config.type == "uniapp-x") {
+		config.eps.enable = false;
+	}
+
+	// uniapp
+	if (options.uniapp) {
+		assign(config.uniapp, options.uniapp);
 	}
 
 	// tailwind

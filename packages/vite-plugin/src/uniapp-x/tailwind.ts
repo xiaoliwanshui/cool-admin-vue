@@ -94,17 +94,17 @@ function postcssPlugin(): Plugin {
 							{
 								postcssPlugin: "vite-cool-uniappx-class-mapping",
 								prepare() {
-									// 存储 Tailwind 颜色值
-									const colorValues: Record<string, string> = {};
-
 									return {
 										// 处理选择器规则
 										Rule(rule: any) {
 											if (
-												rule.selector.includes("uni-") ||
-												[".button-hover"].some((e) =>
-													rule.selector.includes(e),
-												)
+												[
+													".button-hover",
+													":deep(",
+													"&::",
+													"uni-",
+													".uni-",
+												].some((e) => rule.selector.includes(e))
 											) {
 												return;
 											}
@@ -285,33 +285,31 @@ function transformPlugin(): Plugin {
 
 					let _node = node;
 
-					// 兼容 <input /> 标签
-					if (_node.startsWith("<input")) {
-						_node = _node.replace("/>", "</input>");
-					}
+					// uniappx 插件模式
+					if (!config.uniapp.isPlugin) {
+						// 为 text 节点添加暗黑模式文本颜色
+						if (!_node.includes(darkTextClass) && _node.startsWith("<text")) {
+							let classIndex = _node.indexOf("class=");
 
-					// 为 text 节点添加暗黑模式文本颜色
-					if (!_node.includes(darkTextClass) && _node.startsWith("<text")) {
-						let classIndex = _node.indexOf("class=");
-
-						// 处理动态 class
-						if (classIndex >= 0) {
-							if (_node[classIndex - 1] == ":") {
-								classIndex = _node.lastIndexOf("class=");
+							// 处理动态 class
+							if (classIndex >= 0) {
+								if (_node[classIndex - 1] == ":") {
+									classIndex = _node.lastIndexOf("class=");
+								}
 							}
-						}
 
-						// 添加暗黑模式类名
-						if (classIndex >= 0) {
-							_node =
-								_node.substring(0, classIndex + 7) +
-								`${darkTextClass} ` +
-								_node.substring(classIndex + 7, _node.length);
-						} else {
-							_node =
-								_node.substring(0, 5) +
-								` class="${darkTextClass}" ` +
-								_node.substring(5, _node.length);
+							// 添加暗黑模式类名
+							if (classIndex >= 0) {
+								_node =
+									_node.substring(0, classIndex + 7) +
+									`${darkTextClass} ` +
+									_node.substring(classIndex + 7, _node.length);
+							} else {
+								_node =
+									_node.substring(0, 5) +
+									` class="${darkTextClass}" ` +
+									_node.substring(5, _node.length);
+							}
 						}
 					}
 
@@ -332,13 +330,22 @@ function transformPlugin(): Plugin {
 
 					// 如果没有动态类名,添加空的动态类名绑定
 					if (!hasDynamicClass) {
-						_node = _node.slice(0, -1) + ` :class="{}"` + ">";
+						// 优化写法，避免重复字符串拼接
+						const insertIndex = _node.length - (_node.endsWith("/>") ? 2 : 1);
+
+						_node =
+							_node.slice(0, insertIndex) + ` :class="{}"` + _node.slice(insertIndex);
 					}
 
 					// 获取暗黑模式类名
-					const darkClassNames = classNames.filter((name) =>
+					let darkClassNames = classNames.filter((name) =>
 						name.startsWith("dark-colon-"),
 					);
+
+					// 插件模式，不支持 dark:
+					if (config.uniapp.isPlugin) {
+						darkClassNames = [];
+					}
 
 					// 生成暗黑模式类名的动态绑定
 					const darkClassContent = darkClassNames
@@ -391,10 +398,12 @@ function transformPlugin(): Plugin {
 							modifiedCode += '<script lang="ts" setup></script>';
 						}
 
-						modifiedCode = addScriptContent(
-							modifiedCode,
-							"\nimport { isDark as __isDark } from '@/cool';",
-						);
+						if (!config.uniapp.isPlugin) {
+							modifiedCode = addScriptContent(
+								modifiedCode,
+								"\nimport { isDark as __isDark } from '@/cool';",
+							);
+						}
 					}
 
 					// 清理空的类名绑定

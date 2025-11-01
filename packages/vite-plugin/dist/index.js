@@ -56,6 +56,10 @@
             rpxRatio: 2,
             darkTextClass: "dark:text-surface-50",
         },
+        uniapp: {
+            isPlugin: false,
+        },
+        clean: false,
     };
 
     // 根目录
@@ -92,12 +96,68 @@
     function readFile(path, json) {
         try {
             const content = fs.readFileSync(path, "utf8");
-            return json
-                ? JSON.parse(content.replace(/\/\/.*$/gm, "").replace(/\/\*[\s\S]*?\*\//g, ""))
-                : content;
+            return json ? JSON.parse(removeJsonComments(content)) : content;
         }
         catch (err) { }
         return "";
+    }
+    // 安全地移除JSON中的注释
+    function removeJsonComments(content) {
+        let result = "";
+        let inString = false;
+        let stringChar = "";
+        let escaped = false;
+        let i = 0;
+        while (i < content.length) {
+            const char = content[i];
+            const nextChar = content[i + 1];
+            // 处理字符串状态
+            if (!inString && (char === '"' || char === "'")) {
+                inString = true;
+                stringChar = char;
+                result += char;
+            }
+            else if (inString && char === stringChar && !escaped) {
+                inString = false;
+                stringChar = "";
+                result += char;
+            }
+            else if (inString) {
+                // 在字符串内，直接添加字符
+                result += char;
+                escaped = char === "\\" && !escaped;
+            }
+            else {
+                // 不在字符串内，检查注释
+                if (char === "/" && nextChar === "/") {
+                    // 单行注释，跳过到行尾
+                    while (i < content.length && content[i] !== "\n") {
+                        i++;
+                    }
+                    if (i < content.length) {
+                        result += content[i]; // 保留换行符
+                    }
+                }
+                else if (char === "/" && nextChar === "*") {
+                    // 多行注释，跳过到 */
+                    i += 2;
+                    while (i < content.length - 1) {
+                        if (content[i] === "*" && content[i + 1] === "/") {
+                            i += 2;
+                            break;
+                        }
+                        i++;
+                    }
+                    continue;
+                }
+                else {
+                    result += char;
+                    escaped = false;
+                }
+            }
+            i++;
+        }
+        return result;
     }
     // 写入文件
     function writeFile(path, data) {
@@ -151,15 +211,25 @@
         // 保留 Service 类型定义前的内容
         let header = template.substring(0, startIndex);
         // 获取 Service 类型定义及其内容，去除换行和制表符
-        const serviceContent = template.substring(startIndex).replace(/\n|\t/g, "");
+        const serviceTemplateContent = template.substring(startIndex).replace(/\n|\t/g, "");
+        // 找到 Service 的内容部分
+        const serviceStartIndex = serviceTemplateContent.indexOf("{") + 1;
+        const serviceEndIndex = findClosingBrace(serviceTemplateContent, serviceStartIndex);
+        const serviceInnerContent = serviceTemplateContent
+            .substring(serviceStartIndex, serviceEndIndex)
+            .trim();
+        // 存储所有接口定义
+        const allInterfaces = new Map();
+        // 处理 Service 内容，保持原有结构但替换嵌套对象为接口引用
+        const serviceContent = buildCurrentLevelContent(serviceInnerContent);
+        // 递归收集所有需要生成的接口
+        flattenContent(serviceInnerContent, allInterfaces);
+        // 生成所有接口定义
         let interfaces = "";
-        let serviceFields = "";
-        // 解析内容并生成接口定义
-        parse(serviceContent).forEach(({ key, content, level }) => {
-            interfaces += `\nexport interface ${firstUpperCase(key)}Interface {${content}}\n`;
-            serviceFields += `${key}: ${firstUpperCase(key)}Interface;`;
+        allInterfaces.forEach((content, key) => {
+            interfaces += `\nexport interface ${firstUpperCase(key)}Interface { ${content} }\n`;
         });
-        return `${header}${interfaces}\nexport type Service = {${serviceFields}}`;
+        return `${header}${interfaces}\nexport type Service = { ${serviceContent} }`;
     }
     /**
      * 查找匹配的右花括号位置
@@ -184,40 +254,51 @@
         return currentIndex - 1;
     }
     /**
-     * 解析内容中的嵌套结构
-     * @param content - 要解析的内容字符串
-     * @returns 解析结果数组，包含解析出的键值对
+     * 递归收集所有需要生成的接口
+     * @param content - 要处理的内容
+     * @param allInterfaces - 存储所有接口定义的 Map
+     * @param parentFields - 父级字段数组（暂未使用）
      */
-    function parse(content, level = 0) {
-        // 匹配形如 xxx: { ... } 的结构
+    function flattenContent(content, allInterfaces, parentFields) {
         const interfacePattern = /(\w+)\s*:\s*\{/g;
-        const result = [];
         let match;
         while ((match = interfacePattern.exec(content)) !== null) {
+            const key = match[1];
             const startIndex = match.index + match[0].length;
             const endIndex = findClosingBrace(content, startIndex);
             if (endIndex > startIndex) {
-                let parsedContent = content.substring(startIndex, endIndex).trim();
-                // 处理嵌套结构
-                if (parsedContent.includes("{") && parsedContent.includes("}")) {
-                    const nestedInterfaces = parse(parsedContent, level + 1);
-                    // 替换嵌套的内容为接口引用
-                    if (nestedInterfaces.length > 0) {
-                        nestedInterfaces.forEach((nestedInterface) => {
-                            const pattern = `${nestedInterface.key}: {${nestedInterface.content}};`;
-                            const replacement = `${nestedInterface.key}: ${firstUpperCase(nestedInterface.key)}Interface`;
-                            parsedContent = parsedContent.replace(pattern, replacement);
-                        });
-                    }
-                }
-                // 将解析结果添加到数组开头
-                result.unshift({
-                    key: match[1],
-                    level,
-                    content: parsedContent,
-                });
+                const innerContent = content.substring(startIndex, endIndex).trim();
+                // 构建当前接口的内容，将嵌套对象替换为接口引用
+                const currentLevelContent = buildCurrentLevelContent(innerContent);
+                allInterfaces.set(key, currentLevelContent);
+                // 递归处理嵌套内容
+                flattenContent(innerContent, allInterfaces);
             }
         }
+    }
+    /**
+     * 构建当前级别的内容，将嵌套对象替换为接口引用
+     * @param content - 内容字符串
+     * @returns 处理后的内容
+     */
+    function buildCurrentLevelContent(content) {
+        const interfacePattern = /(\w+)\s*:\s*\{/g;
+        let result = content;
+        let match;
+        // 重置正则表达式的 lastIndex
+        interfacePattern.lastIndex = 0;
+        while ((match = interfacePattern.exec(content)) !== null) {
+            const key = match[1];
+            const startIndex = match.index + match[0].length;
+            const endIndex = findClosingBrace(content, startIndex);
+            if (endIndex > startIndex) {
+                const fullMatch = content.substring(match.index, endIndex + 1);
+                const replacement = `${key}: ${firstUpperCase(key)}Interface;`;
+                result = result.replace(fullMatch, replacement);
+            }
+        }
+        // 清理多余的分号和空格
+        result = result.replace(/;+/g, ";").replace(/\s+/g, " ").trim();
         return result;
     }
 
@@ -797,8 +878,9 @@
             printWidth: 100,
             trailingComma: "none",
         })
-            .catch(() => {
-            error(`[cool-eps] Failed to format /build/cool/eps.d.ts. Please delete the file and try again`);
+            .catch((err) => {
+            console.log(err);
+            error(`[cool-eps] File format error, please try again`);
             return null;
         });
     }
@@ -846,7 +928,7 @@
             }
         });
         if (config.type == "uniapp-x" || config.type == "app") {
-            list = list.filter((e) => e.prefix.startsWith("/app"));
+            list = list.filter((e) => e.prefix.startsWith("/app") || e.prefix.startsWith("/admin"));
         }
     }
     /**
@@ -854,22 +936,25 @@
      * @returns {boolean} 是否有更新
      */
     function createJson() {
-        if (config.type == "uniapp-x") {
-            return false;
+        let data = [];
+        if (config.type != "uniapp-x") {
+            data = list.map((e) => {
+                return {
+                    prefix: e.prefix,
+                    name: e.name || "",
+                    api: e.api.map((apiItem) => ({
+                        name: apiItem.name,
+                        method: apiItem.method,
+                        path: apiItem.path,
+                    })),
+                    search: e.search,
+                };
+            });
         }
-        const arr = list.map((e) => {
-            return {
-                prefix: e.prefix,
-                name: e.name || "",
-                api: e.api.map((apiItem) => ({
-                    name: apiItem.name,
-                    method: apiItem.method,
-                    path: apiItem.path,
-                })),
-                search: e.search,
-            };
-        });
-        const content = JSON.stringify(arr);
+        else {
+            data = list;
+        }
+        const content = JSON.stringify(data);
         const local_content = readFile(getEpsPath("eps.json"));
         // 判断是否需要更新
         const isUpdate = content != local_content;
@@ -894,6 +979,9 @@
             for (const item of list) {
                 if (!checkName(item.name))
                     continue;
+                if (formatName(item.name) == "BusinessInterface") {
+                    console.log(111);
+                }
                 let t = `interface ${formatName(item.name)} {`;
                 // 合并 columns 和 pageColumns，去重
                 const columns = lodash.uniqBy(lodash.compact([...(item.columns || []), ...(item.pageColumns || [])]), "source");
@@ -1007,12 +1095,22 @@
                                                 break;
                                         }
                                         // 方法描述
-                                        t += `
-										/**
-										 * ${a.summary || n}
-										 */
-										${n}(data${q.length == 1 ? "?" : ""}: ${q.join("")}): Promise<${res}>;
-									`;
+                                        if (config.type == "uniapp-x") {
+                                            t += `
+											/**
+											 * ${a.summary || n}
+											 */
+											${n}(data${q.length == 1 ? "?" : ""}: ${q.join("")}): Promise<any>;
+										`;
+                                        }
+                                        else {
+                                            t += `
+											/**
+											 * ${a.summary || n}
+											 */
+											${n}(data${q.length == 1 ? "?" : ""}: ${q.join("")}): Promise<${res}>;
+										`;
+                                        }
                                         if (!permission.includes(n)) {
                                             permission.push(n);
                                         }
@@ -1054,6 +1152,8 @@
             return `
 			type json = any;
 
+			${await createDict()}
+
 			interface PagePagination {
 				size: number;
 				page: number;
@@ -1082,8 +1182,6 @@
 			}`)}
 
 			${noUniappX("type Request = (options: RequestOptions) => Promise<any>;")}
-
-			${await createDict()}
 
 			type Service = {
 				${noUniappX("request: Request;")}
@@ -1249,32 +1347,13 @@
                                     if (item.name) {
                                         types.push(item.name);
                                     }
-                                    // 返回类型
-                                    let res = "";
-                                    // 实体名
-                                    const en = item.name || "any";
-                                    switch (a.path) {
-                                        case "/page":
-                                            res = `${name}PageResponse`;
-                                            types.push(res);
-                                            break;
-                                        case "/list":
-                                            res = `${en}[]`;
-                                            break;
-                                        case "/info":
-                                            res = en;
-                                            break;
-                                        default:
-                                            res = "any";
-                                            break;
-                                    }
                                     // 方法描述
                                     t += `
 									/**
 									 * ${a.summary || n}
 									 */
-									${n}(data${q.length == 1 ? "?" : ""}: ${q.join("")})${noUniappX(`: Promise<${res}>`)} {
-										return request<${res}>({
+									${n}(data?: any): Promise<any> {
+										return request({
 											url: "/${d[i].namespace}${a.path}",
 											method: "${(a.method || "get").toLocaleUpperCase()}",
 											data,
@@ -1581,6 +1660,12 @@
             // 删除临时页面
             ctx.pages = ctx.pages?.filter((e) => !e.isTemp);
             ctx.subPackages = ctx.subPackages?.filter((e) => !e.isTemp);
+            // 删除不需要的数据
+            for (const i in ctx) {
+                if (!["pages", "subPackages", "tabBar", "globalStyle", "uniIdRouter"].includes(i)) {
+                    delete ctx[i];
+                }
+            }
             // 加载 uni_modules 配置文件
             const files = await glob.glob(rootDir("uni_modules") + "/**/pages_init.json", {
                 stat: true,
@@ -1927,8 +2012,13 @@ if (typeof window !== 'undefined') {
                                         return {
                                             // 处理选择器规则
                                             Rule(rule) {
-                                                if (rule.selector.includes("uni-") ||
-                                                    [".button-hover"].some((e) => rule.selector.includes(e))) {
+                                                if ([
+                                                    ".button-hover",
+                                                    ":deep(",
+                                                    "&::",
+                                                    "uni-",
+                                                    ".uni-",
+                                                ].some((e) => rule.selector.includes(e))) {
                                                     return;
                                                 }
                                                 // 转换选择器为安全的类名格式
@@ -2069,31 +2159,30 @@ if (typeof window !== 'undefined') {
                             return;
                         }
                         let _node = node;
-                        // 兼容 <input /> 标签
-                        if (_node.startsWith("<input")) {
-                            _node = _node.replace("/>", "</input>");
-                        }
-                        // 为 text 节点添加暗黑模式文本颜色
-                        if (!_node.includes(darkTextClass) && _node.startsWith("<text")) {
-                            let classIndex = _node.indexOf("class=");
-                            // 处理动态 class
-                            if (classIndex >= 0) {
-                                if (_node[classIndex - 1] == ":") {
-                                    classIndex = _node.lastIndexOf("class=");
+                        // uniappx 插件模式
+                        if (!config.uniapp.isPlugin) {
+                            // 为 text 节点添加暗黑模式文本颜色
+                            if (!_node.includes(darkTextClass) && _node.startsWith("<text")) {
+                                let classIndex = _node.indexOf("class=");
+                                // 处理动态 class
+                                if (classIndex >= 0) {
+                                    if (_node[classIndex - 1] == ":") {
+                                        classIndex = _node.lastIndexOf("class=");
+                                    }
                                 }
-                            }
-                            // 添加暗黑模式类名
-                            if (classIndex >= 0) {
-                                _node =
-                                    _node.substring(0, classIndex + 7) +
-                                        `${darkTextClass} ` +
-                                        _node.substring(classIndex + 7, _node.length);
-                            }
-                            else {
-                                _node =
-                                    _node.substring(0, 5) +
-                                        ` class="${darkTextClass}" ` +
-                                        _node.substring(5, _node.length);
+                                // 添加暗黑模式类名
+                                if (classIndex >= 0) {
+                                    _node =
+                                        _node.substring(0, classIndex + 7) +
+                                            `${darkTextClass} ` +
+                                            _node.substring(classIndex + 7, _node.length);
+                                }
+                                else {
+                                    _node =
+                                        _node.substring(0, 5) +
+                                            ` class="${darkTextClass}" ` +
+                                            _node.substring(5, _node.length);
+                                }
                             }
                         }
                         // 获取所有类名
@@ -2110,10 +2199,17 @@ if (typeof window !== 'undefined') {
                         const hasDynamicClass = _node.includes(":class=");
                         // 如果没有动态类名,添加空的动态类名绑定
                         if (!hasDynamicClass) {
-                            _node = _node.slice(0, -1) + ` :class="{}"` + ">";
+                            // 优化写法，避免重复字符串拼接
+                            const insertIndex = _node.length - (_node.endsWith("/>") ? 2 : 1);
+                            _node =
+                                _node.slice(0, insertIndex) + ` :class="{}"` + _node.slice(insertIndex);
                         }
                         // 获取暗黑模式类名
-                        const darkClassNames = classNames.filter((name) => name.startsWith("dark-colon-"));
+                        let darkClassNames = classNames.filter((name) => name.startsWith("dark-colon-"));
+                        // 插件模式，不支持 dark:
+                        if (config.uniapp.isPlugin) {
+                            darkClassNames = [];
+                        }
                         // 生成暗黑模式类名的动态绑定
                         const darkClassContent = darkClassNames
                             .map((name) => {
@@ -2149,7 +2245,9 @@ if (typeof window !== 'undefined') {
                             if (!modifiedCode.includes("<script")) {
                                 modifiedCode += '<script lang="ts" setup></script>';
                             }
-                            modifiedCode = addScriptContent(modifiedCode, "\nimport { isDark as __isDark } from '@/cool';");
+                            if (!config.uniapp.isPlugin) {
+                                modifiedCode = addScriptContent(modifiedCode, "\nimport { isDark as __isDark } from '@/cool';");
+                            }
                         }
                         // 清理空的类名绑定
                         modifiedCode = modifiedCode
@@ -2176,6 +2274,65 @@ if (typeof window !== 'undefined') {
         return [postcssPlugin(), transformPlugin()];
     }
 
+    // 获取 tailwind.config.ts 中的颜色
+    function getTailwindColor() {
+        const config = readFile(rootDir("tailwind.config.ts"));
+        if (!config) {
+            return null;
+        }
+        try {
+            // 从配置文件中动态提取主色和表面色
+            const colorResult = {};
+            // 提取 getPrimary 调用中的颜色名称
+            const primaryMatch = config.match(/getPrimary\(["']([^"']+)["']\)/);
+            const primaryColorName = primaryMatch?.[1];
+            // 提取 getSurface 调用中的颜色名称
+            const surfaceMatch = config.match(/getSurface\(["']([^"']+)["']\)/);
+            const surfaceColorName = surfaceMatch?.[1];
+            if (primaryColorName) {
+                // 提取 PRIMARY_COLOR_PALETTES 中对应的调色板
+                const primaryPaletteMatch = config.match(new RegExp(`{\\s*name:\\s*["']${primaryColorName}["'],\\s*palette:\\s*({[^}]+})`, "s"));
+                if (primaryPaletteMatch) {
+                    // 解析调色板对象
+                    const paletteStr = primaryPaletteMatch[1];
+                    const paletteEntries = paletteStr.match(/(\d+):\s*["']([^"']+)["']/g);
+                    if (paletteEntries) {
+                        paletteEntries.forEach((entry) => {
+                            const match = entry.match(/(\d+):\s*["']([^"']+)["']/);
+                            if (match) {
+                                const [, key, value] = match;
+                                colorResult[`primary-${key}`] = value;
+                            }
+                        });
+                    }
+                }
+            }
+            if (surfaceColorName) {
+                // 提取 SURFACE_PALETTES 中对应的调色板
+                const surfacePaletteMatch = config.match(new RegExp(`{\\s*name:\\s*["']${surfaceColorName}["'],\\s*palette:\\s*({[^}]+})`, "s"));
+                if (surfacePaletteMatch) {
+                    // 解析调色板对象
+                    const paletteStr = surfacePaletteMatch[1];
+                    const paletteEntries = paletteStr.match(/(\d+):\s*["']([^"']+)["']/g);
+                    if (paletteEntries) {
+                        paletteEntries.forEach((entry) => {
+                            const match = entry.match(/(\d+):\s*["']([^"']+)["']/);
+                            if (match) {
+                                const [, key, value] = match;
+                                // 0 对应 surface，其他对应 surface-*
+                                const colorKey = key === "0" ? "surface" : `surface-${key}`;
+                                colorResult[colorKey] = value;
+                            }
+                        });
+                    }
+                }
+            }
+            return colorResult;
+        }
+        catch (error) {
+            return null;
+        }
+    }
     function codePlugin() {
         return [
             {
@@ -2184,25 +2341,40 @@ if (typeof window !== 'undefined') {
                 async transform(code, id) {
                     if (id.includes("/cool/ctx/index.ts")) {
                         const ctx = await createCtx();
-                        const theme = await readFile(rootDir("theme.json"), true);
+                        // 主题配置
+                        const theme = readFile(rootDir("theme.json"), true);
+                        // 主题配置
+                        ctx["theme"] = theme || {};
+                        // 颜色值
+                        ctx["color"] = getTailwindColor();
+                        if (!ctx.subPackages) {
+                            ctx.subPackages = [];
+                        }
+                        if (!ctx.tabBar) {
+                            ctx.tabBar = {};
+                        }
+                        // 安全字符映射
                         ctx["SAFE_CHAR_MAP_LOCALE"] = [];
                         for (const i in SAFE_CHAR_MAP_LOCALE) {
                             ctx["SAFE_CHAR_MAP_LOCALE"].push([i, SAFE_CHAR_MAP_LOCALE[i]]);
                         }
-                        ctx["theme"] = theme;
-                        code = code.replace("const ctx = {}", `const ctx = ${JSON.stringify(ctx, null, 4)}`);
+                        let ctxCode = JSON.stringify(ctx, null, 4);
+                        ctxCode = ctxCode.replace(`"tabBar": {}`, `"tabBar": {} as TabBar`);
+                        ctxCode = ctxCode.replace(`"subPackages": []`, `"subPackages": [] as SubPackage[]`);
+                        code = code.replace("const ctx = {}", `const ctx = ${ctxCode}`);
+                        code = code.replace("const ctx = parse<Ctx>({})!", `const ctx = parse<Ctx>(${ctxCode})!`);
                     }
-                    if (id.includes("/cool/service/index.ts")) {
-                        const eps = await createEps();
-                        if (eps.serviceCode) {
-                            const { content, types } = eps.serviceCode;
-                            const typeCode = `import type { ${lodash.uniq(types).join(", ")} } from '../types';`;
-                            code =
-                                typeCode +
-                                    "\n\n" +
-                                    code.replace("const service = {}", `const service = ${content}`);
-                        }
-                    }
+                    // if (id.includes("/cool/service/index.ts")) {
+                    // 	const eps = await createEps();
+                    // 	if (eps.serviceCode) {
+                    // 		const { content, types } = eps.serviceCode;
+                    // 		const typeCode = `import type { ${uniq(types).join(", ")} } from '../types';`;
+                    // 		code =
+                    // 			typeCode +
+                    // 			"\n\n" +
+                    // 			code.replace("const service = {}", `const service = ${content}`);
+                    // 	}
+                    // }
                     if (id.endsWith(".json")) {
                         const d = JSON.parse(code);
                         for (let i in d) {
@@ -2215,7 +2387,17 @@ if (typeof window !== 'undefined') {
                                 delete d[i];
                             }
                         }
-                        code = JSON.stringify(d);
+                        // 转字符串，不然会报错：Method too large
+                        if (id.includes("/locale/")) {
+                            let t = [];
+                            d.forEach(([a, b]) => {
+                                t.push(`${a}<__=__>${b}`);
+                            });
+                            code = JSON.stringify([[t.join("<__&__>")]]);
+                        }
+                        else {
+                            code = JSON.stringify(d);
+                        }
                     }
                     return {
                         code,
@@ -2258,6 +2440,14 @@ if (typeof window !== 'undefined') {
         config.type = options.type;
         // 请求地址
         config.reqUrl = getProxyTarget(options.proxy);
+        if (config.type == "uniapp-x") {
+            // 是否纯净版
+            config.clean = options.clean ?? true;
+            if (config.clean) {
+                // 默认设置为测试地址
+                config.reqUrl = "https://show.cool-admin.com/api";
+            }
+        }
         // 是否开启名称标签
         config.nameTag = options.nameTag ?? true;
         // svg
@@ -2281,6 +2471,14 @@ if (typeof window !== 'undefined') {
             if (mapping) {
                 lodash.merge(config.eps.mapping, mapping);
             }
+        }
+        // 如果类型为 uniapp-x，则关闭 eps
+        if (config.type == "uniapp-x") {
+            config.eps.enable = false;
+        }
+        // uniapp
+        if (options.uniapp) {
+            lodash.assign(config.uniapp, options.uniapp);
         }
         // tailwind
         if (options.tailwind) {

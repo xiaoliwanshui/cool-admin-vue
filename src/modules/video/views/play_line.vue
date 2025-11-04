@@ -183,6 +183,14 @@ const Upsert = useUpsert({
 			required: true
 		},
 		{
+			label: t('vip'),
+			prop: 'vip',
+			flex: false,
+			component: { name: 'cl-switch' },
+			span: 8,
+			group: 'base'
+		},
+		{
 			label: t('文件地址'),
 			prop: 'file',
 			component: { name: 'el-input', props: { type: 'textarea', rows: 4 } }
@@ -210,6 +218,14 @@ const Table = useTable({
 		{ label: t('资源ID'), prop: 'collection_id', minWidth: 140 },
 		{ label: t('副标题'), prop: 'sub_title', minWidth: 140 },
 		{ label: t('名称'), prop: 'name', minWidth: 140 },
+		{
+			label: t('vip'),
+			prop: 'vip',
+			flex: false,
+			component: { name: 'cl-switch' },
+			span: 8,
+			group: 'base'
+		},
 		{
 			label: t('状态'),
 			prop: 'status',

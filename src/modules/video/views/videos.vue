@@ -232,7 +232,16 @@ const Upsert = useUpsert({
 			prop: 'number',
 			hook: 'number',
 			component: { name: 'el-input-number' },
-			span: 12,
+			span: 8,
+			group: 'base'
+		},
+		{
+			label: t('VIP片集数(从多少集开始)'),
+			prop: 'vipNumber',
+			hook: 'number',
+			component: { name: 'el-input-number' },
+			defaultValue: 0,
+			span: 8,
 			group: 'base'
 		},
 		{
@@ -240,7 +249,7 @@ const Upsert = useUpsert({
 			prop: 'total',
 			hook: 'number',
 			component: { name: 'el-input-number' },
-			span: 12,
+			span: 8,
 			group: 'base'
 		},
 		{

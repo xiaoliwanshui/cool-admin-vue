@@ -2932,6 +2932,11 @@ declare namespace Eps {
 		tag?: string;
 
 		/**
+		 * VIP标识
+		 */
+		vip?: number;
+
+		/**
 		 * 创建时间
 		 */
 		createTime?: string;
@@ -3249,6 +3254,11 @@ declare namespace Eps {
 		 * 踩数
 		 */
 		down?: number;
+
+		/**
+		 * VIP集数
+		 */
+		vipNumber?: number;
 
 		/**
 		 * 资源名称

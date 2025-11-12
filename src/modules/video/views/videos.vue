@@ -240,7 +240,7 @@ const Upsert = useUpsert({
 			prop: 'vipNumber',
 			hook: 'number',
 			component: { name: 'el-input-number' },
-			defaultValue: 0,
+			defaultValue: 1,
 			span: 8,
 			group: 'base'
 		},

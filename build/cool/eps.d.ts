@@ -6294,6 +6294,11 @@ declare namespace Eps {
 
 	interface VideoCollection_category {
 		/**
+		 * 导入分类
+		 */
+		import_category(data?: any): Promise<any>;
+
+		/**
 		 * 匹配分类
 		 */
 		match_category(data?: any): Promise<any>;
@@ -6337,6 +6342,7 @@ declare namespace Eps {
 		 * 权限标识
 		 */
 		permission: {
+			import_category: string;
 			match_category: string;
 			sync_category: string;
 			delete: string;
@@ -6351,6 +6357,7 @@ declare namespace Eps {
 		 * 权限状态
 		 */
 		_permission: {
+			import_category: boolean;
 			match_category: boolean;
 			sync_category: boolean;
 			delete: boolean;

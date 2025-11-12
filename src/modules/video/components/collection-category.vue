@@ -104,7 +104,7 @@ const Upsert = useUpsert({
 	items: [
 		{
 			label: "资源名称",
-			prop: "resource_id",
+			prop: "collection_id",
 			hook: "number",
 			component: {
 				name: "el-select",
@@ -195,7 +195,7 @@ const Upsert = useUpsert({
 const Table = useTable({
 	columns: [
 		{type: "selection"},
-		{label: "资源id", prop: "resource_id", minWidth: 140},
+		{label: "资源id", prop: "collection_id", minWidth: 140},
 		{label: "采集资源分类id", prop: "class_id", minWidth: 140},
 		{label: "采集资源分类", prop: "class_name", minWidth: 140},
 		{label: "系统分类", prop: "category_id", dict: typeDict, minWidth: 140},
@@ -227,7 +227,7 @@ const Crud = useCrud(
 		service: service.video.collection_category
 	},
 	(app) => {
-		app.refresh({resource_id: resourceId});
+		app.refresh({collection_id: resourceId});
 	}
 );
 </script>

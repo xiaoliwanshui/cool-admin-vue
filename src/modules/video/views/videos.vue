@@ -20,8 +20,14 @@
 					tree
 				/>
 			</cl-filter>
-			<cl-filter :label="t('地区')">
-				<cl-select :options="dict.get('area')" :width="140" check-strictly prop="region" />
+			<cl-filter :label="t('视频ID')">
+				<el-input
+					v-model="videoIdValue"
+					:style="{ width: '140px' }"
+					clearable
+					@clear="handleIdClear"
+					@blur="handleIdChange"
+				/>
 			</cl-filter>
 			<cl-filter :label="t('入库')">
 				<cl-select :options="play_url_put_inDict" :width="140" prop="play_url_put_in" />
@@ -58,10 +64,14 @@ import { useCrud, useTable, useUpsert } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
 import { useDict } from '/$/dict';
 import { useI18n } from 'vue-i18n';
+import { ref, watch } from 'vue';
 
-const { service } = useCool();
+const { service, router, route } = useCool();
 const { dict } = useDict();
 const { t } = useI18n();
+
+// 视频ID输入框的值
+const videoIdValue = ref<string | number>('');
 
 const play_url_put_inDict = [
 	{ value: 1, label: t('已入库') },
@@ -410,11 +420,105 @@ const Table = useTable({
 			minWidth: 160,
 			component: { name: 'cl-date-text' }
 		},
-		{ type: 'op', buttons: ['edit', 'delete'] },
+		{
+			width: 450,
+			type: 'op',
+			buttons: [
+				'edit',
+				'delete',
+				'info',
+				{
+					label: t('线路详情'),
+					type: 'primary',
+					onClick({ scope }) {
+						router.push({
+							path: '/video/play_line',
+							query: {
+								video_id: scope.row.id
+							}
+						});
+					}
+				}
+			]
+		},
 		{ label: t('创建人'), prop: 'createUserId', minWidth: 140 },
 		{ label: t('修改人'), prop: 'updateUserId', minWidth: 140 }
 	]
 });
+
+// 处理ID清除
+function handleIdClear() {
+	videoIdValue.value = '';
+	// 清空时移除路由参数中的 id
+	const query = { ...route.query };
+	delete query.id;
+	router.replace({
+		path: route.path,
+		query
+	});
+	// 刷新列表，不携带 id 参数
+	Crud.value?.refresh({
+		id: undefined,
+		page: 1
+	});
+}
+
+// 处理ID变化
+function handleIdChange() {
+	const id = String(videoIdValue.value || '').trim();
+
+	if (id) {
+		// 有值时更新路由参数并刷新列表
+		router.replace({
+			path: route.path,
+			query: {
+				...route.query,
+				id: id
+			}
+		});
+		Crud.value?.refresh({
+			id: id,
+			page: 1
+		});
+	} else {
+		// 空值时移除路由参数中的 id
+		const query = { ...route.query };
+		delete query.id;
+		router.replace({
+			path: route.path,
+			query
+		});
+		// 刷新列表，显式设置 id 为 undefined，确保不携带 id 参数
+		Crud.value?.refresh({
+			id: undefined,
+			page: 1
+		});
+	}
+}
+
+// 处理路由参数变化，更新输入框值并刷新列表
+function handleRouteQuery(crudInstance?: any) {
+	const crudApp = crudInstance || Crud.value;
+	const id = route.query.id;
+
+	if (id && String(id).trim()) {
+		// 设置输入框的值
+		videoIdValue.value = String(id).trim() as string | number;
+		// 刷新列表，带上 id 参数
+		crudApp?.refresh({
+			id: String(id).trim(),
+			page: 1
+		});
+	} else {
+		// 清空输入框
+		videoIdValue.value = '';
+		// 刷新列表，显式设置 id 为 undefined，确保不携带 id 参数
+		crudApp?.refresh({
+			id: undefined,
+			page: 1
+		});
+	}
+}
 
 // cl-crud
 const Crud = useCrud(
@@ -422,7 +526,20 @@ const Crud = useCrud(
 		service: service.video.videos
 	},
 	app => {
-		app.refresh();
+		// 初始化时处理路由参数
+		handleRouteQuery(app);
 	}
+);
+
+// 监听路由查询参数变化，当 id 变化时重新刷新
+watch(
+	() => route.query.id,
+	(newId, oldId) => {
+		// 只有当 id 真的变化时才处理
+		if (newId !== oldId) {
+			handleRouteQuery();
+		}
+	},
+	{ immediate: false }
 );
 </script>

@@ -158,5 +158,8 @@
   "imd评分": "IMD Rating",
   "iimdID": "IIMD ID",
   "豆瓣ID": "Douban ID",
-  "上映日期": "Release Date"
+  "上映日期": "Release Date",
+  "线路详情": "Line Details",
+  "周报详情": "Week Details",
+  "视频详情": "Video Details"
 }

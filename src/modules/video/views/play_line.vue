@@ -45,7 +45,7 @@ import { useI18n } from 'vue-i18n';
 import collectionSelect from '../components/collection-select.vue';
 
 const ArtplayerContainer = ref<Artplayer>();
-const { service } = useCool();
+const { service, route, router } = useCool();
 const { t } = useI18n();
 
 const visible = ref<boolean>(false);
@@ -66,7 +66,7 @@ const Search = useSearch({
 			label: t('资源名称'),
 			prop: 'collection_id',
 			component: {
-				vm: collectionSelect,
+				vm: collectionSelect
 			}
 		},
 		{
@@ -107,8 +107,33 @@ const Search = useSearch({
 					clearable: true
 				}
 			}
-		},
-	]
+		}
+	],
+	onChange(data, prop) {
+		// 当 video_id 字段变化时，同步更新路由参数
+		if (prop === 'video_id') {
+			const videoId = String(data.video_id || '').trim();
+
+			if (videoId) {
+				// 有值时更新路由参数
+				router.replace({
+					path: route.path,
+					query: {
+						...route.query,
+						video_id: videoId
+					}
+				});
+			} else {
+				// 空值时移除路由参数中的 video_id
+				const query = { ...route.query };
+				delete query.video_id;
+				router.replace({
+					path: route.path,
+					query
+				});
+			}
+		}
+	}
 });
 const play = async (url: string) => {
 	await nextTick();
@@ -214,6 +239,7 @@ const Table = useTable({
 	columns: [
 		{ type: 'selection' },
 		{ label: t('影视名称'), prop: 'video_name', minWidth: 140 },
+		{ label: t('影视ID'), prop: 'video_id', minWidth: 140 },
 		{ label: t('资源名'), prop: 'collection_name', minWidth: 140 },
 		{ label: t('资源ID'), prop: 'collection_id', minWidth: 140 },
 		{ label: t('副标题'), prop: 'sub_title', minWidth: 140 },
@@ -269,14 +295,53 @@ const Table = useTable({
 	]
 });
 
+// 处理路由参数变化，更新搜索条件并刷新列表
+function handleRouteQuery(crudInstance?: any) {
+	const crudApp = crudInstance || Crud.value;
+	const videoId = route.query.video_id;
+	const videoIdStr = videoId ? String(videoId).trim() : '';
+
+	if (videoIdStr) {
+		// 设置搜索表单的 video_id 值
+		Search.value?.setForm('video_id', videoIdStr);
+
+		// 刷新列表，带上 video_id 参数
+		crudApp?.refresh({
+			video_id: videoIdStr,
+			page: 1
+		});
+	} else {
+		// 清空搜索条件
+		Search.value?.setForm('video_id', '');
+		// 刷新列表，显式设置 video_id 为 undefined，确保不携带参数
+		crudApp?.refresh({
+			video_id: undefined,
+			page: 1
+		});
+	}
+}
+
 // cl-crud
 const Crud = useCrud(
 	{
 		service: service.video.play_line
 	},
 	app => {
-		app.refresh();
+		// 初始化时处理路由参数
+		handleRouteQuery(app);
 	}
+);
+
+// 监听路由查询参数变化，当 video_id 变化时重新搜索
+watch(
+	() => route.query.video_id,
+	(newVideoId, oldVideoId) => {
+		// 只有当 video_id 真的变化时才处理
+		if (newVideoId !== oldVideoId) {
+			handleRouteQuery();
+		}
+	},
+	{ immediate: false }
 );
 </script>
 <style lang="scss" scoped>

@@ -20,6 +20,9 @@
 					tree
 				/>
 			</cl-filter>
+			<!-- 搜索组件 -->
+			<cl-search ref="Search" />
+			<!-- 关键字搜索 -->
 			<cl-search-key />
 		</cl-row>
 
@@ -41,14 +44,14 @@
 </template>
 
 <script lang="ts" name="video-weekId" setup>
-import { useCrud, useForm, useTable, useUpsert } from '@cool-vue/crud';
+import { useCrud, useForm, useSearch, useTable, useUpsert } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useDict } from '/$/dict';
 import WeekFrom from '/$/video/components/week-from.vue';
 import { useI18n } from 'vue-i18n';
 
-const { service } = useCool();
+const { service, route, router } = useCool();
 const visible = ref<boolean>(false);
 const modelValue = ref<Array<any>>([]);
 const weekId = ref<number>(0);
@@ -58,14 +61,67 @@ const { t } = useI18n();
 
 const Form = useForm();
 
+// cl-search 配置
+const Search = useSearch({
+	items: [
+		{
+			label: t('视频ID'),
+			prop: 'video_id',
+			component: {
+				name: 'el-input',
+				props: {
+					clearable: true
+				}
+			}
+		}
+	]
+});
+
+// 处理路由参数变化，更新搜索条件并刷新列表
+function handleRouteQuery(crudInstance?: any) {
+	const crudApp = crudInstance || Crud.value;
+	const videoId = route.query.video_id;
+
+	if (videoId) {
+		// 设置搜索表单的 video_id 值
+		Search.value?.setForm('video_id', videoId);
+
+		// 刷新列表，带上 video_id 参数
+		crudApp?.refresh({
+			video_id: videoId,
+			page: 1
+		});
+	} else {
+		// 清空搜索条件
+		Search.value?.setForm('video_id', '');
+		// 刷新列表
+		crudApp?.refresh({
+			page: 1
+		});
+	}
+}
+
 // cl-crud
 const Crud = useCrud(
 	{
 		service: service.video.week
 	},
 	app => {
-		app.refresh();
+		// 初始化时处理路由参数
+		handleRouteQuery(app);
 	}
+);
+
+// 监听路由查询参数变化，当 video_id 变化时重新搜索
+watch(
+	() => route.query.video_id,
+	(newVideoId, oldVideoId) => {
+		// 只有当 video_id 真的变化时才处理
+		if (newVideoId !== oldVideoId) {
+			handleRouteQuery();
+		}
+	},
+	{ immediate: false }
 );
 const Upsert = useUpsert({
 	items: [
@@ -166,7 +222,27 @@ const Table = useTable({
 		},
 		{ label: t('创建人'), prop: 'createUserId', minWidth: 140 },
 		{ label: t('修改人'), prop: 'updateUserId', minWidth: 140 },
-		{ type: 'op', width: 250, buttons: ['info', 'edit', 'delete'] }
+		{
+			type: 'op',
+			width: 350,
+			buttons: [
+				'info',
+				'edit',
+				'delete',
+				{
+					label: t('视频详情'),
+					type: 'primary',
+					onClick({ scope }) {
+						router.push({
+							path: '/video/videos',
+							query: {
+								id: scope.row.video_id || scope.row.videoId
+							}
+						});
+					}
+				}
+			]
+		}
 	]
 });
 </script>

@@ -65,12 +65,10 @@ const Upsert = useUpsert({
 		{
 			label: t('状态'),
 			prop: 'status',
-			required: true,
 			component: {
-				name: 'el-select',
-				options: dict.get('liveStatus')
+				name: 'cl-switch'
 			},
-			value: 368
+			required: true
 		},
 		{
 			label: t('图片'),
@@ -97,7 +95,14 @@ const Table = useTable({
 		{ label: t('标题'), prop: 'title' },
 		{ label: t('分类'), prop: 'category_id', dict: dict.get('live_category') },
 		{ label: t('图片'), prop: 'image', component: { name: 'cl-image' } },
-		{ label: t('状态'), prop: 'status', dict: dict.get('liveStatus') },
+		{
+			label: t('状态'),
+			prop: 'status',
+			component: {
+				name: 'cl-switch'
+			},
+			required: true
+		},
 		() => {
 			return {
 				label: t('推流服务器'),

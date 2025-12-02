@@ -5,6 +5,7 @@
 			<cl-refresh-btn />
 			<!-- 新增按钮 -->
 			<cl-add-btn />
+			<el-button @click="open">采集数据</el-button>
 			<!-- 删除按钮 -->
 			<cl-multi-delete-btn />
 			<!-- 导出按钮 -->
@@ -25,8 +26,8 @@
 					v-model="videoIdValue"
 					:style="{ width: '140px' }"
 					clearable
-					@clear="handleIdClear"
 					@blur="handleIdChange"
+					@clear="handleIdClear"
 				/>
 			</cl-filter>
 			<cl-filter :label="t('入库')">
@@ -57,14 +58,17 @@
 		<!-- 新增、编辑 -->
 		<cl-upsert ref="Upsert" />
 	</cl-crud>
+	<cl-form ref="Form"></cl-form>
 </template>
 
 <script lang="ts" name="video-videos" setup>
-import { useCrud, useTable, useUpsert } from '@cool-vue/crud';
+import { useCrud, useForm, useTable, useUpsert } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
 import { useDict } from '/$/dict';
 import { useI18n } from 'vue-i18n';
 import { ref, watch } from 'vue';
+
+const Form = useForm();
 
 const { service, router, route } = useCool();
 const { dict } = useDict();
@@ -438,6 +442,12 @@ const Table = useTable({
 							}
 						});
 					}
+				},
+				{
+					label: t('采集数据'),
+					async onClick({ scope }) {
+						await syncVideo(scope.row.title);
+					}
 				}
 			]
 		},
@@ -445,6 +455,34 @@ const Table = useTable({
 		{ label: t('修改人'), prop: 'updateUserId', minWidth: 140 }
 	]
 });
+
+const syncVideo = async (keyWord: string) => {
+	service.video.collection.collection_keyword({
+		keyWord: keyWord
+	});
+};
+
+function open() {
+	Form.value?.open({
+		title: '数据采集',
+		items: [
+			{
+				label: '剧名',
+				prop: 'keyWord',
+				required: true,
+				component: {
+					name: 'el-input'
+				}
+			}
+		],
+		on: {
+			async submit(data, { close, done }) {
+				await syncVideo(data.keyWord);
+				close();
+			}
+		}
+	});
+}
 
 // 处理ID清除
 function handleIdClear() {

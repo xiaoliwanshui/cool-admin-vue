@@ -6229,6 +6229,11 @@ declare namespace Eps {
 
 	interface VideoCollection {
 		/**
+		 * 根据关键字采集
+		 */
+		collection_keyword(data?: any): Promise<any>;
+
+		/**
 		 * 日更新
 		 */
 		collection_day(data?: any): Promise<any>;
@@ -6267,6 +6272,7 @@ declare namespace Eps {
 		 * 权限标识
 		 */
 		permission: {
+			collection_keyword: string;
 			collection_day: string;
 			delete: string;
 			update: string;
@@ -6280,6 +6286,7 @@ declare namespace Eps {
 		 * 权限状态
 		 */
 		_permission: {
+			collection_keyword: boolean;
 			collection_day: boolean;
 			delete: boolean;
 			update: boolean;

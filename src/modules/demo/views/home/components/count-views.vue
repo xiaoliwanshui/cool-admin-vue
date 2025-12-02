@@ -11,8 +11,31 @@
 			</div>
 
 			<div class="card__footer">
-				<span class="mr-2">{{ $t('访客数') }}</span>
-				<span>{{ props.visit.total }}</span>
+				<ul class="cop">
+					<li>
+						<span>{{ $t('总访客数') }}</span>
+
+						<div class="fall">
+							<el-icon>
+								<bottom-right />
+							</el-icon>
+
+							<span>{{ props.visit.total }}</span>
+						</div>
+					</li>
+
+					<li>
+						<span>{{ $t('日访客数') }}</span>
+
+						<div class="rise">
+							<el-icon>
+								<top-right />
+							</el-icon>
+
+							<span>{{ props.visit.today }}</span>
+						</div>
+					</li>
+				</ul>
 			</div>
 		</div>
 	</div>
@@ -107,6 +130,33 @@ onMounted(() => {
 		&__footer {
 			border-top: 0;
 		}
+		.cop {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+
+		li {
+			display: flex;
+			list-style: none;
+			flex: 1;
+
+			.fall,
+			.rise {
+				display: flex;
+				align-items: center;
+				margin-left: 10px;
+			}
+
+			.fall {
+				color: var(--el-color-success);
+			}
+
+			.rise {
+				color: var(--el-color-danger);
+			}
+		}
+	}
 	}
 }
 </style>

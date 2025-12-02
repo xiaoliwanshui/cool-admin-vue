@@ -99,8 +99,8 @@ const Search = useSearch({
 			}
 		},
 		{
-			label: t('视频名称'),
-			prop: 'video_name',
+			label: t('影视名称'),
+			prop: 'keyWord',
 			component: {
 				name: 'el-input',
 				props: {

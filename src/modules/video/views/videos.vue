@@ -21,7 +21,7 @@
 					tree
 				/>
 			</cl-filter>
-			<cl-filter :label="t('视频ID')">
+			<!-- <cl-filter :label="t('视频ID')">
 				<el-input
 					v-model="videoIdValue"
 					:style="{ width: '140px' }"
@@ -29,7 +29,7 @@
 					@blur="handleIdChange"
 					@clear="handleIdClear"
 				/>
-			</cl-filter>
+			</cl-filter> -->
 			<cl-filter :label="t('入库')">
 				<cl-select :options="play_url_put_inDict" :width="140" prop="play_url_put_in" />
 			</cl-filter>
@@ -58,7 +58,42 @@
 		<!-- 新增、编辑 -->
 		<cl-upsert ref="Upsert" />
 	</cl-crud>
-	<cl-form ref="Form"></cl-form>
+	<cl-form ref="Form">
+		<!-- 动态编辑标签插槽 - 共用 -->
+		<template #slot-tags="{ scope }">
+			<div class="tag-editor">
+				<!-- 标签列表 -->
+				<div
+					class="tag-list"
+					style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px"
+				>
+					<el-tag
+						v-for="(title, index) in scope.titles"
+						:key="index"
+						:type="scope.selectedKeyword === title ? 'primary' : undefined"
+						closable
+						style="cursor: pointer"
+						@close.stop="handleTagClose(scope, index)"
+						@click="handleTagSelect(scope, title)"
+					>
+						{{ title }}
+					</el-tag>
+				</div>
+				<!-- 输入框用于添加新标签 -->
+				<el-input
+					v-model="tagInputValue"
+					placeholder="输入剧名，支持用逗号(,)或分号(;)分割多个标题，或输入数组格式如：[标题1,标题2]"
+					clearable
+					@keyup.enter="handleAddTag(scope)"
+					@clear="tagInputValue = ''"
+				>
+					<template #append>
+						<el-button @click="handleAddTag(scope)">添加</el-button>
+					</template>
+				</el-input>
+			</div>
+		</template>
+	</cl-form>
 </template>
 
 <script lang="ts" name="video-videos" setup>
@@ -66,7 +101,8 @@ import { useCrud, useForm, useTable, useUpsert } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
 import { useDict } from '/$/dict';
 import { useI18n } from 'vue-i18n';
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
+import { ElMessage } from 'element-plus';
 
 const Form = useForm();
 
@@ -76,6 +112,15 @@ const { t } = useI18n();
 
 // 视频ID输入框的值
 const videoIdValue = ref<string | number>('');
+
+// 存储选中的标题列表
+const selectedTitles = ref<string[]>([]);
+
+// 标签输入框的值
+const tagInputValue = ref<string>('');
+
+// 当前激活的 tab
+const activeTab = ref<string>('collection');
 
 const play_url_put_inDict = [
 	{ value: 1, label: t('已入库') },
@@ -333,17 +378,14 @@ const Table = useTable({
 			label: t('搜索榜单分类'),
 			prop: 'searchRecommendType',
 			dict: dict.get('search_type'),
-			dictColor: true,
-			minWidth: 150,
-			dictAllLevels: true // 显示所有等级
+			minWidth: 150
 		},
 		{
 			label: t('语言'),
 			prop: 'language',
 			dict: dict.get('language'),
 			dictColor: true,
-			minWidth: 150,
-			dictAllLevels: true // 显示所有等级
+			minWidth: 150
 		},
 		{
 			label: t('地区'),
@@ -446,7 +488,7 @@ const Table = useTable({
 				{
 					label: t('采集数据'),
 					async onClick({ scope }) {
-						await syncVideo(scope.row.title);
+						await syncVideo([scope.row.title]);
 					}
 				}
 			]
@@ -456,32 +498,282 @@ const Table = useTable({
 	]
 });
 
-const syncVideo = async (keyWord: string) => {
+const syncVideo = async (keyWord: string[]) => {
 	service.video.collection.collection_keyword({
 		keyWord: keyWord
 	});
 };
 
 function open() {
+	// 获取表格选中的数据
+	const selection = Table.value?.selection || [];
+	// 获取所有选中项的 title 数组
+	const titles = selection.map((item: any) => item.title || '').filter((title: string) => title);
+
+	// 更新选中的标题列表
+	selectedTitles.value = titles;
+
+	// 清空输入框
+	tagInputValue.value = '';
+	// 重置 tab
+	activeTab.value = 'collection';
+
 	Form.value?.open({
-		title: '数据采集',
+		title: '批量操作',
+		width: '800px',
+		// 设置默认表单值
+		form: {
+			titles: titles,
+			selectedKeyword: titles.length > 0 ? titles[0] : '',
+			searchRecommendType: ''
+		},
 		items: [
 			{
-				label: '剧名',
-				prop: 'keyWord',
+				type: 'tabs',
+				props: {
+					type: 'card',
+					modelValue: activeTab.value,
+					labels: [
+						{
+							label: '采集操作',
+							value: 'collection'
+						},
+						{
+							label: '榜单操作',
+							value: 'ranking'
+						}
+					],
+					onChange: (value: string) => {
+						// 监听 tab 切换，更新 activeTab
+						activeTab.value = value;
+						// 动态更新搜索榜单分类字段的required
+						if (value === 'ranking') {
+							Form.value?.setProps('searchRecommendType', { required: true });
+							Form.value?.showItem('searchRecommendType');
+						} else {
+							Form.value?.setProps('searchRecommendType', { required: false });
+							Form.value?.hideItem('searchRecommendType');
+						}
+					}
+				}
+			},
+			// 采集操作
+			{
+				label: '剧名标签',
+				prop: 'titles',
+				group: 'collection',
 				required: true,
 				component: {
-					name: 'el-input'
+					name: 'slot-tags'
+				}
+			},
+			// 榜单操作 - 共用同一个标签编辑器
+			{
+				label: t('搜索榜单分类'),
+				prop: 'searchRecommendType',
+				group: 'ranking',
+				// 初始状态不验证，在tab切换时动态设置
+				required: false,
+				hidden: activeTab.value !== 'ranking',
+				component: {
+					name: 'el-select',
+					options: dict.get('search_type'),
+					props: {
+						clearable: true
+					}
+				}
+			},
+			{
+				label: '剧名标签',
+				prop: 'titles',
+				group: 'ranking',
+				required: true,
+				component: {
+					name: 'slot-tags'
 				}
 			}
 		],
 		on: {
+			open() {
+				// 表单打开时，根据当前tab设置搜索榜单分类字段的状态
+				if (activeTab.value === 'ranking') {
+					Form.value?.setProps('searchRecommendType', { required: true });
+					Form.value?.showItem('searchRecommendType');
+				} else {
+					Form.value?.setProps('searchRecommendType', { required: false });
+					Form.value?.hideItem('searchRecommendType');
+				}
+			},
 			async submit(data, { close, done }) {
-				await syncVideo(data.keyWord);
-				close();
+				try {
+					const titles = data.titles || [];
+					const currentTab = activeTab.value;
+
+					if (titles.length === 0) {
+						done();
+						return;
+					}
+
+					if (currentTab === 'collection') {
+						// 采集操作：执行数据采集
+						await syncVideo(titles);
+					} else if (currentTab === 'ranking') {
+						// 榜单操作：批量更新搜索榜单分类
+						const searchRecommendType = data.searchRecommendType;
+						if (!searchRecommendType) {
+							done();
+							return;
+						}
+
+						// 根据标题获取视频ID
+						const videoIds: number[] = [];
+
+						// 先从表格数据中查找
+						const tableData = Table.value?.data || [];
+						titles.forEach((title: string) => {
+							const video = tableData.find((item: any) => item.title === title);
+							if (video && video.id !== undefined && video.id !== null) {
+								videoIds.push(Number(video.id));
+							}
+						});
+
+						// 如果表格中没有找到所有视频，通过接口查询
+						if (videoIds.length < titles.length) {
+							const missingTitles = titles.filter((title: string) => {
+								return !tableData.some((item: any) => item.title === title);
+							});
+
+							// 通过标题查询视频ID
+							for (const title of missingTitles) {
+								try {
+									const result = await service.video.videos.page({
+										title: title,
+										size: 1
+									});
+									if (
+										result.list &&
+										result.list.length > 0 &&
+										result.list[0].id !== undefined &&
+										result.list[0].id !== null
+									) {
+										videoIds.push(Number(result.list[0].id));
+									}
+								} catch (error) {
+									console.error(`查询视频失败: ${title}`, error);
+								}
+							}
+						}
+
+						if (videoIds.length === 0) {
+							ElMessage.warning('未找到对应的视频数据');
+							done();
+							return;
+						}
+
+						// 批量更新搜索榜单分类
+						await service.video.videos.updateSearchRecommendType({
+							ids: videoIds,
+							searchRecommendType: searchRecommendType
+						});
+
+						ElMessage.success(`成功更新 ${videoIds.length} 个视频的榜单分类`);
+					}
+
+					// 刷新列表
+					Crud.value?.refresh();
+					close();
+				} catch (error: any) {
+					console.error('操作失败', error);
+					done();
+				}
 			}
 		}
 	});
+}
+
+// 处理标签关闭
+function handleTagClose(scope: any, index: number) {
+	if (scope.titles && Array.isArray(scope.titles)) {
+		// 创建新数组，移除指定索引的项
+		const newTitles = [...scope.titles];
+		const deletedTitle = newTitles[index];
+		newTitles.splice(index, 1);
+		// 更新表单数据
+		Form.value?.setForm('titles', newTitles);
+		// 如果删除的是当前选中的标签，则选择第一个标签
+		if (scope.selectedKeyword === deletedTitle) {
+			if (newTitles.length > 0) {
+				Form.value?.setForm('selectedKeyword', newTitles[0]);
+			} else {
+				Form.value?.setForm('selectedKeyword', '');
+			}
+		}
+	}
+}
+
+// 处理标签选择
+function handleTagSelect(scope: any, title: string) {
+	Form.value?.setForm('selectedKeyword', title);
+}
+
+// 处理添加标签
+function handleAddTag(scope: any) {
+	let inputValue = tagInputValue.value.trim();
+
+	// 如果输入框为空，不添加
+	if (!inputValue) {
+		return;
+	}
+
+	// 获取当前的标签列表
+	const titles = scope.titles || [];
+	const newTitles: string[] = [];
+
+	// 尝试解析数组格式（如 [a, b, c] 或 ["a", "b", "c"]）
+	try {
+		// 检查是否是数组格式的字符串
+		if (inputValue.startsWith('[') && inputValue.endsWith(']')) {
+			// 尝试解析为 JSON 数组
+			const parsed = JSON.parse(inputValue);
+			if (Array.isArray(parsed)) {
+				parsed.forEach((item: any) => {
+					const title = String(item || '').trim();
+					if (title && !titles.includes(title) && !newTitles.includes(title)) {
+						newTitles.push(title);
+					}
+				});
+			}
+		}
+	} catch (e) {
+		// 如果不是有效的 JSON，继续使用分割方式
+	}
+
+	// 如果没有解析到数组，使用分割方式
+	if (newTitles.length === 0) {
+		// 先替换中文逗号和分号
+		inputValue = inputValue.replace(/，/g, ',').replace(/；/g, ';');
+
+		// 按分号或逗号分割
+		const parts = inputValue.split(/[;,]/);
+
+		parts.forEach(part => {
+			const title = part.trim();
+			if (title && !titles.includes(title) && !newTitles.includes(title)) {
+				newTitles.push(title);
+			}
+		});
+	}
+
+	// 如果有新标签，添加到列表
+	if (newTitles.length > 0) {
+		const updatedTitles = [...titles, ...newTitles];
+		Form.value?.setForm('titles', updatedTitles);
+		// 自动选中第一个新添加的标签
+		Form.value?.setForm('selectedKeyword', newTitles[0]);
+	}
+
+	// 清空输入框
+	tagInputValue.value = '';
 }
 
 // 处理ID清除
@@ -581,3 +873,15 @@ watch(
 	{ immediate: false }
 );
 </script>
+
+<style lang="scss" scoped>
+.tag-editor {
+	.tag-list {
+		min-height: 40px;
+		padding: 8px;
+		border: 1px solid var(--el-border-color);
+		border-radius: 4px;
+		background-color: var(--el-fill-color-lighter);
+	}
+}
+</style>

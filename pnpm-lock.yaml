@@ -30,8 +30,8 @@ importers:
         specifier: ^2.0.1
         version: 2.0.1
       axios:
-        specifier: ^1.7.9
-        version: 1.11.0
+        specifier: 1.12.0
+        version: 1.12.0
       chardet:
         specifier: ^2.0.0
         version: 2.1.0
@@ -45,8 +45,8 @@ importers:
         specifier: ^5.6.0
         version: 5.6.0
       element-plus:
-        specifier: 2.10.2
-        version: 2.10.2(vue@3.5.18(typescript@5.5.4))
+        specifier: 2.11.3
+        version: 2.11.3(vue@3.5.18(typescript@5.5.4))
       file-saver:
         specifier: ^2.0.5
         version: 2.0.5
@@ -1314,8 +1314,8 @@ packages:
     peerDependencies:
       postcss: ^8.1.0
 
-  axios@1.11.0:
-    resolution: {integrity: sha512-1Lx3WLFQWm3ooKDYZD1eXmoGO9fxYQjrycfHFC8P0sCfQVXyROp0p9PFWBehewBOdCwHc+f/b8I0fMto5eSfwA==}
+  axios@1.12.0:
+    resolution: {integrity: sha512-oXTDccv8PcfjZmPGlWsPSwtOJCZ/b6W5jAMCNcfwJbCzDckwG0jrYJFaWH1yvivfCXjVzV/SPDEhMB3Q+DSurg==}
 
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
@@ -1569,13 +1569,8 @@ packages:
   electron-to-chromium@1.5.191:
     resolution: {integrity: sha512-xcwe9ELcuxYLUFqZZxL19Z6HVKcvNkIwhbHUz7L3us6u12yR+7uY89dSl570f/IqNthx8dAw3tojG7i4Ni4tDA==}
 
-  element-plus@2.10.2:
-    resolution: {integrity: sha512-p2KiAa0jEGXrzdlTAfpiS7HQFAhla4gvx6H7RuDf+OO0uC3DGpolxvdHjFR8gt7+vaWyxQNcHa1sAdBkmjqlgA==}
-    peerDependencies:
-      vue: ^3.2.0
-
-  element-plus@2.10.4:
-    resolution: {integrity: sha512-UD4elWHrCnp1xlPhbXmVcaKFLCRaRAY6WWRwemGfGW3ceIjXm9fSYc9RNH3AiOEA6Ds1p9ZvhCs76CR9J8Vd+A==}
+  element-plus@2.11.3:
+    resolution: {integrity: sha512-769xsjLR4B9Vf9cl5PDXnwTEdmFJvMgAkYtthdJKPhjVjU3hdAwTJ+gXKiO+PUyo2KWFwOYKZd4Ywh6PHfkbJg==}
     peerDependencies:
       vue: ^3.2.0
 
@@ -3174,7 +3169,7 @@ snapshots:
   '@cool-vue/crud@8.0.6(typescript@5.5.4)':
     dependencies:
       '@vue/runtime-core': 3.5.18
-      element-plus: 2.10.4(vue@3.5.18(typescript@5.5.4))
+      element-plus: 2.11.3(vue@3.5.18(typescript@5.5.4))
       lodash-es: 4.17.21
       vue: 3.5.18(typescript@5.5.4)
     transitivePeerDependencies:
@@ -3184,7 +3179,7 @@ snapshots:
   '@cool-vue/vite-plugin@8.2.4':
     dependencies:
       '@vue/compiler-sfc': 3.5.18
-      axios: 1.11.0
+      axios: 1.12.0
       glob: 10.4.5
       lodash: 4.17.21
       magic-string: 0.30.17
@@ -4132,7 +4127,7 @@ snapshots:
       postcss: 8.5.6
       postcss-value-parser: 4.2.0
 
-  axios@1.11.0:
+  axios@1.12.0:
     dependencies:
       follow-redirects: 1.15.9
       form-data: 4.0.4
@@ -4378,28 +4373,7 @@ snapshots:
 
   electron-to-chromium@1.5.191: {}
 
-  element-plus@2.10.2(vue@3.5.18(typescript@5.5.4)):
-    dependencies:
-      '@ctrl/tinycolor': 3.6.1
-      '@element-plus/icons-vue': 2.3.1(vue@3.5.18(typescript@5.5.4))
-      '@floating-ui/dom': 1.7.2
-      '@popperjs/core': '@sxzz/popperjs-es@2.11.7'
-      '@types/lodash': 4.17.20
-      '@types/lodash-es': 4.17.12
-      '@vueuse/core': 9.13.0(vue@3.5.18(typescript@5.5.4))
-      async-validator: 4.2.5
-      dayjs: 1.11.13
-      escape-html: 1.0.3
-      lodash: 4.17.21
-      lodash-es: 4.17.21
-      lodash-unified: 1.0.3(@types/lodash-es@4.17.12)(lodash-es@4.17.21)(lodash@4.17.21)
-      memoize-one: 6.0.0
-      normalize-wheel-es: 1.2.0
-      vue: 3.5.18(typescript@5.5.4)
-    transitivePeerDependencies:
-      - '@vue/composition-api'
-
-  element-plus@2.10.4(vue@3.5.18(typescript@5.5.4)):
+  element-plus@2.11.3(vue@3.5.18(typescript@5.5.4)):
     dependencies:
       '@ctrl/tinycolor': 3.6.1
       '@element-plus/icons-vue': 2.3.1(vue@3.5.18(typescript@5.5.4))

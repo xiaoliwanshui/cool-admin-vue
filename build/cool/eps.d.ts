@@ -2552,88 +2552,6 @@ declare namespace Eps {
 		[key: string]: any;
 	}
 
-	interface CollectionTaskTaskEntity {
-		/**
-		 * ID
-		 */
-		id?: number;
-
-		/**
-		 * 创建用户ID
-		 */
-		createUserId?: number;
-
-		/**
-		 * 更新用户ID
-		 */
-		updateUserId?: number;
-
-		/**
-		 * 名称
-		 */
-		taskName?: string;
-
-		/**
-		 * 任务状态
-		 */
-		taskStatus?: number;
-
-		/**
-		 * 任务类型
-		 */
-		taskType?: number;
-
-		/**
-		 * 执行参数
-		 */
-		execParams?: any;
-
-		/**
-		 * 执行结果
-		 */
-		execResult?: any;
-
-		/**
-		 * 采集源
-		 */
-		collectionSource?: any;
-
-		/**
-		 * 开始时间
-		 */
-		startDate?: Date;
-
-		/**
-		 * 结束时间
-		 */
-		endDate?: Date;
-
-		/**
-		 * 备注信息
-		 */
-		remark?: string;
-
-		/**
-		 * 错误信息
-		 */
-		errorMessage?: any;
-
-		/**
-		 * 创建时间
-		 */
-		createTime?: string;
-
-		/**
-		 * 更新时间
-		 */
-		updateTime?: string;
-
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
 	interface VideoHostKeyWordEntity {
 		/**
 		 * ID
@@ -4072,11 +3990,6 @@ declare namespace Eps {
 	interface VideoCollection_categoryPageResponse {
 		pagination: PagePagination;
 		list: CollectionCategoryEntity[];
-	}
-
-	interface VideoCollection_taskPageResponse {
-		pagination: PagePagination;
-		list: CollectionTaskTaskEntity[];
 	}
 
 	interface VideoHot_keywordPageResponse {
@@ -6378,64 +6291,6 @@ declare namespace Eps {
 		request: Request;
 	}
 
-	interface VideoCollection_task {
-		/**
-		 * 删除
-		 */
-		delete(data?: any): Promise<any>;
-
-		/**
-		 * 修改
-		 */
-		update(data?: any): Promise<any>;
-
-		/**
-		 * 单个信息
-		 */
-		info(data?: any): Promise<CollectionTaskTaskEntity>;
-
-		/**
-		 * 列表查询
-		 */
-		list(data?: any): Promise<CollectionTaskTaskEntity[]>;
-
-		/**
-		 * 分页查询
-		 */
-		page(data?: any): Promise<VideoCollection_taskPageResponse>;
-
-		/**
-		 * 新增
-		 */
-		add(data?: any): Promise<any>;
-
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-
-		request: Request;
-	}
-
 	interface VideoHot_keyword {
 		/**
 		 * 删除
@@ -6728,6 +6583,11 @@ declare namespace Eps {
 
 	interface VideoVideos {
 		/**
+		 * 批量更新推荐类型
+		 */
+		updateSearchRecommendType(data?: any): Promise<any>;
+
+		/**
 		 * 获取视频字段信息
 		 */
 		videoEntity(data?: any): Promise<any>;
@@ -6776,6 +6636,7 @@ declare namespace Eps {
 		 * 权限标识
 		 */
 		permission: {
+			updateSearchRecommendType: string;
 			videoEntity: string;
 			delete: string;
 			update: string;
@@ -6791,6 +6652,7 @@ declare namespace Eps {
 		 * 权限状态
 		 */
 		_permission: {
+			updateSearchRecommendType: boolean;
 			videoEntity: boolean;
 			delete: boolean;
 			update: boolean;
@@ -7113,7 +6975,6 @@ declare namespace Eps {
 			category: VideoCategory;
 			collection: VideoCollection;
 			collection_category: VideoCollection_category;
-			collection_task: VideoCollection_task;
 			hot_keyword: VideoHot_keyword;
 			live: VideoLive;
 			player: VideoPlayer;

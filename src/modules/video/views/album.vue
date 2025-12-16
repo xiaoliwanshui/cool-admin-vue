@@ -57,7 +57,42 @@
 	>
 		<videos-album :albumId="albumId" style="height: 600px"></videos-album>
 	</cl-dialog>
-	<cl-form ref="addListForm"></cl-form>
+	<cl-form ref="addListForm">
+		<!-- 动态编辑标签插槽 -->
+		<template #slot-tags="{ scope }">
+			<div class="tag-editor">
+				<!-- 标签列表 -->
+				<div
+					class="tag-list"
+					style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px"
+				>
+					<el-tag
+						v-for="(title, index) in scope.titles"
+						:key="index"
+						:type="scope.selectedKeyword === title ? 'primary' : undefined"
+						closable
+						style="cursor: pointer"
+						@close.stop="handleTagClose(scope, index)"
+						@click="handleTagSelect(scope, title)"
+					>
+						{{ title }}
+					</el-tag>
+				</div>
+				<!-- 输入框用于添加新标签 -->
+				<el-input
+					v-model="tagInputValue"
+					placeholder="输入视频标题，支持用逗号(,)或分号(;)分割多个标题，或输入数组格式如：[标题1,标题2]"
+					clearable
+					@keyup.enter="handleAddTag(scope)"
+					@clear="tagInputValue = ''"
+				>
+					<template #append>
+						<el-button @click="handleAddTag(scope)">添加</el-button>
+					</template>
+				</el-input>
+			</div>
+		</template>
+	</cl-form>
 </template>
 
 <script lang="ts" name="video-album" setup>
@@ -78,6 +113,9 @@ const videoAlbumVisible = ref<boolean>(false);
 const addListForm = useForm();
 const { dict } = useDict();
 const { t } = useI18n();
+
+// 标签输入框的值
+const tagInputValue = ref<string>('');
 
 const Upsert = useUpsert({
 	items: [
@@ -189,45 +227,49 @@ const Upsert = useUpsert({
 });
 
 function addListFormOpen(scope) {
+	// 清空输入框
+	tagInputValue.value = '';
+
 	addListForm.value?.open({
 		title: t('批量添加视频'),
+		form: {
+			titles: [],
+			selectedKeyword: ''
+		},
 		items: [
 			{
-				label: t('视频标题'),
-				prop: 'title',
+				label: t('视频标题标签'),
+				prop: 'titles',
 				required: true,
 				component: {
-					name: 'el-input',
-					props: {
-						type: 'textarea',
-						rows: 4,
-						clearable: true,
-						placeholder: t('举例(用英文逗号分割):恐怖游轮 死神来了')
-					}
+					name: 'slot-tags'
 				}
 			}
 		],
 		on: {
-			submit(data, { close, done }) {
-				//使用,分割
-				const titles = data.title.replace(/，/g, ',').replace(/\s/g, '').split(',');
-				//并校验titles数据可靠性
+			async submit(data, { close, done }) {
+				// 获取所有标签数组
+				const titles = data.titles || [];
 				if (titles.length > 0) {
-					console.info(scope.row.id);
-					service.video.album_video.add_list({
-						id: scope.row.id,
-						titles
-					});
-				}
-
-				console.log(titles);
-				setTimeout(() => {
+					try {
+						await service.video.album_video.add_list({
+							id: scope.row.id,
+							titles
+						});
+						
+						// 刷新列表
+						Crud.value?.refresh();
+						close();
+					} catch (error: any) {
+						console.error('添加失败', error);
+						done();
+					}
+				} else {
 					close();
-				}, 1500);
+				}
 			}
 		}
 	});
-	console.log(scope);
 }
 
 // cl-table
@@ -361,4 +403,101 @@ const submit = () => {
 		visible.value = false;
 	}
 };
+
+// 处理标签关闭
+function handleTagClose(scope: any, index: number) {
+	if (scope.titles && Array.isArray(scope.titles)) {
+		// 创建新数组，移除指定索引的项
+		const newTitles = [...scope.titles];
+		const deletedTitle = newTitles[index];
+		newTitles.splice(index, 1);
+		// 更新表单数据
+		addListForm.value?.setForm('titles', newTitles);
+		// 如果删除的是当前选中的标签，则选择第一个标签
+		if (scope.selectedKeyword === deletedTitle) {
+			if (newTitles.length > 0) {
+				addListForm.value?.setForm('selectedKeyword', newTitles[0]);
+			} else {
+				addListForm.value?.setForm('selectedKeyword', '');
+			}
+		}
+	}
+}
+
+// 处理标签选择
+function handleTagSelect(scope: any, title: string) {
+	addListForm.value?.setForm('selectedKeyword', title);
+}
+
+// 处理添加标签
+function handleAddTag(scope: any) {
+	let inputValue = tagInputValue.value.trim();
+
+	// 如果输入框为空，不添加
+	if (!inputValue) {
+		return;
+	}
+
+	// 获取当前的标签列表
+	const titles = scope.titles || [];
+	const newTitles: string[] = [];
+
+	// 尝试解析数组格式（如 [a, b, c] 或 ["a", "b", "c"]）
+	try {
+		// 检查是否是数组格式的字符串
+		if (inputValue.startsWith('[') && inputValue.endsWith(']')) {
+			// 尝试解析为 JSON 数组
+			const parsed = JSON.parse(inputValue);
+			if (Array.isArray(parsed)) {
+				parsed.forEach((item: any) => {
+					const title = String(item || '').trim();
+					if (title && !titles.includes(title) && !newTitles.includes(title)) {
+						newTitles.push(title);
+					}
+				});
+			}
+		}
+	} catch (e) {
+		// 如果不是有效的 JSON，继续使用分割方式
+	}
+
+	// 如果没有解析到数组，使用分割方式
+	if (newTitles.length === 0) {
+		// 先替换中文逗号和分号
+		inputValue = inputValue.replace(/，/g, ',').replace(/；/g, ';');
+
+		// 按分号或逗号分割
+		const parts = inputValue.split(/[;,]/);
+
+		parts.forEach(part => {
+			const title = part.trim();
+			if (title && !titles.includes(title) && !newTitles.includes(title)) {
+				newTitles.push(title);
+			}
+		});
+	}
+
+	// 如果有新标签，添加到列表
+	if (newTitles.length > 0) {
+		const updatedTitles = [...titles, ...newTitles];
+		addListForm.value?.setForm('titles', updatedTitles);
+		// 自动选中第一个新添加的标签
+		addListForm.value?.setForm('selectedKeyword', newTitles[0]);
+	}
+
+	// 清空输入框
+	tagInputValue.value = '';
+}
 </script>
+
+<style lang="scss" scoped>
+.tag-editor {
+	.tag-list {
+		min-height: 40px;
+		padding: 8px;
+		border: 1px solid var(--el-border-color);
+		border-radius: 4px;
+		background-color: var(--el-fill-color-lighter);
+	}
+}
+</style>

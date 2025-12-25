@@ -29,14 +29,14 @@
 		<!-- 新增、编辑 -->
 		<cl-upsert ref="Upsert" />
 	</cl-crud>
-	<cl-dialog v-model="visible" :before-close="beforeClose" height="auto" :title="t('分类绑定')">
+	<cl-dialog v-model="visible" :before-close="beforeClose" :title="t('分类绑定')" height="auto">
 		<collection-category :resourceId="resourceId" style="height: 600px"></collection-category>
 		<template #footer>
 			<el-button @click="visible = false">{{ t('取消') }}</el-button>
 			<el-button type="primary" @click="submit">{{ t('确定') }}</el-button>
 		</template>
 	</cl-dialog>
-	<cl-dialog v-model="collectionShow" height="auto" :title="t('采集进度')">
+	<cl-dialog v-model="collectionShow" :title="t('采集进度')" height="auto">
 		<el-table :data="tableData" max-height="450" style="width: 100%">
 			<el-table-column :label="t('#')" type="index" width="50" />
 			<el-table-column :label="t('名称')" prop="title" width="180"></el-table-column>
@@ -97,6 +97,11 @@ const Upsert = useUpsert({
 			label: t('说明'),
 			prop: 'desc',
 			component: { name: 'el-input', props: { clearable: true } }
+		},
+		{
+			label: t('排序'),
+			prop: 'sort',
+			component: { name: 'el-input-number' }
 		}
 	]
 });

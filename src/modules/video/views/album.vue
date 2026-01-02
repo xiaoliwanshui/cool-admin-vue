@@ -15,6 +15,7 @@
 				<cl-select
 					:options="dict.get('video_category')"
 					:width="140"
+					allLevelsId
 					check-strictly
 					prop="category_id"
 					tree

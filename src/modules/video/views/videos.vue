@@ -16,6 +16,7 @@
 				<cl-select
 					:options="dict.get('video_category')"
 					:width="140"
+					allLevelsId
 					check-strictly
 					prop="category_id"
 					tree
@@ -73,8 +74,8 @@
 						:type="scope.selectedKeyword === title ? 'primary' : undefined"
 						closable
 						style="cursor: pointer"
-						@close.stop="handleTagClose(scope, index)"
 						@click="handleTagSelect(scope, title)"
+						@close.stop="handleTagClose(scope, index)"
 					>
 						{{ title }}
 					</el-tag>
@@ -82,10 +83,10 @@
 				<!-- 输入框用于添加新标签 -->
 				<el-input
 					v-model="tagInputValue"
-					placeholder="输入剧名，支持用逗号(,)或分号(;)分割多个标题，或输入数组格式如：[标题1,标题2]"
 					clearable
-					@keyup.enter="handleAddTag(scope)"
+					placeholder="输入剧名，支持用逗号(,)或分号(;)分割多个标题，或输入数组格式如：[标题1,标题2]"
 					@clear="tagInputValue = ''"
+					@keyup.enter="handleAddTag(scope)"
 				>
 					<template #append>
 						<el-button @click="handleAddTag(scope)">添加</el-button>
@@ -101,7 +102,7 @@ import { useCrud, useForm, useTable, useUpsert } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
 import { useDict } from '/$/dict';
 import { useI18n } from 'vue-i18n';
-import { ref, watch, computed } from 'vue';
+import { ref, watch } from 'vue';
 import { ElMessage } from 'element-plus';
 
 const Form = useForm();

@@ -29,51 +29,16 @@
 		<!-- 新增、编辑 -->
 		<cl-upsert ref="Upsert" />
 	</cl-crud>
-	<cl-dialog v-model="visible" :before-close="beforeClose" :title="t('分类绑定')" height="auto">
-		<collection-category :resourceId="resourceId" style="height: 600px"></collection-category>
-		<template #footer>
-			<el-button @click="visible = false">{{ t('取消') }}</el-button>
-			<el-button type="primary" @click="submit">{{ t('确定') }}</el-button>
-		</template>
-	</cl-dialog>
-	<cl-dialog v-model="collectionShow" :title="t('采集进度')" height="auto">
-		<el-table :data="tableData" max-height="450" style="width: 100%">
-			<el-table-column :label="t('#')" type="index" width="50" />
-			<el-table-column :label="t('名称')" prop="title" width="180"></el-table-column>
-			<el-table-column :label="t('封面')" prop="horizontal_poster" width="180">
-				<template #default="scope">
-					<img :src="scope.row.horizontal_poster" style="width: 100px; height: 100px" />
-				</template>
-			</el-table-column>
-			<el-table-column :label="t('备注')" prop="note" width="180"></el-table-column>
-			<el-table-column :label="t('操作类型')" prop="updateType" width="180"></el-table-column>
-		</el-table>
-		<template #footer>
-			<el-button @click="visible = false">{{ t('取消') }}</el-button>
-			<el-button type="primary" @click="submit">{{ t('确定') }}</el-button>
-		</template>
-	</cl-dialog>
 </template>
 
 <script lang="ts" name="video-collection" setup>
 import { useCrud, useTable, useUpsert } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
-import { ref } from 'vue';
-import collectionCategory from '/$/video/components/collection-category.vue';
 import { VIDEOPARAMS } from '/$/video/utils/VideoParams';
-import { useDict } from '/$/dict';
 import { useI18n } from 'vue-i18n';
-
-const { dict } = useDict();
 const { service } = useCool();
 const { t } = useI18n();
 
-const visible = ref<boolean>(false);
-const modelValue = ref<Array<any>>([]);
-const resourceId = ref<number>(0);
-//定义采集进度show
-const collectionShow = ref<boolean>(false);
-//定义采集进度 结果数组
 
 // cl-upsert
 const Upsert = useUpsert({
@@ -144,7 +109,7 @@ const Table = useTable({
 				{
 					label: t('采集全部'),
 					async onClick({ scope }) {
-						await syncVideo(scope);
+						await syncVideo(scope,{});
 					}
 				},
 				{
@@ -172,7 +137,6 @@ const Table = useTable({
 	]
 });
 
-const tableData = ref([]);
 // cl-crud
 const Crud = useCrud(
 	{
@@ -183,43 +147,6 @@ const Crud = useCrud(
 	}
 );
 
-// 刷新
-function refresh(params?: any) {
-	Crud.value?.refresh(params);
-}
 
-const url = '/dev/admin/video/collection/call';
 
-//使用fetch 请求sse 协议的url
-async function fetchEventStream(url) {
-	const response = await fetch(url, {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'text/event-stream'
-		}
-	});
-
-	const reader = response.body?.getReader();
-	const decoder = new TextDecoder();
-
-	while (true) {
-		const { done, value } = await reader?.read();
-		if (done) {
-			break;
-		}
-		const text = decoder.decode(value);
-		const data = qs.parse(text);
-		if (data) {
-			if (data.video) {
-				tableData.value.push({
-					...data.video,
-					updateType: data.type
-				});
-			}
-		}
-	}
-}
-
-// 使用示例
-fetchEventStream(url);
 </script>

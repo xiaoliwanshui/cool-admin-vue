@@ -85,6 +85,7 @@ import { useDict } from '/$/dict';
 import { Plugins } from '/#/crud';
 import { useI18n } from 'vue-i18n';
 import { ElMessage } from 'element-plus';
+import { VIDEOPARAMS } from '../utils/VideoParams';
 
 const { service } = useCool();
 const { dict } = useDict();
@@ -151,7 +152,6 @@ const submitImport = () => {
 		});
 
 	const collectionItem = collectionList.value.find(item => item.value === collectionId);
-
 
 	const payload = {
 		query: { id: collectionId, name: collectionItem?.label ?? '' },
@@ -223,11 +223,27 @@ const Table = useTable({
 		{ label: t('修改人'), prop: 'updateUserId', minWidth: 140 },
 		{ label: t('创建时间'), prop: 'createTime', minWidth: 140, sortable: 'desc' },
 		{ label: t('更新时间'), prop: 'updateTime', minWidth: 140 },
-		{ type: 'op', buttons: ['edit', 'delete'] }
+		{ type: 'op', buttons: [{
+					label: t('采集全部'),
+					async onClick({ scope }) {
+						await syncVideo(scope,{t: scope.row.class_id});
+					}
+				},'edit', 'delete'] }
 	],
 	//【很重要】配置插件
 	plugins: [Plugins.Table.toTree()]
 });
+
+const syncVideo = async (scope, params: VIDEOPARAMS) => {
+	service.video.collection.info({id: scope.row.collection_id}).then(res => {
+		if(res){
+			service.video.collection.collection_day({
+				collection: res,
+				params
+			});
+		}
+	});
+};
 
 // cl-crud
 const Crud = useCrud(

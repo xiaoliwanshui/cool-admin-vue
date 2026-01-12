@@ -11,7 +11,17 @@
 			<cl-export-btn :columns="Table?.columns" />
 			<cl-flex1 />
 			<!-- 条件搜索 -->
-			<cl-search ref="Search" />
+			<cl-filter :label="t('分类')">
+				<cl-select
+					:options="dict.get('video_category')"
+					:width="140"
+					allLevelsId
+					check-strictly
+					prop="category_id"
+					tree
+				/>
+			</cl-filter>
+			<cl-search-key />
 		</cl-row>
 
 		<cl-row>
@@ -154,8 +164,6 @@ const Table = useTable({
 	]
 });
 
-// cl-search
-const Search = useSearch();
 
 // cl-crud
 const Crud = useCrud(

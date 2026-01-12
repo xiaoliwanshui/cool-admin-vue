@@ -286,13 +286,21 @@ const Upsert = useUpsert({
 			component: { name: 'el-input-number' },
 			group: 'score'
 		},
+		{
+			label: t('年份'),
+			prop: 'year',
+			hook: 'number',
+			component: { name: 'el-input-number' },
+			span: 6,
+			group: 'base'
+		},
 
 		{
 			label: t('总集数'),
 			prop: 'number',
 			hook: 'number',
 			component: { name: 'el-input-number' },
-			span: 8,
+			span: 6,
 			group: 'base'
 		},
 		{
@@ -301,7 +309,7 @@ const Upsert = useUpsert({
 			hook: 'number',
 			component: { name: 'el-input-number' },
 			defaultValue: 1,
-			span: 8,
+			span: 6,
 			group: 'base'
 		},
 		{
@@ -309,7 +317,7 @@ const Upsert = useUpsert({
 			prop: 'total',
 			hook: 'number',
 			component: { name: 'el-input-number' },
-			span: 8,
+			span: 6,
 			group: 'base'
 		},
 		{

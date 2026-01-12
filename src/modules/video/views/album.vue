@@ -94,6 +94,23 @@
 			</div>
 		</template>
 	</cl-form>
+
+	<!-- AI提示语生成对话框 -->
+	<cl-dialog v-model="aiPromptVisible" :title="t('AI提示语生成')" height="auto" width="60%">
+		<div class="ai-prompt-content">
+			<el-input
+				v-model="aiPromptText"
+				:rows="10"
+				placeholder="AI提示语将显示在这里..."
+				readonly
+				type="textarea"
+			/>
+			<div style="margin-top: 10px; text-align: center">
+				<el-button type="primary" @click="copyAiPrompt">{{ t('复制提示语') }}</el-button>
+				<el-button @click="aiPromptVisible = false">{{ t('关闭') }}</el-button>
+			</div>
+		</div>
+	</cl-dialog>
 </template>
 
 <script lang="ts" name="video-album" setup>
@@ -105,6 +122,8 @@ import videosAlbum from '/$/video/components/videos-album.vue';
 import _ from 'lodash';
 import { useDict } from '/$/dict';
 import { useI18n } from 'vue-i18n';
+import { useClipboard } from '@vueuse/core';
+import { ElMessage } from 'element-plus';
 
 const { service } = useCool();
 const visible = ref<boolean>(false);
@@ -117,6 +136,11 @@ const { t } = useI18n();
 
 // 标签输入框的值
 const tagInputValue = ref<string>('');
+
+// AI提示语相关变量
+const aiPromptVisible = ref<boolean>(false);
+const aiPromptText = ref<string>('');
+const { copy, isSupported } = useClipboard();
 
 const Upsert = useUpsert({
 	items: [
@@ -165,8 +189,8 @@ const Upsert = useUpsert({
 		{
 			label: t('月人气'),
 			prop: 'popularity_month',
-			hook: 'number',
 			span: 12,
+			hook: 'number',
 			component: { name: 'el-input-number' },
 			required: true,
 			value: _.random(1000, 3000)
@@ -273,6 +297,60 @@ function addListFormOpen(scope) {
 	});
 }
 
+// 生成AI提示语
+function generateAiPrompt(scope: any) {
+	const albumTitle = scope.row.title || '未命名专辑';
+	const albumDescription = scope.row.introduce || '无描述';
+	const categoryName =
+		dict.get('video_category').value.find((item: any) => item.value === scope.row.category_id)
+			?.name || '未分类';
+	// 构建AI提示语
+	const prompt = `请为${categoryName}视频专辑生成一个批量添加视频的列表：
+
+专辑名称：${albumTitle}
+专辑描述：${albumDescription}
+专辑分类：${categoryName}
+上映时间区间：${new Date().getFullYear()}年-${new Date().getFullYear() - 2}年
+
+请根据专辑的类型和主题，生成一系列相关的${categoryName}标题，格式如下：
+[
+  "墨雨云间",
+  "九重紫",
+  "藏海传",
+  ...
+]
+
+要求：
+1. 视频标题应与专辑主题相关
+2. 总共生成50-60个${categoryName}标题
+3. 标题应具有吸引力和创意
+4. 每个标题控制在10-20个字符以内
+5. 重要：生成的视频必须是真实存在于当前各大视频平台的真实视频内容，不能是虚构的视频标题
+7. 生成的视频标题中不能包含书名号《》或<>等符号
+8. 只能返回视频标题，不能包含其他任何描述性文字或解释
+9. 不要添加任何额外的信息或解释
+10. 不要重复的数据
+`;
+
+	aiPromptText.value = prompt;
+	aiPromptVisible.value = true;
+}
+
+// 复制AI提示语
+async function copyAiPrompt() {
+	if (!isSupported) {
+		ElMessage.error('当前浏览器不支持复制功能');
+		return;
+	}
+
+	try {
+		await copy(aiPromptText.value);
+		ElMessage.success('AI提示语复制成功');
+	} catch (error) {
+		ElMessage.error('复制失败');
+	}
+}
+
 // cl-table
 const Table = useTable({
 	columns: [
@@ -352,6 +430,12 @@ const Table = useTable({
 			buttons: [
 				t('edit'),
 				t('delete'),
+				{
+					label: t('AI生成提示语'),
+					async onClick({ scope }) {
+						generateAiPrompt(scope);
+					}
+				},
 				{
 					label: t('快速添加'),
 					async onClick({ scope }) {
@@ -499,6 +583,14 @@ function handleAddTag(scope: any) {
 		border: 1px solid var(--el-border-color);
 		border-radius: 4px;
 		background-color: var(--el-fill-color-lighter);
+	}
+}
+
+.ai-prompt-content {
+	.el-textarea {
+		textarea {
+			font-family: monospace;
+		}
 	}
 }
 </style>

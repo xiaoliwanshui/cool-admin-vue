@@ -1877,14 +1877,14 @@ declare namespace Eps {
 		surface_plot?: string;
 
 		/**
-		 * 是否推荐 1是 2否
+		 * 是否推荐 1是 0否
 		 */
-		recommend?: BigInt;
+		recommend?: number;
 
 		/**
-		 * 是否推荐 1是 2否
+		 * 是否推荐 1是 0否
 		 */
-		status?: BigInt;
+		status?: number;
 
 		/**
 		 * 简介

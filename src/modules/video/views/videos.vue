@@ -47,7 +47,40 @@
 
 		<cl-row>
 			<!-- 数据表格 -->
-			<cl-table ref="Table" />
+			<cl-table ref="Table">
+				<template #column-video_class="{ scope }">
+					<template v-if="scope.row.video_class">
+						<el-tag
+							v-for="(item, index) in typeof scope.row.video_class === 'string'
+								? scope.row.video_class.split(',').filter(Boolean)
+								: Array.isArray(scope.row.video_class)
+									? scope.row.video_class
+									: []"
+							:key="index"
+							size="small"
+							style="margin-right: 4px; margin-bottom: 4px"
+						>
+							{{ item.trim() }}
+						</el-tag>
+					</template>
+				</template>
+				<template #column-video_tag="{ scope }">
+					<template v-if="scope.row.video_tag">
+						<el-tag
+							v-for="(item, index) in typeof scope.row.video_tag === 'string'
+								? scope.row.video_tag.split(',').filter(Boolean)
+								: Array.isArray(scope.row.video_tag)
+									? scope.row.video_tag
+									: []"
+							:key="index"
+							size="small"
+							style="margin-right: 4px; margin-bottom: 4px"
+						>
+							{{ item.trim() }}
+						</el-tag>
+					</template>
+				</template>
+			</cl-table>
 		</cl-row>
 
 		<cl-row>
@@ -195,14 +228,16 @@ const Upsert = useUpsert({
 		{
 			label: t('影片分类'),
 			prop: 'video_class',
-			component: { name: 'el-input', props: { clearable: true } },
+			hook: 'splitJoin',
+			component: { name: 'el-input-tag', props: { clearable: true, delimiter: ',' } },
 			span: 12,
 			group: 'base'
 		},
 		{
 			label: t('影片标签'),
 			prop: 'video_tag',
-			component: { name: 'el-input', props: { clearable: true } },
+			hook: 'splitJoin',
+			component: { name: 'el-input-tag', props: { clearable: true, delimiter: ',' } },
 			span: 12,
 			group: 'base'
 		},

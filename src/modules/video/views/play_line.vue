@@ -9,6 +9,20 @@
 			<cl-multi-delete-btn />
 			<!-- 导出按钮 -->
 			<cl-export-btn :columns="Table?.columns" />
+			<!-- 批量检查按钮 -->
+			<el-button
+				type="warning"
+				:loading="checking"
+				:disabled="checking"
+				@click="handleBatchCheck"
+			>
+				<template v-if="checking">
+					{{ checkProgressText }}
+				</template>
+				<template v-else>
+					{{ t('批量检查链接') }}
+				</template>
+			</el-button>
 			<cl-flex1 />
 			<!-- 关键字搜索 -->
 			<!-- 关键字搜索 -->
@@ -37,11 +51,12 @@
 <script lang="ts" name="video-play_line" setup>
 import { useCrud, useSearch, useTable, useUpsert } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
-import { nextTick, ref, watch } from 'vue';
+import { nextTick, ref, watch, computed } from 'vue';
 import Artplayer from 'artplayer';
 import artplayerPluginHlsQuality from 'artplayer-plugin-hls-quality';
 import Hls from 'hls.js';
 import { useI18n } from 'vue-i18n';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import collectionSelect from '../components/collection-select.vue';
 
 const ArtplayerContainer = ref<Artplayer>();
@@ -49,6 +64,16 @@ const { service, route, router } = useCool();
 const { t } = useI18n();
 
 const visible = ref<boolean>(false);
+const checking = ref<boolean>(false);
+const checkProgress = ref<{ current: number; total: number }>({ current: 0, total: 0 });
+
+// 进度文本
+const checkProgressText = computed(() => {
+	if (checkProgress.value.total === 0) {
+		return t('检查中...');
+	}
+	return `${t('检查中')} ${checkProgress.value.current}/${checkProgress.value.total}`;
+});
 const beforeClose = (done: () => void) => {
 	if (ArtplayerContainer.value) {
 		ArtplayerContainer.value.destroy();
@@ -212,9 +237,16 @@ const Upsert = useUpsert({
 			prop: 'vip',
 			flex: false,
 			component: { name: 'cl-switch' },
-			span: 8,
-			group: 'base'
+			span: 12
 		},
+		{
+			label: t('status'),
+			prop: 'status',
+			flex: false,
+			component: { name: 'cl-switch' },
+			span: 12
+		},
+
 		{
 			label: t('文件地址'),
 			prop: 'file',
@@ -331,6 +363,202 @@ const Crud = useCrud(
 		handleRouteQuery(app);
 	}
 );
+
+// 检查链接连通性
+async function checkLink(url: string): Promise<boolean> {
+	if (!url || !url.trim()) {
+		return false;
+	}
+
+	const cleanUrl = url.trim();
+
+	// 方法1: 尝试使用 HEAD 请求（最轻量）
+	try {
+		const controller = new AbortController();
+		const timeoutId = setTimeout(() => controller.abort(), 8000); // 8秒超时
+
+		const response = await fetch(cleanUrl, {
+			method: 'HEAD',
+			mode: 'cors',
+			signal: controller.signal,
+			credentials: 'omit'
+		});
+
+		clearTimeout(timeoutId);
+
+		// 检查状态码，2xx 和 3xx 都认为可用
+		if (response.ok || (response.status >= 300 && response.status < 400)) {
+			return true;
+		}
+	} catch (error: any) {
+		// CORS 错误或其他错误，继续尝试其他方法
+		if (error.name !== 'AbortError') {
+			// 不是超时错误，继续尝试
+		} else {
+			// 超时，直接返回 false
+			return false;
+		}
+	}
+
+	// 方法2: 尝试使用 GET 请求（只请求少量数据）
+	try {
+		const controller = new AbortController();
+		const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+		const response = await fetch(cleanUrl, {
+			method: 'GET',
+			mode: 'cors',
+			signal: controller.signal,
+			credentials: 'omit',
+			headers: {
+				Range: 'bytes=0-512' // 只请求前512字节
+			}
+		});
+
+		clearTimeout(timeoutId);
+
+		// 检查状态码
+		if (
+			response.ok ||
+			response.status === 206 ||
+			(response.status >= 300 && response.status < 400)
+		) {
+			return true;
+		}
+	} catch (error: any) {
+		// 如果还是失败，尝试使用 XMLHttpRequest
+		if (error.name === 'AbortError') {
+			return false;
+		}
+	}
+
+	// 方法3: 使用 XMLHttpRequest（兼容性更好，但可能遇到 CORS）
+	return new Promise(resolve => {
+		const xhr = new XMLHttpRequest();
+		const timeoutId = setTimeout(() => {
+			xhr.abort();
+			resolve(false);
+		}, 8000);
+
+		xhr.open('HEAD', cleanUrl, true);
+		xhr.timeout = 8000;
+
+		xhr.onload = () => {
+			clearTimeout(timeoutId);
+			// 2xx 和 3xx 都认为可用
+			if (xhr.status >= 200 && xhr.status < 400) {
+				resolve(true);
+			} else {
+				resolve(false);
+			}
+		};
+
+		xhr.onerror = () => {
+			clearTimeout(timeoutId);
+			resolve(false);
+		};
+
+		xhr.ontimeout = () => {
+			clearTimeout(timeoutId);
+			resolve(false);
+		};
+
+		try {
+			xhr.send();
+		} catch (e) {
+			clearTimeout(timeoutId);
+			resolve(false);
+		}
+	});
+}
+
+// 批量检查链接
+async function handleBatchCheck() {
+	const selection = Table.value?.selection || [];
+
+	if (selection.length === 0) {
+		ElMessage.warning(t('请先选择要检查的数据'));
+		return;
+	}
+
+	// 确认对话框
+	try {
+		await ElMessageBox.confirm(
+			`确定要检查选中的 ${selection.length} 条数据的链接连通性吗？`,
+			t('批量检查'),
+			{
+				type: 'warning',
+				confirmButtonText: t('确定'),
+				cancelButtonText: t('取消')
+			}
+		);
+	} catch {
+		return; // 用户取消
+	}
+
+	checking.value = true;
+	checkProgress.value = { current: 0, total: selection.length };
+	let successCount = 0;
+	let failCount = 0;
+	const updatePromises: Promise<any>[] = [];
+
+	try {
+		// 遍历选中的数据
+		for (let i = 0; i < selection.length; i++) {
+			const item = selection[i];
+			const fileUrl = item.file;
+
+			// 更新进度
+			checkProgress.value.current = i + 1;
+
+			if (!fileUrl || !fileUrl.trim()) {
+				// 如果没有链接，标记为异常
+				updatePromises.push(
+					service.video.play_line.update({
+						id: item.id,
+						status: 0
+					})
+				);
+				failCount++;
+				continue;
+			}
+
+			// 检查链接连通性
+			const isAvailable = await checkLink(fileUrl.trim());
+
+			// 更新状态
+			updatePromises.push(
+				service.video.play_line.update({
+					id: item.id,
+					status: isAvailable ? 1 : 0
+				})
+			);
+
+			if (isAvailable) {
+				successCount++;
+			} else {
+				failCount++;
+			}
+		}
+
+		// 等待所有更新完成
+		await Promise.all(updatePromises);
+
+		ElMessage.success(`检查完成：正常 ${successCount} 条，异常 ${failCount} 条`);
+
+		// 刷新列表
+		Crud.value?.refresh();
+	} catch (error: any) {
+		console.error('批量检查失败：', error);
+		ElMessage.error(t('批量检查失败：') + (error.message || error));
+	} finally {
+		checking.value = false;
+		// 延迟重置进度，让用户看到完成状态
+		setTimeout(() => {
+			checkProgress.value = { current: 0, total: 0 };
+		}, 1000);
+	}
+}
 
 // 监听路由查询参数变化，当 video_id 变化时重新搜索
 watch(

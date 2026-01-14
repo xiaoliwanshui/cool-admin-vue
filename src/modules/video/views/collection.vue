@@ -36,9 +36,9 @@ import { useCrud, useTable, useUpsert } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
 import { VIDEOPARAMS } from '/$/video/utils/VideoParams';
 import { useI18n } from 'vue-i18n';
+import { ElMessage } from 'element-plus';
 const { service } = useCool();
 const { t } = useI18n();
-
 
 // cl-upsert
 const Upsert = useUpsert({
@@ -76,10 +76,11 @@ const syncCategory = async scope => {
 };
 
 const syncVideo = async (scope, params: VIDEOPARAMS) => {
-	service.video.collection.collection_day({
+	await service.video.collection.collection_day({
 		collection: scope.row,
 		params
 	});
+	ElMessage.success('执行成功');
 };
 
 // cl-table
@@ -109,7 +110,7 @@ const Table = useTable({
 				{
 					label: t('采集全部'),
 					async onClick({ scope }) {
-						await syncVideo(scope,{});
+						await syncVideo(scope, {});
 					}
 				},
 				{
@@ -146,7 +147,4 @@ const Crud = useCrud(
 		app.refresh();
 	}
 );
-
-
-
 </script>

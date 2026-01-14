@@ -223,24 +223,32 @@ const Table = useTable({
 		{ label: t('修改人'), prop: 'updateUserId', minWidth: 140 },
 		{ label: t('创建时间'), prop: 'createTime', minWidth: 140, sortable: 'desc' },
 		{ label: t('更新时间'), prop: 'updateTime', minWidth: 140 },
-		{ type: 'op', buttons: [{
+		{
+			type: 'op',
+			buttons: [
+				{
 					label: t('采集全部'),
 					async onClick({ scope }) {
-						await syncVideo(scope,{t: scope.row.class_id});
+						await syncVideo(scope, { t: scope.row.class_id });
 					}
-				},'edit', 'delete'] }
+				},
+				'edit',
+				'delete'
+			]
+		}
 	],
 	//【很重要】配置插件
 	plugins: [Plugins.Table.toTree()]
 });
 
 const syncVideo = async (scope, params: VIDEOPARAMS) => {
-	service.video.collection.info({id: scope.row.collection_id}).then(res => {
-		if(res){
-			service.video.collection.collection_day({
+	service.video.collection.info({ id: scope.row.collection_id }).then(async res => {
+		if (res) {
+			await service.video.collection.collection_day({
 				collection: res,
 				params
 			});
+			ElMessage.success('执行成功');
 		}
 	});
 };

@@ -22,8 +22,6 @@
 			</cl-filter>
 			<!-- 搜索组件 -->
 			<cl-search ref="Search" />
-			<!-- 关键字搜索 -->
-			<cl-search-key />
 		</cl-row>
 
 		<cl-row>

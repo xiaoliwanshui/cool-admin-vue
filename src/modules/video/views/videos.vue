@@ -80,6 +80,38 @@
 						</el-tag>
 					</template>
 				</template>
+				<template #column-actors="{ scope }">
+					<template v-if="scope.row.actors">
+						<el-tag
+							v-for="(item, index) in typeof scope.row.actors === 'string'
+								? scope.row.actors.split(',').filter(Boolean)
+								: Array.isArray(scope.row.actors)
+									? scope.row.actors
+									: []"
+							:key="index"
+							size="small"
+							style="margin-right: 4px; margin-bottom: 4px"
+						>
+							{{ item.trim() }}
+						</el-tag>
+					</template>
+				</template>
+				<template #column-directors="{ scope }">
+					<template v-if="scope.row.directors">
+						<el-tag
+							v-for="(item, index) in typeof scope.row.directors === 'string'
+								? scope.row.directors.split(',').filter(Boolean)
+								: Array.isArray(scope.row.directors)
+									? scope.row.directors
+									: []"
+							:key="index"
+							size="small"
+							style="margin-right: 4px; margin-bottom: 4px"
+						>
+							{{ item.trim() }}
+						</el-tag>
+					</template>
+				</template>
 			</cl-table>
 		</cl-row>
 
@@ -298,6 +330,7 @@ const Upsert = useUpsert({
 			prop: 'popularity_day',
 			hook: 'number',
 			component: { name: 'el-input-number' },
+			span: 8,
 			group: 'score'
 		},
 		{
@@ -305,6 +338,7 @@ const Upsert = useUpsert({
 			prop: 'popularity_week',
 			hook: 'number',
 			component: { name: 'el-input-number' },
+			span: 8,
 			group: 'score'
 		},
 		{
@@ -312,6 +346,7 @@ const Upsert = useUpsert({
 			prop: 'popularity_month',
 			hook: 'number',
 			component: { name: 'el-input-number' },
+			span: 8,
 			group: 'score'
 		},
 		{
@@ -319,6 +354,7 @@ const Upsert = useUpsert({
 			prop: 'popularity_sum',
 			hook: 'number',
 			component: { name: 'el-input-number' },
+			span: 8,
 			group: 'score'
 		},
 		{
@@ -326,7 +362,7 @@ const Upsert = useUpsert({
 			prop: 'year',
 			hook: 'number',
 			component: { name: 'el-input-number' },
-			span: 6,
+			span: 8,
 			group: 'base'
 		},
 
@@ -335,7 +371,7 @@ const Upsert = useUpsert({
 			prop: 'number',
 			hook: 'number',
 			component: { name: 'el-input-number' },
-			span: 6,
+			span: 8,
 			group: 'base'
 		},
 		{
@@ -352,7 +388,15 @@ const Upsert = useUpsert({
 			prop: 'total',
 			hook: 'number',
 			component: { name: 'el-input-number' },
-			span: 6,
+			span: 8,
+			group: 'base'
+		},
+		{
+			label: t('状态'),
+			prop: 'status',
+			span: 8,
+			hook: 'number',
+			component: { name: 'el-input-number' },
 			group: 'base'
 		},
 		{
@@ -386,7 +430,154 @@ const Upsert = useUpsert({
 			prop: 'sort',
 			hook: 'number',
 			component: { name: 'el-input-number' },
+			span: 8,
 			group: 'score'
+		},
+		{
+			label: t('导演'),
+			prop: 'directors',
+			hook: 'splitJoin',
+			component: { name: 'el-input-tag', props: { clearable: true, delimiter: ',' } },
+			span: 24,
+			group: 'base'
+		},
+		{
+			label: t('演员'),
+			prop: 'actors',
+			hook: 'splitJoin',
+			component: { name: 'el-input-tag', props: { clearable: true, delimiter: ',' } },
+			span: 24,
+			group: 'base'
+		},
+		{
+			label: t('IMDb评分'),
+			prop: 'imdb_score',
+			hook: 'number',
+			component: { name: 'el-input-number', props: { precision: 1, step: 0.1 } },
+			span: 8,
+			group: 'score'
+		},
+		{
+			label: t('IMDb评分ID'),
+			prop: 'imdb_score_id',
+			component: { name: 'el-input', props: { clearable: true } },
+			span: 8,
+			group: 'score'
+		},
+		{
+			label: t('豆瓣评分'),
+			prop: 'douban_score',
+			hook: 'number',
+			component: { name: 'el-input-number' },
+			span: 8,
+			group: 'score'
+		},
+		{
+			label: t('豆瓣评分ID'),
+			prop: 'douban_score_id',
+			span: 8,
+			component: { name: 'el-input', props: { clearable: true } },
+			group: 'score'
+		},
+		{
+			label: t('总人气'),
+			span: 8,
+			prop: 'popularity',
+			hook: 'number',
+			component: { name: 'el-input-number' },
+			group: 'score'
+		},
+		{
+			label: t('连载状态'),
+			prop: 'note',
+			component: { name: 'el-input', props: { clearable: true } },
+			group: 'base'
+		},
+		{
+			label: t('时长(单位s)'),
+			prop: 'duration',
+			hook: 'number',
+			component: { name: 'el-input-number' },
+			group: 'base'
+		},
+		{
+			label: t('备注'),
+			prop: 'remarks',
+			component: { name: 'el-input', props: { clearable: true } },
+			group: 'base'
+		},
+		{
+			label: t('发行商'),
+			prop: 'publish',
+			component: { name: 'el-input', props: { clearable: true } },
+			group: 'base'
+		},
+		{
+			label: t('上映日期'),
+			prop: 'pubdate',
+			component: { name: 'el-input', props: { clearable: true } },
+			group: 'base'
+		},
+		{
+			label: t('序列号'),
+			prop: 'serial_number',
+			component: { name: 'el-input', props: { clearable: true } },
+			group: 'base'
+		},
+		{
+			label: t('截屏'),
+			prop: 'screenshot',
+			component: { name: 'cl-upload' },
+			group: 'image'
+		},
+		{
+			label: t('是否连载完毕'),
+			prop: 'end',
+			hook: 'number',
+			component: { name: 'el-input-number' },
+			group: 'base'
+		},
+		{
+			label: t('单位'),
+			prop: 'unit',
+			component: { name: 'el-input', props: { clearable: true } },
+			group: 'base'
+		},
+		{
+			label: t('资源id'),
+			prop: 'collection_id',
+			hook: 'number',
+			component: { name: 'el-input-number' },
+			group: 'base'
+		},
+		{
+			label: t('顶数'),
+			prop: 'up',
+			hook: 'number',
+			component: { name: 'el-input-number' },
+			span: 8,
+			group: 'score'
+		},
+		{
+			label: t('踩数'),
+			prop: 'down',
+			hook: 'number',
+			component: { name: 'el-input-number' },
+			span: 8,
+			group: 'score'
+		},
+		{
+			label: t('资源名称'),
+			prop: 'collection_name',
+			component: { name: 'el-input', props: { clearable: true } },
+			group: 'base'
+		},
+		{
+			label: t('父级分类'),
+			prop: 'category_pid',
+			hook: 'number',
+			component: { name: 'el-input-number' },
+			group: 'base'
 		}
 	]
 });
@@ -458,46 +649,63 @@ const Table = useTable({
 		{
 			label: t('imd评分'),
 			prop: 'imdb_score',
-			minWidth: 150,
-			component: { name: 'el-rate', props: { disabled: true } }
+			minWidth: 100,
+			component: { name: 'el-rate', props: { disabled: true, max: 10 } }
 		},
 		{ label: t('iimdID'), prop: 'imdb_score_id', minWidth: 140 },
 		{
 			label: t('豆瓣评分.百分制'),
 			prop: 'douban_score',
 			minWidth: 150,
-			component: { name: 'el-rate', props: { disabled: true } }
+			component: { name: 'el-rate', props: { disabled: true, max: 10 } }
 		},
 		{ label: t('豆瓣ID'), prop: 'douban_score_id', minWidth: 140 },
 		{ label: t('简介'), prop: 'introduce', showOverflowTooltip: true, minWidth: 200 },
-		{ label: t('日人气'), prop: 'popularity_day', minWidth: 140 },
-		{ label: t('周人气'), prop: 'popularity_week', minWidth: 140 },
-		{ label: t('月人气'), prop: 'popularity_month', minWidth: 140 },
-		{ label: t('总人气'), prop: 'popularity', minWidth: 140 },
+		{ label: t('总人气'), prop: 'popularity', minWidth: 120 },
+		{ label: t('日人气'), prop: 'popularity_day', minWidth: 120 },
+		{ label: t('周人气'), prop: 'popularity_week', minWidth: 120 },
+		{ label: t('月人气'), prop: 'popularity_month', minWidth: 120 },
+		{ label: t('总人气(汇总)'), prop: 'popularity_sum', minWidth: 120 },
+		{ label: t('连载状态'), prop: 'note', minWidth: 120 },
+		{ label: t('年份'), prop: 'year', minWidth: 100 },
+		{ label: t('状态'), prop: 'status', minWidth: 100 },
+		{ label: t('时长(单位s)'), prop: 'duration', minWidth: 120 },
+		{ label: t('总集数'), prop: 'number', minWidth: 100 },
+		{ label: t('更新集数'), prop: 'total', minWidth: 100 },
+		{
+			label: t('横屏海报'),
+			prop: 'horizontal_poster',
+			minWidth: 120,
+			component: { name: 'cl-image', props: { size: 60 } }
+		},
+		{
+			label: t('竖屏海报'),
+			prop: 'vertical_poster',
+			minWidth: 120,
+			component: { name: 'cl-image', props: { size: 60 } }
+		},
+		{ label: t('备注'), prop: 'remarks', minWidth: 120 },
+		{ label: t('发行商'), prop: 'publish', minWidth: 120 },
 		{ label: t('上映日期'), prop: 'pubdate', minWidth: 140 },
+		{ label: t('序列号'), prop: 'serial_number', minWidth: 140 },
 		{
-			label: t('状态'),
-			prop: 'status',
-			minWidth: 100,
-			component: {
-				name: 'cl-switch',
-				props: {
-					activeValue: '1',
-					inactiveValue: '2'
-				}
-			}
+			label: t('截屏'),
+			prop: 'screenshot',
+			minWidth: 120,
+			component: { name: 'cl-image', props: { size: 60 } }
 		},
-		// 播放地址是否入库1-1已经入库 0未入库
-		{
-			label: t('资源是否入库'),
-			prop: 'play_url_put_in',
-			dict: play_url_put_inDict,
-			dictColor: true,
-			minWidth: 150,
-			dictAllLevels: true // 显示所有等级
-		},
-
+		{ label: t('是否连载完毕'), prop: 'end', minWidth: 120 },
+		{ label: t('单位'), prop: 'unit', minWidth: 100 },
 		{ label: t('采集的源地址'), prop: 'play_url', showOverflowTooltip: true, minWidth: 200 },
+		{ label: t('资源ID'), prop: 'collection_id', minWidth: 100 },
+		{ label: t('顶数'), prop: 'up', minWidth: 100 },
+		{ label: t('踩数'), prop: 'down', minWidth: 100 },
+		{ label: t('VIP集数'), prop: 'vipNumber', minWidth: 100 },
+		{ label: t('资源名称'), prop: 'collection_name', minWidth: 140 },
+		{ label: t('父级分类'), prop: 'category_pid', minWidth: 120 },
+		{ label: t('导演'), prop: 'directors', minWidth: 140 },
+		{ label: t('演员'), prop: 'actors', minWidth: 140 },
+		{ label: t('排序'), prop: 'sort', minWidth: 100 },
 		{
 			label: t('创建时间'),
 			prop: 'createTime',

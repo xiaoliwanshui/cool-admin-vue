@@ -15,8 +15,6 @@
 			<cl-export-btn :columns="Table?.columns" />
 
 			<cl-flex1 />
-			<!-- 关键字搜索 -->
-			<cl-search-key :placeholder="t('搜索关键字')" />
 			<cl-filter :label="t('资源')">
 				<cl-select
 					:options="collectionList"
@@ -25,6 +23,8 @@
 					prop="collection_id"
 				/>
 			</cl-filter>
+			<!-- 关键字搜索 -->
+			<cl-search-key :placeholder="t('搜索关键字')" />
 		</cl-row>
 
 		<cl-row>
@@ -48,8 +48,8 @@
 				<el-select
 					v-model="selectedCollectionId"
 					:placeholder="t('请选择资源')"
-					filterable
 					clearable
+					filterable
 					style="width: 100%"
 				>
 					<el-option
@@ -63,9 +63,9 @@
 			<el-form-item :label="t('内容')">
 				<el-input
 					v-model="importContent"
-					type="textarea"
-					:rows="10"
 					:placeholder="t('请输入需要导入的内容')"
+					:rows="10"
+					type="textarea"
 				/>
 			</el-form-item>
 		</el-form>

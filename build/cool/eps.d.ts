@@ -2902,6 +2902,11 @@ declare namespace Eps {
 		path?: string;
 
 		/**
+		 * 颜色
+		 */
+		color?: string;
+
+		/**
 		 * 关联ID
 		 */
 		relatedId?: number;

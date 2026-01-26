@@ -2907,6 +2907,11 @@ declare namespace Eps {
 		color?: string;
 
 		/**
+		 * 副标题
+		 */
+		subTitle?: string;
+
+		/**
 		 * 关联ID
 		 */
 		relatedId?: number;

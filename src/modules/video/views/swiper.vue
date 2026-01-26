@@ -69,10 +69,17 @@ const Upsert = useUpsert({
 		{
 			label: t('标题'),
 			prop: 'title',
+			required: true,
+			component: { name: 'el-input', props: { clearable: true } }
+		},
+		{
+			label: t('副标题'),
+			prop: 'subTitle',
 			component: { name: 'el-input', props: { clearable: true } }
 		},
 		{
 			label: t('图片'),
+			required: true,
 			prop: 'image',
 			component: {
 				name: 'cl-upload',
@@ -143,6 +150,18 @@ const Upsert = useUpsert({
 			}
 		},
 		{
+			label: t('类型'),
+			required: true,
+			prop: 'category',
+			component: {
+				name: 'el-tree-select',
+				props: {
+					data: dict.get('video_category'),
+					'check-strictly': true
+				}
+			}
+		},
+		{
 			label: t('颜色'),
 			prop: 'color',
 			component: {
@@ -154,6 +173,7 @@ const Upsert = useUpsert({
 				}
 			}
 		},
+
 		{
 			label: t('页面'),
 			prop: 'path',
@@ -164,17 +184,7 @@ const Upsert = useUpsert({
 			prop: 'relatedId',
 			component: { name: 'el-input', props: { clearable: true } }
 		},
-		{
-			label: t('类型'),
-			prop: 'category',
-			component: {
-				name: 'el-tree-select',
-				props: {
-					data: dict.get('video_category'),
-					'check-strictly': true
-				}
-			}
-		},
+
 		{
 			label: t('排序'),
 			prop: 'sort',
@@ -293,6 +303,7 @@ const Table = useTable({
 	columns: [
 		{ type: 'selection' },
 		{ label: t('标题'), prop: 'title', minWidth: 120 },
+		{ label: t('副标题'), prop: 'subTitle', minWidth: 120 },
 		{
 			label: t('图片'),
 			prop: 'image',

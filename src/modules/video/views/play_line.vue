@@ -11,9 +11,9 @@
 			<cl-export-btn :columns="Table?.columns" />
 			<!-- 批量检查按钮 -->
 			<el-button
-				type="warning"
-				:loading="checking"
 				:disabled="checking"
+				:loading="checking"
+				type="warning"
 				@click="handleBatchCheck"
 			>
 				<template v-if="checking">
@@ -43,7 +43,7 @@
 		<!-- 新增、编辑 -->
 		<cl-upsert ref="Upsert" />
 	</cl-crud>
-	<cl-dialog v-model="visible" :before-close="beforeClose" height="auto" :title="t('视频预览')">
+	<cl-dialog v-model="visible" :before-close="beforeClose" :title="t('视频预览')" height="auto">
 		<div id="playerRefDom"></div>
 	</cl-dialog>
 </template>
@@ -51,7 +51,7 @@
 <script lang="ts" name="video-play_line" setup>
 import { useCrud, useSearch, useTable, useUpsert } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
-import { nextTick, ref, watch, computed } from 'vue';
+import { computed, nextTick, ref, watch } from 'vue';
 import Artplayer from 'artplayer';
 import artplayerPluginHlsQuality from 'artplayer-plugin-hls-quality';
 import Hls from 'hls.js';
@@ -114,8 +114,8 @@ const Search = useSearch({
 			}
 		},
 		{
-			label: t('视频ID'),
-			prop: 'video_id',
+			label: t('影视名称'),
+			prop: 'keyWord',
 			component: {
 				name: 'el-input',
 				props: {
@@ -124,11 +124,14 @@ const Search = useSearch({
 			}
 		},
 		{
-			label: t('影视名称'),
-			prop: 'keyWord',
+			label: t('集数'),
+			prop: 'sort',
 			component: {
-				name: 'el-input',
+				name: 'el-input-number',
 				props: {
+					//限制只能输入整数
+					step: 1,
+					min: 0,
 					clearable: true
 				}
 			}
@@ -257,7 +260,20 @@ const Upsert = useUpsert({
 			prop: 'sub_title',
 			component: { name: 'el-input', props: { clearable: true } }
 		},
-		{ label: t('排序'), prop: 'sort', hook: 'number', component: { name: 'el-input-number' } },
+		{
+			label: t('排序'),
+			prop: 'sort',
+			hook: 'number',
+			component: {
+				name: 'el-input-number',
+				props: {
+					//限制只能输入整数
+					step: 1,
+					min: 0,
+					clearable: true
+				}
+			}
+		},
 		{
 			label: t('标识'),
 			prop: 'tag',

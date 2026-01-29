@@ -122,19 +122,6 @@ const Search = useSearch({
 					clearable: true
 				}
 			}
-		},
-		{
-			label: t('集数'),
-			prop: 'sort',
-			component: {
-				name: 'el-input-number',
-				props: {
-					//限制只能输入整数
-					step: 1,
-					min: 0,
-					clearable: true
-				}
-			}
 		}
 	],
 	onChange(data, prop) {

@@ -10,7 +10,8 @@
 			<cl-multi-delete-btn />
 			<!-- 导出按钮 -->
 			<cl-export-btn :columns="Table?.columns" />
-			<cl-flex1 />
+		</cl-row>
+		<cl-row>
 			<!-- 字典 -->
 			<cl-filter :label="t('分类')">
 				<cl-select
@@ -22,7 +23,7 @@
 					tree
 				/>
 			</cl-filter>
-			<!-- <cl-filter :label="t('视频ID')">
+			<cl-filter :label="t('视频ID')">
 				<el-input
 					v-model="videoIdValue"
 					:style="{ width: '140px' }"
@@ -30,7 +31,7 @@
 					@blur="handleIdChange"
 					@clear="handleIdClear"
 				/>
-			</cl-filter> -->
+			</cl-filter>
 			<cl-filter :label="t('入库')">
 				<cl-select :options="play_url_put_inDict" :width="140" prop="play_url_put_in" />
 			</cl-filter>
@@ -42,7 +43,7 @@
 				/>
 			</cl-filter>
 			<!-- 关键字搜索 -->
-			<cl-search-key />
+			<cl-search-key onchange="onChange" />
 		</cl-row>
 
 		<cl-row>
@@ -192,6 +193,31 @@ const play_url_put_inDict = [
 	{ value: 1, label: t('已入库') },
 	{ value: 0, label: t('未入库') }
 ];
+const onChange = (data, prop) => {
+	// 当 video_id 字段变化时，同步更新路由参数
+	if (prop === 'video_id') {
+		const videoId = String(data.video_id || '').trim();
+
+		if (videoId) {
+			// 有值时更新路由参数
+			router.replace({
+				path: route.path,
+				query: {
+					...route.query,
+					id: videoId
+				}
+			});
+		} else {
+			// 空值时移除路由参数中的 video_id
+			const query = { ...route.query };
+			delete query.video_id;
+			router.replace({
+				path: route.path,
+				query
+			});
+		}
+	}
+};
 // cl-upsert
 const Upsert = useUpsert({
 	items: [
@@ -1081,7 +1107,8 @@ function handleIdChange() {
 // 处理路由参数变化，更新输入框值并刷新列表
 function handleRouteQuery(crudInstance?: any) {
 	const crudApp = crudInstance || Crud.value;
-	const id = route.query.id;
+	// 优先使用 id 参数，如果没有则使用 video_id 参数
+	const id = route.query.id || route.query.video_id;
 
 	if (id && String(id).trim()) {
 		// 设置输入框的值
@@ -1113,12 +1140,13 @@ const Crud = useCrud(
 	}
 );
 
-// 监听路由查询参数变化，当 id 变化时重新刷新
+// 监听路由查询参数变化，当 id 或 video_id 变化时重新刷新
 watch(
-	() => route.query.id,
-	(newId, oldId) => {
-		// 只有当 id 真的变化时才处理
-		if (newId !== oldId) {
+	() => [route.query.id, route.query.video_id],
+	([newId, newVideoId], [oldId, oldVideoId]) => {
+		// 只有当 id 或 video_id 真的变化时才处理
+		if (String(newId) !== String(oldId) || String(newVideoId) !== String(oldVideoId)) {
+			console.log('路由参数变化:', { oldId, newId, oldVideoId, newVideoId });
 			handleRouteQuery();
 		}
 	},

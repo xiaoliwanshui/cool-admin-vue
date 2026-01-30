@@ -1969,6 +1969,11 @@ declare namespace Eps {
 		videos_id?: BigInt;
 
 		/**
+		 * 排序
+		 */
+		sort?: number;
+
+		/**
 		 * 创建时间
 		 */
 		createTime?: string;
@@ -2360,7 +2365,7 @@ declare namespace Eps {
 		/**
 		 * 排序
 		 */
-		sort?: BigInt;
+		sort?: number;
 
 		/**
 		 * 是否是竖屏，1-是，0-否

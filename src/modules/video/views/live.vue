@@ -13,9 +13,9 @@
 			<cl-export-btn :columns="Table?.columns" />
 			<!-- 批量检查按钮 -->
 			<el-button
-				type="warning"
-				:loading="checking"
 				:disabled="checking"
+				:loading="checking"
+				type="warning"
 				@click="handleBatchCheck"
 			>
 				<template v-if="checking">
@@ -32,6 +32,24 @@
 					:width="140"
 					check-strictly
 					prop="category_id"
+					tree
+				/>
+			</cl-filter>
+			<cl-filter :label="t('状态')">
+				<cl-select
+					:options="[
+						{
+							label: t('正常'),
+							value: 1
+						},
+						{
+							label: t('异常'),
+							value: 0
+						}
+					]"
+					:width="140"
+					check-strictly
+					prop="status"
 					tree
 				/>
 			</cl-filter>
@@ -55,6 +73,10 @@
 	</cl-crud>
 	<!-- 快速导入表单 -->
 	<cl-form ref="ImportForm"></cl-form>
+	<!-- 播放器弹窗 -->
+	<cl-dialog v-model="visible" :before-close="beforeClose" :title="t('直播预览')" height="auto">
+		<div id="playerRefDom"></div>
+	</cl-dialog>
 </template>
 
 <script lang="ts" name="video-live" setup>
@@ -63,7 +85,10 @@ import { useCool } from '/@/cool';
 import { useDict } from '/$/dict';
 import { useI18n } from 'vue-i18n';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { ref, computed } from 'vue';
+import { computed, nextTick, ref } from 'vue';
+import Artplayer from 'artplayer';
+import artplayerPluginHlsQuality from 'artplayer-plugin-hls-quality';
+import Hls from 'hls.js';
 
 const { service } = useCool();
 const { dict } = useDict();
@@ -73,6 +98,73 @@ const image: string = `https://cool-file-1300398902.cos.ap-nanjing.myqcloud.com/
 
 const checking = ref<boolean>(false);
 const checkProgress = ref<{ current: number; total: number }>({ current: 0, total: 0 });
+const visible = ref<boolean>(false);
+const ArtplayerContainer = ref<Artplayer>();
+
+// 播放器相关函数
+const beforeClose = (done: () => void) => {
+	if (ArtplayerContainer.value) {
+		ArtplayerContainer.value.destroy();
+	}
+	done();
+};
+
+const handleError = (error: Error) => {
+	// 处理错误，给用户合适的反馈
+	console.error('播放错误：', error);
+};
+
+const play = async (url: string) => {
+	await nextTick();
+	visible.value = true;
+	if (!url) {
+		handleError(new Error(t('URL为空，无法播放直播流。')));
+		return;
+	}
+	setTimeout(() => {
+		try {
+			ArtplayerContainer.value = new Artplayer({
+				container: '#playerRefDom',
+				url: url,
+				setting: true,
+				plugins: [
+					artplayerPluginHlsQuality({
+						// Show quality in control
+						control: true,
+
+						// Show quality in setting
+						setting: true,
+
+						// Get the resolution text from level
+						getResolution: level => level.height + 'P',
+
+						// I18n
+						title: t('Quality'),
+						auto: t('Auto')
+					})
+				],
+				customType: {
+					m3u8: function playM3u8(video, url, art) {
+						if (Hls.isSupported()) {
+							if (art.hls) art.hls.destroy();
+							const hls = new Hls();
+							hls.loadSource(url);
+							hls.attachMedia(video);
+							art.hls = hls;
+							art.on('destroy', () => hls.destroy());
+						} else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+							video.src = url;
+						} else {
+							art.notice.show = t('Unsupported playback format: m3u8');
+						}
+					}
+				}
+			});
+		} catch (error: unknown) {
+			handleError(error as Error);
+		}
+	}, 0);
+};
 
 // 进度文本
 const checkProgressText = computed(() => {
@@ -155,7 +247,21 @@ const Table = useTable({
 		},
 		{ label: t('创建时间'), prop: 'createTime' },
 		{ label: t('更新时间'), prop: 'updateTime' },
-		{ type: 'op', width: 250, buttons: ['info', 'edit', 'delete'] }
+		{
+			type: 'op',
+			width: 300,
+			buttons: [
+				'info',
+				'edit',
+				'delete',
+				{
+					label: t('播放'),
+					async onClick({ scope }) {
+						play(scope.row.pullUrl);
+					}
+				}
+			]
+		}
 	]
 });
 
@@ -216,7 +322,7 @@ async function checkLink(url: string): Promise<boolean> {
 			signal: controller.signal,
 			credentials: 'omit',
 			headers: {
-				Range: 'bytes=0-512' // 只请求前512字节
+				Range: 'bytes=0-512' // 只请求前52字节
 			}
 		});
 
@@ -421,6 +527,30 @@ function openQuickImport() {
 					const importList: Array<{ title: string; pullUrl: string }> = [];
 					const errors: string[] = [];
 
+					// URL验证函数
+					function isValidM3U8Url(url: string): boolean {
+						if (!url || typeof url !== 'string') {
+							return false;
+						}
+
+						// 检查是否是有效的URL格式
+						try {
+							const parsedUrl = new URL(url);
+
+							// 检查协议是否为http或https
+							if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') {
+								return false;
+							}
+
+							// 检查URL路径是否以.m3u8结尾（不区分大小写）
+							const pathname = parsedUrl.pathname.toLowerCase();
+							return pathname.endsWith('.m3u8');
+						} catch (e) {
+							// 如果URL格式无效，则返回false
+							return false;
+						}
+					}
+
 					for (let i = 0; i < lines.length; i++) {
 						const line = lines[i];
 						const parts = line.split(',');
@@ -435,6 +565,12 @@ function openQuickImport() {
 
 						if (!title || !pullUrl) {
 							errors.push(`第 ${i + 1} 行数据不完整：${line}`);
+							continue;
+						}
+
+						// 验证URL格式和m3u8后缀
+						if (!isValidM3U8Url(pullUrl)) {
+							errors.push(`第 ${i + 1} 行URL格式错误或非m3u8格式：${pullUrl}`);
 							continue;
 						}
 
@@ -501,3 +637,10 @@ function openQuickImport() {
 	});
 }
 </script>
+
+<style lang="scss" scoped>
+#playerRefDom {
+	width: 100%;
+	height: 500px;
+}
+</style>

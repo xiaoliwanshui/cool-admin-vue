@@ -40,7 +40,11 @@ const { user } = toRefs(props);
 
 //计算日环比
 function getRatio() {
-	dayOverDayRate.value = ((user.value.today - user.value.total) / user.value.total) * 100;
+	if (user.value.total > 0) {
+		dayOverDayRate.value = Number(((user.value.today / user.value.total) * 100).toFixed(2));
+	} else {
+		dayOverDayRate.value = 0;
+	}
 }
 
 watch(

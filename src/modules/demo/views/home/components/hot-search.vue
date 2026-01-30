@@ -13,10 +13,6 @@
 								<span>{{ $t('搜索用户数') }}</span>
 								<span>{{ count }}</span>
 							</div>
-							<div class="rise">
-								<i class="el-icon-top-right"></i>
-								<span>+7%</span>
-							</div>
 						</div>
 
 						<v-chart :option="chartOptions" autoresize />
@@ -36,7 +32,7 @@
 <script lang="ts" setup>
 import * as echarts from 'echarts';
 import { useCrud, useTable } from '@cool-vue/crud';
-import { computed, reactive, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -58,24 +54,6 @@ const count = computed(() => {
 	return keyWord.value.reduce((total, item) => {
 		return total + parseInt(item.count || '0');
 	}, 0);
-});
-
-const tab = reactive({
-	active: 'today',
-	list: [
-		{
-			label: t('日热搜'),
-			value: 'today'
-		},
-		{
-			label: t('周热搜'),
-			value: 'week'
-		},
-		{
-			label: t('月热搜'),
-			value: 'month'
-		}
-	]
 });
 
 const chartOptions = ref({

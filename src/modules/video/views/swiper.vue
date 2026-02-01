@@ -29,7 +29,7 @@
 			<cl-table ref="Table">
 				<template #column-color="{ scope }">
 					<el-tag v-if="scope.row.color" :color="scope.row.color"
-						>{{ scope.row.color ?? '暂无颜色' }}
+						>{{ scope.row.color ?? t('暂无颜色') }}
 					</el-tag>
 				</template>
 			</cl-table>

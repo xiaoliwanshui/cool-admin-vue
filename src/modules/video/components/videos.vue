@@ -48,10 +48,11 @@
 import { useCrud, useTable, useUpsert } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
 import { useDict } from '/$/dict';
+import { useI18n } from 'vue-i18n';
 
 const { dict } = useDict();
-
 const { service } = useCool();
+const { t } = useI18n();
 
 // cl-upsert
 const Upsert = useUpsert({

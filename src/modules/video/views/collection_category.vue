@@ -248,7 +248,7 @@ const syncVideo = async (scope, params: VIDEOPARAMS) => {
 				collection: res,
 				params
 			});
-			ElMessage.success('执行成功');
+			ElMessage.success(t('执行成功'));
 		}
 	});
 };

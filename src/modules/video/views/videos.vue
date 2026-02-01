@@ -837,7 +837,7 @@ function open() {
 			},
 			// 采集操作
 			{
-				label: '剧名标签',
+				label: t('剧名标签'),
 				prop: 'titles',
 				group: 'collection',
 				required: true,
@@ -862,7 +862,7 @@ function open() {
 				}
 			},
 			{
-				label: '剧名标签',
+				label: t('剧名标签'),
 				prop: 'titles',
 				group: 'ranking',
 				required: true,

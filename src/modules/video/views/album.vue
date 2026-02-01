@@ -393,7 +393,7 @@ function generateAiPrompt(scope: any) {
 // 复制AI提示语
 async function copyAiPrompt() {
 	if (!isSupported) {
-		ElMessage.error('当前浏览器不支持复制功能');
+		ElMessage.error(t('当前浏览器不支持复制功能'));
 		return;
 	}
 

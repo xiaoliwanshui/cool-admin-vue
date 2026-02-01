@@ -222,8 +222,8 @@ function parseM3u8List(input: string, scope: any): Array<{ file: string; title: 
 		if (fullMatch) {
 			result.push({
 				file: fullMatch[2],
-				title: `第${fullMatch[1]}集`,
-				sub_title: `第${fullMatch[1]}集`,
+				title: t('第{num}集', { num: fullMatch[1] }),
+				sub_title: t('第{num}集', { num: fullMatch[1] }),
 				collection_id: scope.collection_id,
 				collection_name: scope.collection_name,
 				video_line_id: scope.id,
@@ -240,8 +240,8 @@ function parseM3u8List(input: string, scope: any): Array<{ file: string; title: 
 		if (standardMatch) {
 			result.push({
 				file: standardMatch[2],
-				title: `第${standardMatch[1]}集`,
-				sub_title: `第${standardMatch[1]}集`,
+				title: t('第{num}集', { num: standardMatch[1] }),
+				sub_title: t('第{num}集', { num: standardMatch[1] }),
 				collection_id: scope.collection_id,
 				collection_name: scope.collection_name,
 				video_line_id: scope.id,
@@ -258,8 +258,8 @@ function parseM3u8List(input: string, scope: any): Array<{ file: string; title: 
 		if (urlMatch) {
 			result.push({
 				file: urlMatch[1],
-				title: `第${episodeCounter.toString().padStart(2, '0')}集`,
-				sub_title: `第${episodeCounter.toString().padStart(2, '0')}集`,
+				title: t('第{num}集', { num: episodeCounter.toString().padStart(2, '0') }),
+				sub_title: t('第{num}集', { num: episodeCounter.toString().padStart(2, '0') }),
 				collection_id: scope.collection_id,
 				collection_name: scope.collection_name,
 				video_line_id: scope.id,

@@ -1,6 +1,8 @@
 {
   "浏览量": "Views",
   "访客数": "Visitors",
+  "总访客数": "Total Visitors",
+  "日访客数": "Daily Visitors",
   "总用户数": "Total Users",
   "日增用户数": "Daily New Users",
   "付款笔数": "Payment Transactions",
@@ -63,5 +65,7 @@
   "日更新": "Daily Update",
   "异常链接数": "Abnormal Links",
   "占有率": "Occupancy Rate",
-  "反馈预览": "Feedback Preview"
+  "反馈预览": "Feedback Preview",
+  "笔": "Transactions",
+  "条": "Items"
 }

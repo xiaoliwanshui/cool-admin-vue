@@ -170,7 +170,11 @@ const Table = useTable({
 		{
 			label: t("类型"),
 			prop: "type",
-			dict: [{value: "1影片"}, {value: "2名人"}, {value: "3文章"}],
+			dict: [
+				{value: "1", label: t("视频")}, 
+				{value: "2", label: t("名人")}, 
+				{value: "3", label: t("文章")}
+			],
 			dictColor: true,
 			minWidth: 120
 		},

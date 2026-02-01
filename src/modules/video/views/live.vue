@@ -6,7 +6,7 @@
 			<!-- 新增按钮 -->
 			<cl-add-btn />
 			<!-- 快速导入按钮 -->
-			<el-button type="success" @click="openQuickImport">快速导入</el-button>
+			<el-button type="success" @click="openQuickImport">{{ t('快速导入') }}</el-button>
 			<!-- 删除按钮 -->
 			<cl-multi-delete-btn />
 			<!-- 导出按钮 -->
@@ -474,7 +474,7 @@ async function handleBatchCheck() {
 // 打开快速导入表单
 function openQuickImport() {
 	ImportForm.value?.open({
-		title: '快速导入',
+		title: t('快速导入'),
 		width: '800px',
 		items: [
 			{
@@ -518,7 +518,7 @@ function openQuickImport() {
 						.filter(line => line);
 
 					if (lines.length === 0) {
-						ElMessage.warning('请输入要导入的数据');
+						ElMessage.warning(t('请输入要导入的数据'));
 						done();
 						return;
 					}
@@ -556,7 +556,7 @@ function openQuickImport() {
 						const parts = line.split(',');
 
 						if (parts.length < 2) {
-							errors.push(`第 ${i + 1} 行格式错误：${line}`);
+							errors.push(`${t('第')} ${i + 1} ${t('行格式错误')}：${line}`);
 							continue;
 						}
 
@@ -564,13 +564,15 @@ function openQuickImport() {
 						const pullUrl = parts.slice(1).join(',').trim(); // 处理URL中可能包含逗号的情况
 
 						if (!title || !pullUrl) {
-							errors.push(`第 ${i + 1} 行数据不完整：${line}`);
+							errors.push(`${t('第')} ${i + 1} ${t('行数据不完整')}：${line}`);
 							continue;
 						}
 
 						// 验证URL格式和m3u8后缀
 						if (!isValidM3U8Url(pullUrl)) {
-							errors.push(`第 ${i + 1} 行URL格式错误或非m3u8格式：${pullUrl}`);
+							errors.push(
+								`${t('第')} ${i + 1} ${t('行URL格式错误或非m3u8格式')}：${pullUrl}`
+							);
 							continue;
 						}
 
@@ -578,7 +580,7 @@ function openQuickImport() {
 					}
 
 					if (errors.length > 0) {
-						ElMessageBox.alert(errors.join('\n'), '数据格式错误', {
+						ElMessageBox.alert(errors.join('\n'), t('数据格式错误'), {
 							type: 'warning',
 							dangerouslyUseHTMLString: false
 						});
@@ -587,15 +589,15 @@ function openQuickImport() {
 					}
 
 					if (importList.length === 0) {
-						ElMessage.warning('没有有效的数据可导入');
+						ElMessage.warning(t('没有有效的数据可导入'));
 						done();
 						return;
 					}
 
 					// 确认导入
 					await ElMessageBox.confirm(
-						`将导入 ${importList.length} 条数据，是否继续？`,
-						'确认导入',
+						t('将导入 {count} 条数据，是否继续？', { count: importList.length }),
+						t('确认导入'),
 						{
 							type: 'info'
 						}
@@ -617,18 +619,23 @@ function openQuickImport() {
 							successCount++;
 						} catch (error: any) {
 							failCount++;
-							console.error(`导入失败：${item.title}`, error);
+							console.error(`${t('导入失败')}：${item.title}`, error);
 						}
 					}
 
-					ElMessage.success(`导入完成！成功：${successCount} 条，失败：${failCount} 条`);
+					ElMessage.success(
+						t('导入完成！成功：{successCount} 条，失败：{failCount} 条', {
+							successCount,
+							failCount
+						})
+					);
 
 					// 刷新列表
 					Crud.value?.refresh();
 					close();
 				} catch (error: any) {
 					if (error !== 'cancel') {
-						ElMessage.error(error.message || '导入失败');
+						ElMessage.error(error.message || t('导入失败'));
 					}
 					done();
 				}

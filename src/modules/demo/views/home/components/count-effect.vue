@@ -10,7 +10,7 @@
 			</div>
 
 			<div class="card__container">
-				<cl-number :value="feedback.sum" class="num" suffix="条" type="amount" />
+				<cl-number :suffix="$t('条')" :value="feedback.sum" class="num" type="amount" />
 			</div>
 
 			<div class="card__footer">

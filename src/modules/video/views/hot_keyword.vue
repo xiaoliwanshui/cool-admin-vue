@@ -29,12 +29,12 @@
 			<cl-table ref="Table">
 				<template #column-bgColor="{ scope }">
 					<el-tag v-if="scope.row.bgColor" :color="scope.row.bgColor"
-						>{{ scope.row.bgColor ?? '暂无颜色' }}
+						>{{ scope.row.bgColor ?? t('暂无颜色') }}
 					</el-tag>
 				</template>
 				<template #column-fontColor="{ scope }">
 					<el-tag v-if="scope.row.fontColor" :color="scope.row.fontColor"
-						>{{ scope.row.fontColor ?? '暂无颜色' }}
+						>{{ scope.row.fontColor ?? t('暂无颜色') }}
 					</el-tag>
 				</template>
 			</cl-table>
@@ -96,14 +96,14 @@ const Upsert = useUpsert({
 			value: 0
 		},
 		{
-			label: '背景颜色',
+			label: t('背景颜色'),
 			prop: 'bgColor',
 			component: {
 				name: 'el-color-picker'
 			}
 		},
 		{
-			label: '字体颜色',
+			label: t('字体颜色'),
 			prop: 'fontColor',
 			component: {
 				name: 'el-color-picker'

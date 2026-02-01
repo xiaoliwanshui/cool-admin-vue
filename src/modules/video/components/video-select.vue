@@ -43,7 +43,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-	placeholder: '请选择或输入视频名'
+	placeholder: ''
 });
 
 // 定义 emit 事件

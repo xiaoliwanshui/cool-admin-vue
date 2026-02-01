@@ -7,7 +7,7 @@
 			</div>
 
 			<div class="card__container">
-				<cl-number :value="playLine.fail" class="num" suffix="笔" />
+				<cl-number :suffix="$t('笔')" :value="playLine.fail" class="num" />
 			</div>
 
 			<div class="card__footer">

@@ -524,7 +524,7 @@ async function handleBatchCheck() {
 	// 确认对话框
 	try {
 		await ElMessageBox.confirm(
-			`确定要检查选中的 ${selection.length} 条数据的链接连通性吗？`,
+			t('确定要检查选中的 {count} 条数据的链接连通性吗？', { count: selection.length }),
 			t('批量检查'),
 			{
 				type: 'warning',
@@ -584,12 +584,12 @@ async function handleBatchCheck() {
 		// 等待所有更新完成
 		await Promise.all(updatePromises);
 
-		ElMessage.success(`检查完成：正常 ${successCount} 条，异常 ${failCount} 条`);
+		ElMessage.success(t('检查完成：正常 {successCount} 条，异常 {failCount} 条', { successCount, failCount }));
 
 		// 刷新列表
 		Crud.value?.refresh();
 	} catch (error: any) {
-		console.error('批量检查失败：', error);
+		console.error(t('批量检查失败：'), error);
 		ElMessage.error(t('批量检查失败：') + (error.message || error));
 	} finally {
 		checking.value = false;

@@ -41,7 +41,14 @@
 		</cl-row>
 
 		<!-- 新增、编辑 -->
-		<cl-upsert ref="Upsert" />
+		<cl-upsert ref="Upsert">
+			<template #slot-video-line-select="{ scope }">
+				<video-line-select
+					:onChange="videoLineSelectChange"
+					:video-line-id="scope.video_line_id"
+				></video-line-select>
+			</template>
+		</cl-upsert>
 	</cl-crud>
 	<cl-dialog v-model="visible" :before-close="beforeClose" :title="t('视频预览')" height="auto">
 		<div id="playerRefDom"></div>
@@ -58,6 +65,8 @@ import Hls from 'hls.js';
 import { useI18n } from 'vue-i18n';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import collectionSelect from '../components/collection-select.vue';
+import videoSelect from '/$/video/components/video-select.vue';
+import videoLineSelect from '../components/video-line-select.vue';
 
 const ArtplayerContainer = ref<Artplayer>();
 const { service, route, router } = useCool();
@@ -91,7 +100,32 @@ const Search = useSearch({
 			label: t('资源名称'),
 			prop: 'collection_id',
 			component: {
-				vm: collectionSelect
+				vm: collectionSelect,
+				props: {
+					onChange(data) {
+						if (data) {
+							Search.value.setForm('collection_id', data.id);
+						} else {
+							Search.value.setForm('collection_id', undefined);
+						}
+					}
+				}
+			}
+		},
+		{
+			label: t('影视'),
+			prop: 'video_id',
+			component: {
+				vm: videoSelect,
+				props: {
+					onChange(data) {
+						if (data) {
+							Search.value.setForm('video_id', data.id);
+						} else {
+							Search.value.setForm('video_id', undefined);
+						}
+					}
+				}
 			}
 		},
 		{
@@ -110,16 +144,6 @@ const Search = useSearch({
 							value: 0
 						}
 					]
-				}
-			}
-		},
-		{
-			label: t('影视名称'),
-			prop: 'keyWord',
-			component: {
-				name: 'el-input',
-				props: {
-					clearable: true
 				}
 			}
 		}
@@ -201,20 +225,29 @@ const play = async (url: string) => {
 		}
 	}, 0);
 };
+
+const videoLineSelectChange = data => {
+	Upsert.value.setForm('video_line_id', data.id);
+	Upsert.value.setForm('collection_id', data.collection_id);
+	Upsert.value.setForm('collection_name', data.collection_name);
+	Upsert.value.setForm('tag', data.tag);
+	Upsert.value.setForm('video_id', data.video_id);
+	Upsert.value.setForm('video_name', data.video_name);
+
+	console.log(Upsert.value);
+};
+
 // cl-upsert
 const Upsert = useUpsert({
 	items: [
 		{
-			label: t('影视ID'),
-			prop: 'video_id',
-			hook: 'number',
-			component: { name: 'el-input-number' }
-		},
-		{
-			label: t('资源ID'),
+			label: t('线路'),
 			prop: 'video_line_id',
 			hook: 'number',
-			component: { name: 'el-input-number' }
+			component: {
+				name: 'slot-video-line-select'
+			},
+			required: true
 		},
 		{
 			label: t('名称'),
@@ -227,20 +260,23 @@ const Upsert = useUpsert({
 			prop: 'vip',
 			flex: false,
 			component: { name: 'cl-switch' },
-			span: 12
+			span: 12,
+			value: 0
 		},
 		{
 			label: t('status'),
 			prop: 'status',
 			flex: false,
 			component: { name: 'cl-switch' },
-			span: 12
+			span: 12,
+			value: 1
 		},
 
 		{
 			label: t('文件地址'),
 			prop: 'file',
-			component: { name: 'el-input', props: { type: 'textarea', rows: 4 } }
+			component: { name: 'el-input', props: { type: 'textarea', rows: 4 } },
+			required: true
 		},
 		{
 			label: t('副标题'),
@@ -259,7 +295,8 @@ const Upsert = useUpsert({
 					min: 0,
 					clearable: true
 				}
-			}
+			},
+			value: 1
 		},
 		{
 			label: t('标识'),

@@ -1,11 +1,3 @@
-<!--
- * @Author: 17691002584 17691002584@163.com
- * @Date: 2025-08-08 22:16:59
- * @LastEditors: 17691002584 17691002584@163.com
- * @LastEditTime: 2026-02-01 03:00:33
- * @FilePath: src/modules/video/components/collection-select.vue
- * @Description: 视频合集选择组件
- -->
 <template>
 	<el-row :gutter="20">
 		<el-col :span="24">
@@ -31,7 +23,7 @@
 					<span
 						style="float: right; color: var(--el-text-color-secondary); font-size: 13px"
 					>
-						{{ item.description }}
+						{{ item.remarks }}
 					</span>
 				</el-option>
 			</el-select>
@@ -39,19 +31,19 @@
 	</el-row>
 </template>
 
-<script lang="ts" name="video-collection-select" setup>
+<script lang="ts" setup>
 import { useDict } from '/$/dict';
 import { onMounted, ref, watch } from 'vue';
 import { useCool } from '/@/cool/hooks';
 
 // 定义 props
 interface Props {
-	collectionId?: number;
+	videoLineId?: number;
 	placeholder?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-	placeholder: '请选择或输入資源名'
+	placeholder: '请选择或输入线路名'
 });
 
 // 定义 emit 事件
@@ -63,48 +55,25 @@ const { dict } = useDict();
 const loading = ref(false);
 const selectedValue = ref<number | null>(null);
 const { service } = useCool();
-const options = ref<Array<{ label: string; value: number; description?: string }>>([]);
+const options = ref<Array<{ label: string; value: number; remarks?: string }>>([]);
 
-// 加载所有选项数据
-const loadAllOptions = async () => {
-	loading.value = true;
-	try {
-		const data = await service.video.collection.page({
-			page: 1,
-			size: 1000 // 设置一个较大的页面大小以获取所有数据
-		});
-		
-		options.value = data.list.map(item => {
-			return {
-				label: item.name || '',
-				value: item.id || 0,
-				description: item.description
-			};
-		});
-	} catch (error) {
-		console.error('加载所有选项失败:', error);
-	} finally {
-		loading.value = false;
-	}
-};
-
-// 根据传入的 collectionId 查询并回填默认值
-const loadDefaultValue = async (collectionId: number) => {
-	if (!collectionId) return;
+// 根据传入的 videoLineId 查询并回填默认值
+const loadDefaultValue = async (videoLineId: number) => {
+	if (!videoLineId) return;
 
 	loading.value = true;
 	try {
-		const data = await service.video.collection.info({
-			id: collectionId
+		const data = await service.video.video_line.info({
+			id: videoLineId
 		});
 
 		selectedValue.value = data.id || null;
 		// 设置选项以便显示标签
 		options.value = [
 			{
-				label: data.name || '',
+				label: data.video_name || data.collection_name || '',
 				value: data.id || 0,
-				description: data.description
+				remarks: data.tag || data.video_name || data.collection_name
 			}
 		];
 		emit('change', data);
@@ -119,7 +88,7 @@ const loadDefaultValue = async (collectionId: number) => {
 const remoteMethod = (query: string) => {
 	if (query) {
 		loading.value = true;
-		service.video.collection
+		service.video.video_line
 			.page({
 				keyWord: query
 			})
@@ -127,9 +96,9 @@ const remoteMethod = (query: string) => {
 				loading.value = false;
 				options.value = data.list.map(item => {
 					return {
-						label: item.name || '',
+						label: item.video_name || item.collection_name || item.tag || String(item.id),
 						value: item.id || 0,
-						description: item.description
+						remarks: item.tag || item.video_name || item.collection_name || ''
 					};
 				});
 			})
@@ -138,8 +107,7 @@ const remoteMethod = (query: string) => {
 				console.error('远程搜索失败:', error);
 			});
 	} else {
-		// 当查询为空时，加载所有选项
-		loadAllOptions();
+		options.value = [];
 	}
 };
 
@@ -151,8 +119,9 @@ const handleChange = (value: number | null) => {
 		if (selectedItem) {
 			emit('change', {
 				id: selectedItem.value,
-				name: selectedItem.label,
-				description: selectedItem.description
+				video_name: selectedItem.label,
+				collection_name: selectedItem.remarks,
+				tag: selectedItem.remarks
 			});
 		}
 	} else {
@@ -161,26 +130,23 @@ const handleChange = (value: number | null) => {
 	}
 };
 
-// 组件挂载时，加载所有选项，并检查是否有传入 collectionId
-onMounted(async () => {
-	// 首先加载所有选项
-	await loadAllOptions();
-	
-	// 如果有传入 collectionId，则加载默认值
-	if (props.collectionId) {
-		loadDefaultValue(props.collectionId);
+// 组件挂载时，如果有传入 videoLineId，则加载默认值
+onMounted(() => {
+	if (props.videoLineId) {
+		loadDefaultValue(props.videoLineId);
 	}
 });
 
-// 监听 collectionId 变化，如果外部传入新的 collectionId，则重新加载默认值
+// 监听 videoLineId 变化，如果外部传入新的 videoLineId，则重新加载默认值
 watch(
-	() => props.collectionId,
-	newCollectionId => {
-		if (newCollectionId) {
-			loadDefaultValue(newCollectionId);
+	() => props.videoLineId,
+	newVideoLineId => {
+		if (newVideoLineId) {
+			loadDefaultValue(newVideoLineId);
 		} else {
-			// 如果 collectionId 被设置为 undefined 或 null，清空当前值
+			// 如果 videoLineId 被设置为 undefined 或 null，清空当前值
 			selectedValue.value = null;
+			options.value = [];
 		}
 	}
 );

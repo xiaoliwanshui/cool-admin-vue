@@ -37,7 +37,14 @@
 
 		<!-- 新增、编辑 -->
 		<!--		<cl-form ref="Form" />-->
-		<cl-upsert ref="Upsert" />
+		<cl-upsert ref="Upsert">
+			<template #slot-video-select="{ scope }">
+				<VideoSelect
+					:video-id="scope?.videoId || scope?.video_id"
+					@change="videoSelectChange"
+				/>
+			</template>
+		</cl-upsert>
 	</cl-crud>
 </template>
 
@@ -46,14 +53,12 @@ import { useCrud, useForm, useSearch, useTable, useUpsert } from '@cool-vue/crud
 import { useCool } from '/@/cool';
 import { ref, watch } from 'vue';
 import { useDict } from '/$/dict';
-import WeekFrom from '/$/video/components/week-from.vue';
+import VideoSelect from '/$/video/components/video-select.vue';
 import { useI18n } from 'vue-i18n';
 
 const { service, route, router } = useCool();
 const visible = ref<boolean>(false);
 const modelValue = ref<Array<any>>([]);
-const weekId = ref<number>(0);
-const videoAlbumVisible = ref<boolean>(false);
 const { dict } = useDict();
 const { t } = useI18n();
 
@@ -121,13 +126,21 @@ watch(
 	},
 	{ immediate: false }
 );
+
+const videoSelectChange = (data: any) => {
+	if (data) {
+		Upsert.value.setForm('videoId', data.id);
+		// 如果需要同时设置其他字段，也可以在这里添加
+	}
+};
+
 const Upsert = useUpsert({
 	items: [
 		{
 			label: t('视频'),
 			prop: 'videoId',
 			component: {
-				vm: WeekFrom
+				name: 'slot-video-select'
 			},
 			required: true
 		},

@@ -1,11 +1,3 @@
-<!--
- * @Author: 17691002584 17691002584@163.com
- * @Date: 2025-08-08 22:16:59
- * @LastEditors: 17691002584 17691002584@163.com
- * @LastEditTime: 2026-02-01 03:00:33
- * @FilePath: src/modules/video/components/collection-select.vue
- * @Description: 视频合集选择组件
- -->
 <template>
 	<el-row :gutter="20">
 		<el-col :span="24">
@@ -31,7 +23,7 @@
 					<span
 						style="float: right; color: var(--el-text-color-secondary); font-size: 13px"
 					>
-						{{ item.description }}
+						{{ item.remarks }}
 					</span>
 				</el-option>
 			</el-select>
@@ -39,19 +31,19 @@
 	</el-row>
 </template>
 
-<script lang="ts" name="video-collection-select" setup>
+<script lang="ts" setup>
 import { useDict } from '/$/dict';
 import { onMounted, ref, watch } from 'vue';
 import { useCool } from '/@/cool/hooks';
 
 // 定义 props
 interface Props {
-	collectionId?: number;
+	videoId?: number;
 	placeholder?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-	placeholder: '请选择或输入資源名'
+	placeholder: '请选择或输入视频名'
 });
 
 // 定义 emit 事件
@@ -63,25 +55,25 @@ const { dict } = useDict();
 const loading = ref(false);
 const selectedValue = ref<number | null>(null);
 const { service } = useCool();
-const options = ref<Array<{ label: string; value: number; description?: string }>>([]);
+const options = ref<Array<{ label: string; value: number; remarks?: string }>>([]);
 
-// 根据传入的 collectionId 查询并回填默认值
-const loadDefaultValue = async (collectionId: number) => {
-	if (!collectionId) return;
+// 根据传入的 videoId 查询并回填默认值
+const loadDefaultValue = async (videoId: number) => {
+	if (!videoId) return;
 
 	loading.value = true;
 	try {
-		const data = await service.video.collection.info({
-			id: collectionId
+		const data = await service.video.videos.info({
+			id: videoId
 		});
 
 		selectedValue.value = data.id || null;
 		// 设置选项以便显示标签
 		options.value = [
 			{
-				label: data.name || '',
+				label: data.title || '',
 				value: data.id || 0,
-				description: data.description
+				remarks: data.remarks
 			}
 		];
 		emit('change', data);
@@ -96,7 +88,7 @@ const loadDefaultValue = async (collectionId: number) => {
 const remoteMethod = (query: string) => {
 	if (query) {
 		loading.value = true;
-		service.video.collection
+		service.video.videos
 			.page({
 				keyWord: query
 			})
@@ -104,9 +96,9 @@ const remoteMethod = (query: string) => {
 				loading.value = false;
 				options.value = data.list.map(item => {
 					return {
-						label: item.name || '',
+						label: item.title || '',
 						value: item.id || 0,
-						description: item.description
+						remarks: item.remarks
 					};
 				});
 			})
@@ -127,8 +119,8 @@ const handleChange = (value: number | null) => {
 		if (selectedItem) {
 			emit('change', {
 				id: selectedItem.value,
-				name: selectedItem.label,
-				description: selectedItem.description
+				title: selectedItem.label,
+				remarks: selectedItem.remarks
 			});
 		}
 	} else {
@@ -137,21 +129,21 @@ const handleChange = (value: number | null) => {
 	}
 };
 
-// 组件挂载时，如果有传入 collectionId，则加载默认值
+// 组件挂载时，如果有传入 videoId，则加载默认值
 onMounted(() => {
-	if (props.collectionId) {
-		loadDefaultValue(props.collectionId);
+	if (props.videoId) {
+		loadDefaultValue(props.videoId);
 	}
 });
 
-// 监听 collectionId 变化，如果外部传入新的 collectionId，则重新加载默认值
+// 监听 videoId 变化，如果外部传入新的 videoId，则重新加载默认值
 watch(
-	() => props.collectionId,
-	newCollectionId => {
-		if (newCollectionId) {
-			loadDefaultValue(newCollectionId);
+	() => props.videoId,
+	newVideoId => {
+		if (newVideoId) {
+			loadDefaultValue(newVideoId);
 		} else {
-			// 如果 collectionId 被设置为 undefined 或 null，清空当前值
+			// 如果 videoId 被设置为 undefined 或 null，清空当前值
 			selectedValue.value = null;
 			options.value = [];
 		}

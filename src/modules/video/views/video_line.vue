@@ -24,7 +24,20 @@
 		</cl-row>
 
 		<!-- 新增、编辑 -->
-		<cl-upsert ref="Upsert" />
+		<cl-upsert ref="Upsert">
+			<template #slot-video-select="{ scope }">
+				<video-select
+					:onChange="videoSelectChange"
+					:video-id="scope.video_id"
+				></video-select>
+			</template>
+			<template #slot-collection-select="{ scope }">
+				<collection-select
+					:collection-id="scope.collection_id"
+					:onChange="collectionSelectChange"
+				></collection-select>
+			</template>
+		</cl-upsert>
 	</cl-crud>
 </template>
 
@@ -33,10 +46,11 @@ defineOptions({
 	name: 'video-video-line'
 });
 
-import { useCrud, useTable, useUpsert, useSearch } from '@cool-vue/crud';
+import { useCrud, useSearch, useTable, useUpsert } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
 import { useI18n } from 'vue-i18n';
 import collectionSelect from '../components/collection-select.vue';
+import videoSelect from '../components/video-select.vue';
 
 const { service } = useCool();
 const { t } = useI18n();
@@ -45,50 +59,49 @@ const { t } = useI18n();
 const Upsert = useUpsert({
 	items: [
 		{
-			label: t('影视ID'),
+			label: t('视频'),
 			prop: 'video_id',
-			component: { name: 'el-input', props: { clearable: true } },
-			span: 12
+			component: {
+				name: 'slot-video-select'
+			}
 		},
 		{
-			label: t('影视名称'),
-			prop: 'video_name',
-			component: { name: 'el-input', props: { clearable: true } },
-			span: 12
-		},
-		{
-			label: t('名称'),
-			prop: 'collection_name',
-			component: { name: 'el-input', props: { clearable: true } },
-			span: 12,
-			required: true
-		},
-		{
-			label: t('资源id'),
+			label: t('資源名称'),
 			prop: 'collection_id',
-			component: { name: 'el-input', props: { clearable: true } },
-			span: 12
+			component: {
+				name: 'slot-collection-select'
+			}
 		},
 		{
 			label: t('关联播放器ID'),
 			prop: 'player_id',
-			component: { name: 'el-input', props: { clearable: true } },
-			span: 12
+			component: { name: 'el-input', props: { clearable: true } }
 		},
 		{
 			label: t('排序'),
 			prop: 'sort',
-			component: { name: 'el-input', props: { clearable: true } },
-			span: 12
+			component: { name: 'el-input', props: { clearable: true } }
 		},
 		{
 			label: t('标识'),
 			prop: 'tag',
-			component: { name: 'el-input', props: { clearable: true } },
-			span: 12
+			component: { name: 'el-input', props: { clearable: true } }
 		}
-	]
+	],
+	onSubmit: async data => {
+		console.log(data);
+	}
 });
+const videoSelectChange = data => {
+	Upsert.value.setForm('video_id', data.id);
+	Upsert.value.setForm('video_name', data.title);
+};
+
+const collectionSelectChange = data => {
+	Upsert.value.setForm('collection_id', data.id);
+	Upsert.value.setForm('collection_name', data.name);
+	Upsert.value.setForm('tag', data.param);
+};
 
 // cl-table
 const Table = useTable({

@@ -38,26 +38,7 @@
 		<!-- 新增、编辑 -->
 		<cl-upsert ref="Upsert" />
 	</cl-crud>
-	<cl-dialog v-model="visible" :before-close="beforeClose" :title="t('视频列表')" height="auto">
-		<videos
-			:albumId="albumId"
-			:modelValue="modelValue"
-			style="height: 600px"
-			@update:model-value="value => (modelValue = value)"
-		></videos>
-		<template #footer>
-			<el-button @click="visible = false">{{ t('取消') }}</el-button>
-			<el-button type="primary" @click="submit">{{ t('确定') }}</el-button>
-		</template>
-	</cl-dialog>
-	<cl-dialog
-		v-model="videoAlbumVisible"
-		:before-close="beforeClose"
-		:title="t('视频列表')"
-		height="auto"
-	>
-		<videos-album :albumId="albumId" style="height: 600px"></videos-album>
-	</cl-dialog>
+	<cl-form ref="videoTableForm" />
 	<cl-form ref="addListForm">
 		<!-- 动态编辑标签插槽 -->
 		<template #slot-tags="{ scope }">
@@ -117,30 +98,103 @@
 import { useCrud, useForm, useTable, useUpsert } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
 import { ref } from 'vue';
-import videos from '/$/video/components/videos.vue';
-import videosAlbum from '/$/video/components/videos-album.vue';
 import _ from 'lodash';
 import { useDict } from '/$/dict';
 import { useI18n } from 'vue-i18n';
 import { useClipboard } from '@vueuse/core';
 import { ElMessage } from 'element-plus';
 
-const { service } = useCool();
+const { service, refs, setRefs } = useCool();
 const visible = ref<boolean>(false);
 const modelValue = ref<Array<any>>([]);
-const albumId = ref<number>(0);
-const videoAlbumVisible = ref<boolean>(false);
+// 添加加载状态
 const addListForm = useForm();
 const { dict } = useDict();
 const { t } = useI18n();
-
 // 标签输入框的值
 const tagInputValue = ref<string>('');
+const columns = [
+	{ label: t('ID'), prop: 'id', minWidth: 140 },
+	{ label: t('影片标题'), prop: 'title', minWidth: 140 },
+	{
+		label: t('分类'),
+		prop: 'category_id',
+		dict: dict.get('video_category'),
+		dictColor: true,
+		minWidth: 150,
+		dictAllLevels: true // 显示所有等级
+	},
+	{
+		label: t('影片标签'),
+		prop: 'video_tag',
+		minWidth: 140
+	},
+	{
+		label: t('影片封面图'),
+		prop: 'surface_plot',
+		minWidth: 100,
+		component: { name: 'cl-image', props: { size: 60 } }
+	},
+	{ label: t('简介'), prop: 'introduce', showOverflowTooltip: true, minWidth: 200 }
+];
 
 // AI提示语相关变量
 const aiPromptVisible = ref<boolean>(false);
 const aiPromptText = ref<string>('');
 const { copy, isSupported } = useClipboard();
+
+const videoTableForm = useForm();
+
+function openVideoTableForm(row) {
+	videoTableForm.value.open({
+		title: t('添加影片'),
+		items: [
+			{
+				prop: 'video',
+				value: [],
+				component: {
+					name: 'cl-select-table',
+					ref: setRefs('selectTable'),
+					props: {
+						pickerType: 'table',
+						multiple: true,
+						columns,
+						service: service.video.videos,
+						remove: data => {
+							service.video.album_video.delete({
+								ids: data.map(item => item.album)
+							});
+						}
+					}
+				}
+			}
+		],
+		on: {
+			submit: async (data, { close, done }) => {
+				data.video.forEach(item => {
+					service.video.album_video.add({
+						videos_id: item,
+						album_id: row.id
+					});
+				});
+				close();
+			},
+			open() {
+				service.video.album_video
+					.page({
+						album_id: row.id
+					})
+					.then(res => {
+						refs.selectTable?.set(
+							res.list.map(item => {
+								return { ...item, album: item.id, id: item.videos_id };
+							})
+						);
+					});
+			}
+		}
+	});
+}
 
 const Upsert = useUpsert({
 	items: [
@@ -167,15 +221,6 @@ const Upsert = useUpsert({
 					checkStrictly: true
 				}
 			}
-		},
-		{
-			label: t('日人气'),
-			prop: 'popularity_day',
-			hook: 'number',
-			component: { name: 'el-input-number' },
-			span: 12,
-			required: true,
-			value: _.random(1000, 3000)
 		},
 		{
 			label: t('周人气'),
@@ -212,6 +257,15 @@ const Upsert = useUpsert({
 			component: { name: 'el-input-number' },
 			required: true,
 			value: 0
+		},
+		{
+			label: t('日人气'),
+			prop: 'popularity_day',
+			hook: 'number',
+			component: { name: 'el-input-number' },
+			span: 12,
+			required: true,
+			value: _.random(1000, 3000)
 		},
 		{
 			label: t('内容'),
@@ -445,15 +499,7 @@ const Table = useTable({
 				{
 					label: t('绑定数据'),
 					async onClick({ scope }) {
-						albumId.value = scope.row.id;
-						visible.value = !visible.value;
-					}
-				},
-				{
-					label: t('数据预览'),
-					async onClick({ scope }) {
-						albumId.value = scope.row.id;
-						videoAlbumVisible.value = !videoAlbumVisible.value;
+						openVideoTableForm(scope.row);
 					}
 				}
 			]
@@ -470,24 +516,6 @@ const Crud = useCrud(
 		app.refresh();
 	}
 );
-
-const beforeClose = done => {
-	done();
-	albumId.value = 0;
-	modelValue.value = [];
-};
-
-const submit = () => {
-	if (modelValue.value.length > 0 && albumId.value) {
-		modelValue.value.forEach(item => {
-			service.video.album_video.add({
-				videos_id: item.id,
-				album_id: albumId.value
-			});
-		});
-		visible.value = false;
-	}
-};
 
 // 处理标签关闭
 function handleTagClose(scope: any, index: number) {

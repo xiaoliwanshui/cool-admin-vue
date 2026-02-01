@@ -39,7 +39,7 @@
 		<!--		<cl-form ref="Form" />-->
 		<cl-upsert ref="Upsert">
 			<template #slot-video-select="{ scope }">
-				<VideoSelect
+				<video-select
 					:video-id="scope?.videoId || scope?.video_id"
 					@change="videoSelectChange"
 				/>
@@ -54,6 +54,7 @@ import { useCool } from '/@/cool';
 import { ref, watch } from 'vue';
 import { useDict } from '/$/dict';
 import VideoSelect from '/$/video/components/video-select.vue';
+import videoSelect from '/$/video/components/video-select.vue';
 import { useI18n } from 'vue-i18n';
 
 const { service, route, router } = useCool();
@@ -68,12 +69,18 @@ const Form = useForm();
 const Search = useSearch({
 	items: [
 		{
-			label: t('视频ID'),
-			prop: 'video_id',
+			label: t('影视'),
+			prop: 'videoId',
 			component: {
-				name: 'el-input',
+				vm: videoSelect,
 				props: {
-					clearable: true
+					onChange(data) {
+						if (data) {
+							Search.value.setForm('videoId', data.id);
+						} else {
+							Search.value.setForm('videoId', undefined);
+						}
+					}
 				}
 			}
 		}

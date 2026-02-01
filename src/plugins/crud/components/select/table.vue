@@ -5,8 +5,8 @@
 				<div class="mb-[10px]">
 					<el-button type="success" @click="open">{{ $t('添加') }}</el-button>
 					<el-button
-						type="danger"
 						:disabled="refs.table?.selection.length == 0"
+						type="danger"
 						@click="remove()"
 					>
 						{{ $t('移除') }}
@@ -15,10 +15,10 @@
 
 				<cl-crud padding="0">
 					<cl-row>
-						<cl-table :ref="setRefs('table')" :data="data" :auto-height="false" />
+						<cl-table :ref="setRefs('table')" :auto-height="false" :data="data" />
 					</cl-row>
 
-					<cl-row type="flex" align="middle" justify="end">
+					<cl-row align="middle" justify="end" type="flex">
 						<el-pagination
 							v-model:current-page="pager.page"
 							:page-size="pager.size"
@@ -39,13 +39,13 @@
 
 				<template v-else>
 					<template v-for="(item, index) in data" :key="index">
-						<slot name="item" :item="item" :index="index">
+						<slot :index="index" :item="item" name="item">
 							<template v-if="pickerType == 'default'">
 								<cl-image
-									:src="item[dict.img]"
-									:size="24"
-									:radius="5"
 									:preview="false"
+									:radius="5"
+									:size="24"
+									:src="item[dict.img]"
 									class="mr-[5px]"
 								/>
 								<span v-if="!multiple">{{ item[dict.text] }}</span>
@@ -53,10 +53,10 @@
 
 							<template v-else-if="pickerType == 'text'">
 								<el-tag
-									disable-transitions
-									size="small"
-									effect="plain"
 									v-if="multiple"
+									disable-transitions
+									effect="plain"
+									size="small"
 								>
 									{{ item[dict.text] }}
 								</el-tag>
@@ -74,16 +74,16 @@
 		</template>
 	</div>
 
-	<cl-dialog v-model="visible" width="1200px" :title="title">
+	<cl-dialog v-model="visible" :title="title" width="1200px">
 		<cl-crud ref="Crud" padding="0">
 			<cl-row>
 				<!-- 刷新按钮 -->
 				<cl-refresh-btn />
 
 				<!-- 全选 -->
-				<el-button v-if="multiple" type="primary" @click="selectAll">{{
-					$t('全选')
-				}}</el-button>
+				<el-button v-if="multiple" type="primary" @click="selectAll"
+					>{{ $t('全选') }}
+				</el-button>
 
 				<cl-flex1 />
 				<!-- 条件搜索 -->
@@ -96,8 +96,8 @@
 					<template #column-check="{ scope }">
 						<el-button
 							v-if="selection[0]?.[dict.id] == scope.row[dict.id]"
-							type="success"
 							disabled
+							type="success"
 						>
 							{{ $t('已选') }}
 						</el-button>
@@ -118,8 +118,8 @@
 			<el-button @click="close">{{ $t('取消') }}</el-button>
 			<el-button
 				v-if="multiple"
-				type="success"
 				:disabled="isEmpty(selection)"
+				type="success"
 				@click="select()"
 			>
 				{{ $t('选择') }}
@@ -136,7 +136,7 @@ defineOptions({
 import { useI18n } from 'vue-i18n';
 import { useCrud, useForm, useSearch, useTable } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
-import { type PropType, computed, nextTick, reactive, ref, watch } from 'vue';
+import { computed, nextTick, type PropType, reactive, ref, watch } from 'vue';
 import { cloneDeep, isArray, isEmpty, merge } from 'lodash-es';
 import { CircleClose } from '@element-plus/icons-vue';
 import { CrudProps } from '../../comm';
@@ -191,10 +191,12 @@ const props = defineProps({
 	columns: {
 		type: Array as PropType<ClTable.Column[]>,
 		default: () => []
-	}
+	},
+	// 移除回调函数
+	remove: Function
 });
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'remove']);
 
 const { refs, setRefs } = useCool();
 
@@ -345,10 +347,10 @@ async function selectAll() {
 }
 
 // 移除
-function remove() {
+function remove(callback?: () => void) {
 	if (props.pickerType == 'table') {
 		const ids = ((refs.table?.selection || []) as any[]).map(e => e[dict.id]);
-
+		const propsParams = refs.table?.getSelectionRows();
 		list.value = list.value.filter(e => {
 			// 清空选择状态
 			refs.table?.toggleRowSelection(e, false);
@@ -356,8 +358,28 @@ function remove() {
 			// 移除已选的
 			return !ids.find(id => id == e[dict.id]);
 		});
+
+		// 执行 props 中定义的回调函数
+		if (props.remove && typeof props.remove === 'function') {
+			props.remove(propsParams);
+		}
+
+		// 如果提供了回调函数，则执行它
+		if (callback && typeof callback === 'function') {
+			callback();
+		}
 	} else {
 		list.value = [];
+
+		// 执行 props 中定义的回调函数
+		if (props.remove && typeof props.remove === 'function') {
+			props.remove([]);
+		}
+
+		// 如果提供了回调函数，则执行它
+		if (callback && typeof callback === 'function') {
+			callback();
+		}
 	}
 }
 

@@ -176,21 +176,37 @@ const Form = useForm();
 const { service, router, route } = useCool();
 const { dict } = useDict();
 const { t } = useI18n();
-const categoryDict = ref(dict.get('video_category').value);
-categoryDict.value = [
-	...categoryDict.value,
-	{
-		id: 0,
-		typeId: 0,
-		name: '未知',
-		value: 0,
-		orderNum: 1,
-		status: 1,
-		color: null,
-		parentId: null,
-		label: '未知'
-	}
-];
+
+// 创建一个响应式的分类字典引用
+const categoryDict = ref([]);
+// 创建未知分类
+const unknownCategory = {
+	id: 0,
+	typeId: 0,
+	name: '未知',
+	value: 0,
+	orderNum: 1,
+	status: 1,
+	color: null,
+	parentId: null,
+	label: '未知'
+};
+// 监听字典数据变化，动态更新分类列表
+watch(
+	() => dict.get('video_category').value,
+	newValue => {
+		console.log('video_category 字典数据变化:', newValue);
+
+		// 获取现有的分类数据
+		const existingCategories = Array.isArray(newValue) ? [...newValue] : [];
+
+		// 合并现有数据和未知分类
+		categoryDict.value = [...existingCategories, unknownCategory];
+
+		console.log('更新后的categoryDict:', categoryDict.value);
+	},
+	{ immediate: true }
+);
 // 视频ID输入框的值
 const videoIdValue = ref<string | number>('');
 

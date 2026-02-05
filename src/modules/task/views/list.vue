@@ -1,5 +1,5 @@
 <template>
-	<div class="task-list" :class="{ 'is-mini': browser.isMini }">
+	<div :class="{ 'is-mini': browser.isMini }" class="task-list">
 		<div class="list">
 			<div
 				v-for="(item, index) in list"
@@ -29,46 +29,46 @@
 				<div class="status">
 					<template v-if="item.status">
 						<div
+							v-permission="service.task.info.permission.stop"
 							class="icon"
 							@click.stop="stop(item)"
-							v-permission="service.task.info.permission.stop"
 						>
 							<cl-svg name="close-border" />
 						</div>
 
-						<el-tag disable-transitions effect="plain" type="success">{{
-							$t('进行中')
-						}}</el-tag>
+						<el-tag disable-transitions effect="plain" type="success"
+							>{{ $t('进行中') }}
+						</el-tag>
 					</template>
 
 					<template v-else>
 						<div
+							v-permission="service.task.info.permission.start"
 							class="icon"
 							@click.stop="start(item)"
-							v-permission="service.task.info.permission.start"
 						>
 							<cl-svg name="play" />
 						</div>
 
-						<el-tag disable-transitions effect="plain" type="danger">{{
-							$t('已停止')
-						}}</el-tag>
+						<el-tag disable-transitions effect="plain" type="danger"
+							>{{ $t('已停止') }}
+						</el-tag>
 					</template>
 
 					<div class="flex1"></div>
 
 					<div
+						v-permission="service.task.info.permission.log"
 						class="icon"
 						@click.stop="log(item)"
-						v-permission="service.task.info.permission.log"
 					>
 						<cl-svg name="order" />
 					</div>
 
 					<div
+						v-permission="service.task.info.permission.delete"
 						class="icon"
 						@click.stop="remove(item)"
-						v-permission="service.task.info.permission.delete"
 					>
 						<cl-svg name="delete" />
 					</div>
@@ -80,7 +80,7 @@
 				class="item is-add"
 				@click="edit()"
 			>
-				<cl-svg name="plus" :size="36" />
+				<cl-svg :size="36" name="plus" />
 				<p>{{ $t('添加计划任务') }}</p>
 			</div>
 		</div>
@@ -100,7 +100,6 @@ defineOptions({
 
 import { onActivated, ref } from 'vue';
 import { useBrowser, useCool } from '/@/cool';
-import { VideoPlay, VideoPause, Plus, Tickets, Delete } from '@element-plus/icons-vue';
 import { ContextMenu, useForm } from '@cool-vue/crud';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import TaskLogs from '../components/logs.vue';
@@ -110,19 +109,91 @@ const { service, refs, setRefs } = useCool();
 const { browser } = useBrowser();
 const Form = useForm();
 const { t } = useI18n();
-
+const defaultList: Eps.TaskInfoEntity[] = [
+	{
+		id: 1,
+		jobId: null,
+		repeatConf: null,
+		name: '采集任务',
+		cron: null,
+		limit: null,
+		_every: 30,
+		remark: null,
+		status: 1,
+		startDate: null,
+		endDate: null,
+		data: null,
+		type: 1,
+		nextRunTime: null,
+		taskType: 1
+	},
+	{
+		id: 2,
+		jobId: null,
+		repeatConf: null,
+		name: '日采集任务',
+		cron: null,
+		limit: null,
+		_every: 600,
+		remark: null,
+		status: 1,
+		startDate: null,
+		endDate: null,
+		data: null,
+		type: 1,
+		nextRunTime: null,
+		taskType: 1
+	},
+	{
+		id: 3,
+		jobId: null,
+		repeatConf: null,
+		name: '入库检查任务',
+		cron: '0 0 */6 * * *',
+		limit: null,
+		every: 1000,
+		remark: null,
+		status: 1,
+		startDate: null,
+		endDate: null,
+		data: null,
+		type: 1,
+		nextRunTime: null,
+		taskType: 0,
+		system: 1
+	},
+	{
+		id: 4,
+		jobId: null,
+		repeatConf: null,
+		name: '合并线路任务',
+		cron: '0 0 */8 * * *',
+		limit: null,
+		every: 1000,
+		remark: null,
+		status: 1,
+		startDate: null,
+		endDate: null,
+		data: null,
+		type: 1,
+		nextRunTime: null,
+		taskType: 0
+	}
+];
 const list = ref<Eps.TaskInfoEntity[]>([]);
 
 // 刷新
 function refresh() {
 	service.task.info.page({ size: 100, page: 1 }).then(res => {
-		list.value = res.list.map(e => {
-			if (e.every) {
-				e._every = parseInt(String(e.every / 1000));
-			}
+		list.value = res.list
+			.map(e => {
+				if (e.every) {
+					e._every = parseInt(String(e.every / 1000));
+				}
 
-			return e;
-		});
+				return e;
+			})
+			.concat(defaultList);
 	});
 }
 
@@ -146,6 +217,10 @@ function start(item: Eps.TaskInfoEntity) {
 
 // 停用任务
 function stop(item: Eps.TaskInfoEntity) {
+	//如果是默认任务，则不能停用
+	if (list.value.find(e => e.id == item.id)) {
+		return ElMessage.error(t('默认任务不能停用'));
+	}
 	ElMessageBox.confirm(t('此操作将停用任务（{name}），是否继续？', { name: item.name }), '提示', {
 		type: 'warning'
 	})
@@ -164,6 +239,9 @@ function stop(item: Eps.TaskInfoEntity) {
 
 // 删除任务
 function remove(item: Eps.TaskInfoEntity) {
+	if (list.value.find(e => e.id == item.id)) {
+		return ElMessage.error(t('默认任务不能删除'));
+	}
 	ElMessageBox.confirm(t('此操作将删除任务（{name}），是否继续？', { name: item.name }), '提示', {
 		type: 'warning'
 	})
@@ -187,6 +265,9 @@ function log(item: Eps.TaskInfoEntity) {
 
 // 新增、编辑
 async function edit(item?: Eps.TaskInfoEntity) {
+	if (item && list.value.find(e => e.id == item.id)) {
+		return ElMessage.error(t('默认任务不能编辑'));
+	}
 	if (item && !service.task.info._permission.update) {
 		return false;
 	}

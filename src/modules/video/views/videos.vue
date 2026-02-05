@@ -15,7 +15,7 @@
 			<!-- 字典 -->
 			<cl-filter :label="t('分类')">
 				<cl-select
-					:options="dict.get('video_category')"
+					:options="categoryDict"
 					:width="140"
 					allLevelsId
 					check-strictly
@@ -176,7 +176,21 @@ const Form = useForm();
 const { service, router, route } = useCool();
 const { dict } = useDict();
 const { t } = useI18n();
-
+const categoryDict = ref(dict.get('video_category').value);
+categoryDict.value = [
+	...categoryDict.value,
+	{
+		id: 0,
+		typeId: 0,
+		name: '未知',
+		value: 0,
+		orderNum: 1,
+		status: 1,
+		color: null,
+		parentId: null,
+		label: '未知'
+	}
+];
 // 视频ID输入框的值
 const videoIdValue = ref<string | number>('');
 

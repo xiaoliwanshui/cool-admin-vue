@@ -196,6 +196,15 @@
   "执行成功": "Execution succeeded",
   "快速导入": "Quick Import",
   "批量检查链接": "Batch Check Link",
+  "自动检查全部": "Auto Check All",
+  "自动检查中": "Auto Checking",
+  "页": "Page",
+  "确定要自动检查所有线路的链接连通性吗？这可能需要较长时间。": "Are you sure you want to automatically check the connectivity of all lines? This may take a long time.",
+  "自动检查全部": "Auto Check All",
+  "暂无数据需要检查": "No data to check",
+  "开始自动检查，共 {totalCount} 条数据": "Start auto checking, total {totalCount} records",
+  "自动检查完成：正常 {successCount} 条，异常 {failCount} 条": "Auto check completed: Normal {successCount}, Abnormal {failCount}",
+  "自动检查失败：": "Auto check failed: ",
   "影视": "Video",
   "快速添加": "Quick Add",
   "绑定数据": "Bind Data",
@@ -208,5 +217,6 @@
   "副标题": "Subtitle",
   "关联播放器ID": "Associated Player ID",
   "文件地址": "File Address",
-  "颜色": "Color"
+  "颜色": "Color",
+  "排名提升": "Ranking Promotion"
 }

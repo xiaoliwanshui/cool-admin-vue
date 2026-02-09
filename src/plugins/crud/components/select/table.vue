@@ -11,6 +11,13 @@
 					>
 						{{ $t('移除') }}
 					</el-button>
+					<el-button
+						:disabled="refs.table?.selection.length == 0"
+						:type="props.handleBtn.type"
+						@click="handle()"
+					>
+						{{ props.handleBtn.text }}
+					</el-button>
 				</div>
 
 				<cl-crud padding="0">
@@ -129,10 +136,6 @@
 </template>
 
 <script lang="ts" setup>
-defineOptions({
-	name: 'cl-select-table'
-});
-
 import { useI18n } from 'vue-i18n';
 import { useCrud, useForm, useSearch, useTable } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
@@ -140,6 +143,10 @@ import { computed, nextTick, type PropType, reactive, ref, watch } from 'vue';
 import { cloneDeep, isArray, isEmpty, merge } from 'lodash-es';
 import { CircleClose } from '@element-plus/icons-vue';
 import { CrudProps } from '../../comm';
+
+defineOptions({
+	name: 'cl-select-table'
+});
 
 const { t } = useI18n();
 
@@ -192,8 +199,14 @@ const props = defineProps({
 		type: Array as PropType<ClTable.Column[]>,
 		default: () => []
 	},
+	handleBtn: {
+		type: String,
+		text: String,
+		onHandle: Function
+	},
 	// 移除回调函数
-	remove: Function
+	onRemove: Function,
+	onSelect: Function
 });
 
 const emit = defineEmits(['update:modelValue', 'remove']);
@@ -332,8 +345,8 @@ function select(item?: Item) {
 	}
 
 	list.value = cloneDeep(selection.value || []);
-
 	close();
+	props.onSelect?.(Table.value?.getSelectionRows());
 }
 
 // 全选
@@ -360,8 +373,9 @@ function remove(callback?: () => void) {
 		});
 
 		// 执行 props 中定义的回调函数
-		if (props.remove && typeof props.remove === 'function') {
-			props.remove(propsParams);
+		if (props.onRemove && typeof props.onRemove === 'function') {
+			props.onRemove(propsParams);
+			console.log(propsParams);
 		}
 
 		// 如果提供了回调函数，则执行它
@@ -372,13 +386,37 @@ function remove(callback?: () => void) {
 		list.value = [];
 
 		// 执行 props 中定义的回调函数
-		if (props.remove && typeof props.remove === 'function') {
-			props.remove([]);
+		if (props.onRemove && typeof props.onRemove === 'function') {
+			props.onRemove([]);
 		}
 
 		// 如果提供了回调函数，则执行它
 		if (callback && typeof callback === 'function') {
 			callback();
+		}
+	}
+}
+
+//自定义回调
+async function handle() {
+	await nextTick();
+	if (props.pickerType == 'table') {
+		const ids = ((refs.table?.selection || []) as any[]).map(e => e[dict.id]);
+		const propsParams = refs.table?.getSelectionRows();
+		// 执行 props 中定义的回调函数
+		if (props.handleBtn.onHandle && typeof props.handleBtn.onHandle === 'function') {
+			props.handleBtn.onHandle(propsParams);
+		}
+		list.value.forEach(e => {
+			// 清空选择状态
+			refs.table?.toggleRowSelection(e, false);
+		});
+	} else {
+		list.value = [];
+
+		// 执行 props 中定义的回调函数
+		if (props.handleBtn.onHandle && typeof props.handleBtn.onHandle === 'function') {
+			props.handleBtn.onHandle([]);
 		}
 	}
 }

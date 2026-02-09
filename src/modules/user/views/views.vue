@@ -3,6 +3,7 @@
 		<cl-row>
 			<!-- 刷新按钮 -->
 			<cl-refresh-btn />
+			<el-button @click="open">采集数据</el-button>
 			<cl-multi-delete-btn />
 
 			<cl-flex1 />
@@ -34,6 +35,7 @@ defineOptions({
 import { useCrud, useSearch, useTable, useUpsert } from '@cool-vue/crud';
 import { router, useCool } from '/@/cool';
 import { useI18n } from 'vue-i18n';
+import { ElMessage } from 'element-plus';
 
 const { service } = useCool();
 const { t } = useI18n();
@@ -151,6 +153,18 @@ const Table = useTable({
 
 // cl-search
 const Search = useSearch();
+
+async function open() {
+	// 获取表格选中的数据
+	const selection = Table.value?.selection || [];
+	// 获取所有选中项的 title 数组
+	const titles = selection.map((item: any) => item.title || '').filter((title: string) => title);
+
+	await service.video.collection.collection_keyword({
+		keyWord: titles
+	});
+	ElMessage.success('操作成功');
+}
 
 // cl-crud
 const Crud = useCrud(

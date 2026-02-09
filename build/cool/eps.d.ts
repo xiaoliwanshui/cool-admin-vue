@@ -3406,20 +3406,6 @@ declare namespace Eps {
 
 	type Request = (options: RequestOptions) => Promise<any>;
 
-	type DictKey =
-		| "live_category"
-		| "liveTags"
-		| "week"
-		| "area"
-		| "language"
-		| "video_category"
-		| "notice_type"
-		| "feedback_type"
-		| "ads_type"
-		| "search_type"
-		| "video_tag"
-		| "ads_page";
-
 	type Service = {
 		request: Request;
 

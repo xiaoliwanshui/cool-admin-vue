@@ -113,6 +113,7 @@ const { dict } = useDict();
 const { t } = useI18n();
 // 标签输入框的值
 const tagInputValue = ref<string>('');
+const album_id = ref<string>('');
 const columns = [
 	{ label: t('ID'), prop: 'id', minWidth: 140 },
 	{ label: t('影片标题'), prop: 'title', minWidth: 140 },
@@ -124,11 +125,39 @@ const columns = [
 		minWidth: 150,
 		dictAllLevels: true // 显示所有等级
 	},
+	{ label: t('排序'), prop: 'sort', minWidth: 140 },
 	{
 		label: t('影片标签'),
 		prop: 'video_tag',
 		minWidth: 140
 	},
+
+	{
+		label: t('影片封面图'),
+		prop: 'surface_plot',
+		minWidth: 100,
+		component: { name: 'cl-image', props: { size: 60 } }
+	}
+	// { label: t('简介'), prop: 'introduce', showOverflowTooltip: true, minWidth: 200 }
+];
+const resultColumns = [
+	{ label: t('ID'), prop: 'id', minWidth: 140 },
+	{ label: t('影片标题'), prop: 'title', minWidth: 140 },
+	{
+		label: t('分类'),
+		prop: 'category_id',
+		dict: dict.get('video_category'),
+		dictColor: true,
+		minWidth: 150,
+		dictAllLevels: true // 显示所有等级
+	},
+	{ label: t('排序'), prop: 'sort', minWidth: 140 },
+	{
+		label: t('影片标签'),
+		prop: 'video_tag',
+		minWidth: 140
+	},
+
 	{
 		label: t('影片封面图'),
 		prop: 'surface_plot',
@@ -137,7 +166,6 @@ const columns = [
 	},
 	{ label: t('简介'), prop: 'introduce', showOverflowTooltip: true, minWidth: 200 }
 ];
-
 // AI提示语相关变量
 const aiPromptVisible = ref<boolean>(false);
 const aiPromptText = ref<string>('');
@@ -146,6 +174,7 @@ const { copy, isSupported } = useClipboard();
 const videoTableForm = useForm();
 
 function openVideoTableForm(row) {
+	const ids: number[] = [];
 	videoTableForm.value.open({
 		title: t('添加影片'),
 		items: [
@@ -159,10 +188,45 @@ function openVideoTableForm(row) {
 						pickerType: 'table',
 						multiple: true,
 						columns,
+						resultColumns,
 						service: service.video.videos,
-						remove: data => {
+						handleBtn: {
+							type: 'primary',
+							text: t('排序'),
+							async onHandle(data) {
+								for (const item of data) {
+									console.log(item.sort);
+									await service.video.album_video.update({
+										id: item.album,
+										sort: (item.sort || 0) + 1
+									});
+								}
+								ElMessage.success(t('修改成功'));
+								service.video.album_video
+									.page({
+										album_id: row.id
+									})
+									.then(res => {
+										refs.selectTable?.set(
+											res.list.map(item => {
+												return {
+													...item,
+													album: item.id,
+													id: item.videos_id
+												};
+											})
+										);
+									});
+							}
+						},
+						onRemove: data => {
 							service.video.album_video.delete({
 								ids: data.map(item => item.album)
+							});
+						},
+						onSelect(data) {
+							data.map(item => {
+								ids.push(item.id);
 							});
 						}
 					}
@@ -171,15 +235,21 @@ function openVideoTableForm(row) {
 		],
 		on: {
 			submit: async (data, { close, done }) => {
-				data.video.forEach(item => {
-					service.video.album_video.add({
+				if (ids.length === 0) {
+					done();
+					return ElMessage.error(t('请选择影片'));
+				}
+				for (const item of ids) {
+					await service.video.album_video.add({
 						videos_id: item,
 						album_id: row.id
 					});
-				});
+				}
+				ElMessage.success(t('添加成功'));
 				close();
 			},
 			open() {
+				album_id.value = row.id;
 				service.video.album_video
 					.page({
 						album_id: row.id

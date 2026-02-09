@@ -23,6 +23,20 @@
 					{{ t('批量检查链接') }}
 				</template>
 			</el-button>
+			<!-- 自动检查按钮 -->
+			<el-button
+				:disabled="autoChecking"
+				:loading="autoChecking"
+				type="primary"
+				@click="handleAutoCheck"
+			>
+				<template v-if="autoChecking">
+					{{ autoCheckProgressText }}
+				</template>
+				<template v-else>
+					{{ t('自动检查全部') }}
+				</template>
+			</el-button>
 			<cl-flex1 />
 			<!-- 关键字搜索 -->
 			<!-- 关键字搜索 -->
@@ -75,6 +89,12 @@ const { t } = useI18n();
 const visible = ref<boolean>(false);
 const checking = ref<boolean>(false);
 const checkProgress = ref<{ current: number; total: number }>({ current: 0, total: 0 });
+const autoChecking = ref<boolean>(false);
+const autoCheckProgress = ref<{ current: number; total: number; page: number }>({
+	current: 0,
+	total: 0,
+	page: 1
+});
 
 // 进度文本
 const checkProgressText = computed(() => {
@@ -82,6 +102,14 @@ const checkProgressText = computed(() => {
 		return t('检查中...');
 	}
 	return `${t('检查中')} ${checkProgress.value.current}/${checkProgress.value.total}`;
+});
+
+// 自动检查进度文本
+const autoCheckProgressText = computed(() => {
+	if (autoCheckProgress.value.total === 0) {
+		return `${t('自动检查中')} (${t('第')} ${autoCheckProgress.value.page} ${t('页')})`;
+	}
+	return `${t('自动检查中')} ${autoCheckProgress.value.current}/${autoCheckProgress.value.total} (${t('第')} ${autoCheckProgress.value.page} ${t('页')})`;
 });
 const beforeClose = (done: () => void) => {
 	if (ArtplayerContainer.value) {
@@ -584,7 +612,9 @@ async function handleBatchCheck() {
 		// 等待所有更新完成
 		await Promise.all(updatePromises);
 
-		ElMessage.success(t('检查完成：正常 {successCount} 条，异常 {failCount} 条', { successCount, failCount }));
+		ElMessage.success(
+			t('检查完成：正常 {successCount} 条，异常 {failCount} 条', { successCount, failCount })
+		);
 
 		// 刷新列表
 		Crud.value?.refresh();
@@ -596,6 +626,133 @@ async function handleBatchCheck() {
 		// 延迟重置进度，让用户看到完成状态
 		setTimeout(() => {
 			checkProgress.value = { current: 0, total: 0 };
+		}, 1000);
+	}
+}
+
+// 自动检查所有线路
+async function handleAutoCheck() {
+	// 确认对话框
+	try {
+		await ElMessageBox.confirm(
+			t('确定要自动检查所有线路的链接连通性吗？这可能需要较长时间。'),
+			t('自动检查全部'),
+			{
+				type: 'warning',
+				confirmButtonText: t('确定'),
+				cancelButtonText: t('取消')
+			}
+		);
+	} catch {
+		return; // 用户取消
+	}
+
+	autoChecking.value = true;
+	autoCheckProgress.value = { current: 0, total: 0, page: 1 };
+	let successCount = 0;
+	let failCount = 0;
+	let totalCount = 0;
+	const pageSize = 100; // 每页获取100条数据
+	let currentPage = 1;
+
+	try {
+		// 先获取总数量
+		const countResult = await service.video.play_line.page(Search.value.getForm());
+		totalCount = countResult.pagination.total || 0;
+
+		if (totalCount === 0) {
+			ElMessage.info(t('暂无数据需要检查'));
+			return;
+		}
+
+		ElMessage.info(t('开始自动检查，共 {totalCount} 条数据', { totalCount }));
+
+		// 分页处理所有数据
+		while (true) {
+			// 更新当前页码
+			autoCheckProgress.value.page = currentPage;
+
+			// 获取当前页数据
+			const pageResult = await service.video.play_line.page({
+				page: currentPage,
+				size: pageSize,
+				...Search.value.getForm()
+			});
+
+			const dataList = pageResult.list || [];
+
+			if (dataList.length === 0) {
+				break; // 没有更多数据了
+			}
+
+			// 更新总数和当前进度
+			autoCheckProgress.value.total = totalCount;
+
+			// 检查当前页的所有数据
+			for (let i = 0; i < dataList.length; i++) {
+				const item = dataList[i];
+				const fileUrl = item.file;
+
+				// 更新当前检查进度
+				autoCheckProgress.value.current = (currentPage - 1) * pageSize + i + 1;
+
+				if (!fileUrl || !fileUrl.trim()) {
+					// 如果没有链接，标记为异常
+					await service.video.play_line.update({
+						id: item.id,
+						status: 0
+					});
+					failCount++;
+					continue;
+				}
+
+				// 检查链接连通性
+				const isAvailable = await checkLink(fileUrl.trim());
+
+				// 更新状态
+				await service.video.play_line.update({
+					id: item.id,
+					status: isAvailable ? 1 : 0
+				});
+
+				if (isAvailable) {
+					successCount++;
+				} else {
+					failCount++;
+				}
+
+				// 添加小延迟避免请求过于频繁
+				await new Promise(resolve => setTimeout(resolve, 100));
+			}
+
+			// 检查是否还有下一页
+			if (dataList.length < pageSize) {
+				break; // 最后一页
+			}
+
+			currentPage++;
+
+			// 页面间添加稍长延迟
+			await new Promise(resolve => setTimeout(resolve, 500));
+		}
+
+		ElMessage.success(
+			t('自动检查完成：正常 {successCount} 条，异常 {failCount} 条', {
+				successCount,
+				failCount
+			})
+		);
+
+		// 刷新列表
+		Crud.value?.refresh();
+	} catch (error: any) {
+		console.error(t('自动检查失败：'), error);
+		ElMessage.error(t('自动检查失败：') + (error.message || error));
+	} finally {
+		autoChecking.value = false;
+		// 延迟重置进度
+		setTimeout(() => {
+			autoCheckProgress.value = { current: 0, total: 0, page: 1 };
 		}, 1000);
 	}
 }

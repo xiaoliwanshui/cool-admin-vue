@@ -225,6 +225,7 @@ const Table = useTable({
 		{ label: t('更新时间'), prop: 'updateTime', minWidth: 140 },
 		{
 			type: 'op',
+			width: 320,
 			buttons: [
 				{
 					label: t('采集全部'),

@@ -42,7 +42,11 @@
 		</cl-row>
 
 		<!-- 新增、编辑 -->
-		<cl-upsert ref="Upsert" />
+		<cl-upsert ref="Upsert">
+			<template #slot-video-select="{ scope }">
+				<video-select :video-id="scope?.relatedId" @change="videoSelectChange" />
+			</template>
+		</cl-upsert>
 	</cl-crud>
 </template>
 
@@ -52,6 +56,7 @@ import { useCrud, useSearch, useTable, useUpsert } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
 import { useI18n } from 'vue-i18n';
 import ColorThief from 'colorthief';
+import videoSelect from '/$/video/components/video-select.vue';
 
 const { refs, setRefs } = useCool();
 
@@ -173,16 +178,18 @@ const Upsert = useUpsert({
 				}
 			}
 		},
-
-		{
-			label: t('页面'),
-			prop: 'path',
-			component: { name: 'el-input', props: { clearable: true } }
-		},
+		///TODO: 添加关联视频路径
+		// {
+		// 	label: t('页面'),
+		// 	prop: 'path',
+		// 	component: { name: 'el-input', props: { clearable: true } }
+		// },
 		{
 			label: t('选择关联'),
 			prop: 'relatedId',
-			component: { name: 'el-input', props: { clearable: true } }
+			component: {
+				name: 'slot-video-select'
+			}
 		},
 
 		{
@@ -206,6 +213,13 @@ const Upsert = useUpsert({
 		}
 	]
 });
+
+const videoSelectChange = (data: any) => {
+	if (data) {
+		Upsert.value.setForm('relatedId', data.id);
+		// 如果需要同时设置其他字段，也可以在这里添加
+	}
+};
 
 // RGB 转十六进制颜色值的辅助函数
 function rgbToHex(r: number, g: number, b: number): string {

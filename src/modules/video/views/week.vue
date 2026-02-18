@@ -53,7 +53,6 @@ import { useCrud, useForm, useSearch, useTable, useUpsert } from '@cool-vue/crud
 import { useCool } from '/@/cool';
 import { ref, watch } from 'vue';
 import { useDict } from '/$/dict';
-import VideoSelect from '/$/video/components/video-select.vue';
 import videoSelect from '/$/video/components/video-select.vue';
 import { useI18n } from 'vue-i18n';
 

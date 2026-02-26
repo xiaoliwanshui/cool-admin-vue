@@ -37,6 +37,7 @@ import { useCool } from '/@/cool';
 import { VIDEOPARAMS } from '/$/video/utils/VideoParams';
 import { useI18n } from 'vue-i18n';
 import { ElMessage } from 'element-plus';
+
 const { service } = useCool();
 const { t } = useI18n();
 
@@ -56,6 +57,16 @@ const Upsert = useUpsert({
 		{
 			label: t('地址'),
 			prop: 'address',
+			component: { name: 'el-input', props: { clearable: true } }
+		},
+		{
+			label: t('解析地址'),
+			prop: 'address',
+			component: { name: 'el-input', props: { clearable: true } }
+		},
+		{
+			label: t('APIKey'),
+			prop: 'apiKey',
 			component: { name: 'el-input', props: { clearable: true } }
 		},
 		{
@@ -90,6 +101,8 @@ const Table = useTable({
 		{ label: t('ID'), prop: 'id', minWidth: 140 },
 		{ label: t('名称'), prop: 'name', minWidth: 140 },
 		{ label: t('地址'), prop: 'address', minWidth: 140 },
+		{ label: t('解析地址'), prop: 'parse_address', minWidth: 140 },
+		{ label: t('APIKey'), prop: 'apiKey', minWidth: 140 },
 		{ label: t('参数'), prop: 'param', minWidth: 140 },
 		{ label: t('说明'), prop: 'desc', minWidth: 140 },
 		{ label: t('排序'), prop: 'sort', minWidth: 140 },

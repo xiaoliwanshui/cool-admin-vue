@@ -218,5 +218,16 @@
   "关联播放器ID": "Associated Player ID",
   "文件地址": "File Address",
   "颜色": "Color",
-  "排名提升": "Ranking Promotion"
+  "排名提升": "Ranking Promotion",
+  "自动分页采集": "Auto Paginated Collection",
+  "采集中": "Collecting",
+  "停止采集": "Stop Collection",
+  "采集完成": "Collection Completed",
+  "共采集": "Collected Total",
+  "条数据": "Records",
+  "采集失败": "Collection Failed",
+  "采集成功": "Collection Successful",
+  "正在采集中，请稍候...": "Collecting, please wait...",
+  "已停止采集": "Collection Stopped",
+  "当前页": "Current Page"
 }

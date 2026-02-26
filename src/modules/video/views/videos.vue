@@ -5,45 +5,35 @@
 			<cl-refresh-btn />
 			<!-- 新增按钮 -->
 			<cl-add-btn />
-			<el-button @click="open">采集数据</el-button>
+			<el-button @click="open"> 采集数据</el-button>
 			<!-- 删除按钮 -->
 			<cl-multi-delete-btn />
 			<!-- 导出按钮 -->
 			<cl-export-btn :columns="Table?.columns" />
+			<!-- 自动分页采集按钮 -->
+			<el-button
+				:disabled="autoCollecting"
+				:loading="autoCollecting"
+				type="success"
+				@click="autoPaginateCollect"
+			>
+				<template v-if="autoCollecting">
+					{{ t('采集中') }} ({{ collectProgress.currentPage }}/{{
+						collectProgress.totalPages
+					}})
+				</template>
+				<template v-else>
+					{{ t('自动分页采集') }}
+				</template>
+			</el-button>
+			<!-- 停止采集按钮 -->
+			<el-button v-if="autoCollecting" type="danger" @click="stopAutoCollect">
+				{{ t('停止采集') }}
+			</el-button>
 		</cl-row>
 		<cl-row>
-			<!-- 字典 -->
-			<cl-filter :label="t('分类')">
-				<cl-select
-					:options="categoryDict"
-					:width="140"
-					allLevelsId
-					check-strictly
-					prop="category_id"
-					tree
-				/>
-			</cl-filter>
-			<cl-filter :label="t('视频ID')">
-				<el-input
-					v-model="videoIdValue"
-					:style="{ width: '140px' }"
-					clearable
-					@blur="handleIdChange"
-					@clear="handleIdClear"
-				/>
-			</cl-filter>
-			<cl-filter :label="t('入库')">
-				<cl-select :options="play_url_put_inDict" :width="140" prop="play_url_put_in" />
-			</cl-filter>
-			<cl-filter :label="t('搜索榜单分类')">
-				<cl-select
-					:options="dict.get('search_type')"
-					:width="140"
-					prop="searchRecommendType"
-				/>
-			</cl-filter>
-			<!-- 关键字搜索 -->
-			<cl-search-key onchange="onChange" />
+			<!-- 条件搜索 -->
+			<cl-search ref="Search" />
 		</cl-row>
 
 		<cl-row>
@@ -118,6 +108,22 @@
 
 		<cl-row>
 			<cl-flex1 />
+			<!-- 采集进度显示 -->
+			<div v-if="autoCollecting" class="collect-progress">
+				<el-progress
+					:format="() => `${collectProgress.current}/${collectProgress.total}`"
+					:percentage="
+						Math.round((collectProgress.current / collectProgress.total) * 100)
+					"
+					status="success"
+					style="width: 200px; margin-right: 20px"
+				/>
+				<span
+					>{{ t('当前页') }}: {{ collectProgress.currentPage }}/{{
+						collectProgress.totalPages
+					}}</span
+				>
+			</div>
 			<!-- 分页控件 -->
 			<cl-pagination />
 		</cl-row>
@@ -164,18 +170,68 @@
 </template>
 
 <script lang="ts" name="video-videos" setup>
-import { useCrud, useForm, useTable, useUpsert } from '@cool-vue/crud';
+import { useCrud, useForm, useSearch, useTable, useUpsert } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
 import { useDict } from '/$/dict';
 import { useI18n } from 'vue-i18n';
 import { ref, watch } from 'vue';
 import { ElMessage } from 'element-plus';
 
-const Form = useForm();
-
 const { service, router, route } = useCool();
 const { dict } = useDict();
 const { t } = useI18n();
+const Form = useForm();
+// 先声明 Search，稍后再初始化
+const Search = useSearch({
+	items: [
+		{
+			label: t('标题'),
+			prop: 'keyWord',
+			component: {
+				name: 'el-input'
+			}
+		},
+		{
+			label: t('视频ID'),
+			prop: 'id',
+			component: {
+				name: 'el-input'
+			}
+		},
+		{
+			label: t('分类'),
+			prop: 'category_id',
+			component: {
+				name: 'cl-select',
+				props: {
+					tree: true,
+					checkStrictly: true,
+					options: dict.get('video_category')
+				}
+			}
+		},
+		{
+			label: t('状态'),
+			prop: 'play_url_put_in',
+			component: {
+				name: 'cl-select',
+				props: {
+					options: [
+						{
+							label: t('正常'),
+							value: 1
+						},
+						{
+							label: t('异常'),
+							value: 0
+						}
+					]
+				}
+			}
+		}
+	],
+	onChange(data, prop) {}
+});
 
 // 创建一个响应式的分类字典引用
 const categoryDict = ref([]);
@@ -218,6 +274,16 @@ const tagInputValue = ref<string>('');
 
 // 当前激活的 tab
 const activeTab = ref<string>('collection');
+
+// 自动分页采集相关状态
+const autoCollecting = ref<boolean>(false);
+const collectProgress = ref({
+	current: 0,
+	total: 0,
+	currentPage: 1,
+	totalPages: 0
+});
+const collectedData = ref<any[]>([]);
 
 const play_url_put_inDict = [
 	{ value: 1, label: t('已入库') },
@@ -666,6 +732,15 @@ const Table = useTable({
 			dictAllLevels: true // 显示所有等级
 		},
 		{
+			label: t('入库'),
+			prop: 'play_url_put_in',
+			minWidth: 100,
+			dict: [
+				{ value: 1, label: t('已入库') },
+				{ value: 0, label: t('未入库') }
+			]
+		},
+		{
 			label: t('搜索榜单分类'),
 			prop: 'searchRecommendType',
 			dict: dict.get('search_type'),
@@ -728,6 +803,7 @@ const Table = useTable({
 		{ label: t('时长(单位s)'), prop: 'duration', minWidth: 120 },
 		{ label: t('总集数'), prop: 'number', minWidth: 100 },
 		{ label: t('更新集数'), prop: 'total', minWidth: 100 },
+
 		{
 			label: t('横屏海报'),
 			prop: 'horizontal_poster',
@@ -810,6 +886,110 @@ const syncVideo = async (keyWord: string[]) => {
 	service.video.collection.collection_keyword({
 		keyWord: keyWord
 	});
+};
+
+// 自动分页采集函数
+const autoPaginateCollect = async () => {
+	if (autoCollecting.value) {
+		ElMessage.warning(t('正在采集中，请稍候...'));
+		return;
+	}
+
+	autoCollecting.value = true;
+	collectProgress.value = {
+		current: 0,
+		total: 0,
+		currentPage: 1,
+		totalPages: 0
+	};
+	collectedData.value = [];
+
+	try {
+		// 获取当前查询条件
+		const currentSearchParams = Search.value?.getForm() || {};
+
+		// 第一次请求获取总数和总页数
+		const firstResponse = await service.video.videos.page({
+			...currentSearchParams,
+			page: 1,
+			size: 20
+		});
+
+		const total = firstResponse.pagination?.total || 0;
+		const totalPages = Math.ceil(total / 20);
+
+		collectProgress.value.total = total;
+		collectProgress.value.totalPages = totalPages;
+
+		// 收集第一页数据
+		collectedData.value.push(...firstResponse.list);
+		collectProgress.value.current += firstResponse.list.length;
+		collectProgress.value.currentPage = 1;
+
+		// 执行第一页的采集逻辑
+		await executeCollectionLogic(firstResponse.list);
+
+		// 如果有多页，继续采集后续页面
+		if (totalPages > 1) {
+			for (let page = 2; page <= totalPages; page++) {
+				// 检查是否被中断
+				if (!autoCollecting.value) {
+					break;
+				}
+
+				const response = await service.video.videos.page({
+					...currentSearchParams,
+					page: page,
+					size: 20
+				});
+
+				collectedData.value.push(...response.list);
+				collectProgress.value.current += response.list.length;
+				collectProgress.value.currentPage = page;
+
+				// 执行当前页的采集逻辑
+				await executeCollectionLogic(response.list);
+
+				// 添加延迟避免请求过于频繁
+				await new Promise(resolve => setTimeout(resolve, 500));
+			}
+		}
+
+		ElMessage.success(
+			`${t('采集完成')}：${t('共采集')} ${collectedData.value.length} ${t('条数据')}`
+		);
+	} catch (error: any) {
+		console.error('自动分页采集失败：', error);
+		ElMessage.error(`${t('采集失败')}：${error.message || error}`);
+	} finally {
+		autoCollecting.value = false;
+	}
+};
+
+// 执行具体的采集逻辑
+const executeCollectionLogic = async (pageData: any[]) => {
+	// 提取需要采集的标题
+	const titles = pageData
+		.map(item => item.title)
+		.filter(title => title && typeof title === 'string');
+
+	if (titles.length > 0) {
+		try {
+			// 调用采集接口
+			await service.video.collection.collection_keyword({
+				keyWord: titles
+			});
+			console.log(`${t('采集成功')}：`, titles);
+		} catch (error) {
+			console.error(`${t('采集失败')}：`, titles, error);
+		}
+	}
+};
+
+// 停止自动采集
+const stopAutoCollect = () => {
+	autoCollecting.value = false;
+	ElMessage.info(t('已停止采集'));
 };
 
 function open() {
@@ -1182,7 +1362,28 @@ watch(
 	},
 	{ immediate: false }
 );
+
+/**
+ * 自动采集业务
+ */
+function autoCollect() {
+	console.log(Search.value.getForm);
+}
 </script>
+
+<style scoped>
+.collect-progress {
+	display: flex;
+	align-items: center;
+	margin-right: 20px;
+}
+
+.collect-progress span {
+	font-size: 14px;
+	color: #606266;
+	white-space: nowrap;
+}
+</style>
 
 <style lang="scss" scoped>
 .tag-editor {

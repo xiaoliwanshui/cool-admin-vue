@@ -5,8 +5,29 @@
 			<cl-refresh-btn />
 			<!-- 新增按钮 -->
 			<cl-add-btn />
+			<el-button @click="startCollection">采集数据</el-button>
 			<!-- 删除按钮 -->
 			<cl-multi-delete-btn />
+			<!-- 自动分页采集按钮 -->
+			<el-button
+				:disabled="autoCollecting"
+				:loading="autoCollecting"
+				type="success"
+				@click="autoPaginateCollect"
+			>
+				<template v-if="autoCollecting">
+					{{ t('采集中') }} ({{ collectProgress.currentPage }}/{{
+						collectProgress.totalPages
+					}})
+				</template>
+				<template v-else>
+					{{ t('自动分页采集') }}
+				</template>
+			</el-button>
+			<!-- 停止采集按钮 -->
+			<el-button v-if="autoCollecting" type="danger" @click="stopAutoCollect">
+				{{ t('停止采集') }}
+			</el-button>
 			<cl-flex1 />
 			<!-- 条件搜索 -->
 			<cl-search ref="Search" />
@@ -19,6 +40,22 @@
 
 		<cl-row>
 			<cl-flex1 />
+			<!-- 采集进度显示 -->
+			<div v-if="autoCollecting" class="collect-progress">
+				<el-progress
+					:format="() => `${collectProgress.current}/${collectProgress.total}`"
+					:percentage="
+						Math.round((collectProgress.current / collectProgress.total) * 100)
+					"
+					status="success"
+					style="width: 200px; margin-right: 20px"
+				/>
+				<span
+					>{{ t('当前页') }}: {{ collectProgress.currentPage }}/{{
+						collectProgress.totalPages
+					}}</span
+				>
+			</div>
 			<!-- 分页控件 -->
 			<cl-pagination />
 		</cl-row>
@@ -48,6 +85,7 @@ import { ElMessage } from 'element-plus';
 import { useCrud, useForm, useSearch, useTable, useUpsert } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
 import { useI18n } from 'vue-i18n';
+import { ref } from 'vue';
 import collectionSelect from '../components/collection-select.vue';
 import videoSelect from '../components/video-select.vue';
 
@@ -58,6 +96,11 @@ defineOptions({
 const { service } = useCool();
 const { t } = useI18n();
 const ImportForm = useForm();
+
+// 自动分页采集相关状态
+const autoCollecting = ref<boolean>(false);
+const paginationValue = ref({});
+const collectedData = ref<any[]>([]);
 
 // cl-upsert
 const Upsert = useUpsert({
@@ -157,6 +200,11 @@ const Table = useTable({
 const Search = useSearch({
 	items: [
 		{
+			label: t('资源数量'),
+			prop: 'collection_number',
+			component: { name: 'el-input-number', props: { clearable: true } }
+		},
+		{
 			label: t('资源名称'),
 			prop: 'collection_id',
 			component: {
@@ -194,12 +242,105 @@ const Search = useSearch({
 // cl-crud
 const Crud = useCrud(
 	{
-		service: service.video.video_line
+		service: service.video.video_line,
+		async onRefresh(params, { next, done, render }) {
+			if (typeof params.collection_number === 'number') {
+				// 1 默认调用
+				const { list, pagination } =
+					await service.video.video_line.collection_number(params);
+
+				// 更新收集进度参数中的分页数据
+				if (pagination) {
+					paginationValue.value = pagination;
+				}
+
+				// 渲染数据
+				render(list, pagination);
+			} else {
+				// 1 默认调用
+				const { list, pagination } = await next(params);
+
+				// 更新收集进度参数中的分页数据
+				if (pagination) {
+					paginationValue.value = pagination;
+				}
+
+				// 渲染数据
+				render(list, pagination);
+			}
+		}
 	},
 	app => {
 		app.refresh();
 	}
 );
+
+// 自动分页采集函数
+const autoPaginateCollect = async () => {
+	try {
+		//每次等待1秒
+		await new Promise(resolve => setTimeout(resolve, 3000));
+		const params = Search.value?.getForm() || {};
+		const { list } = await service.video.video_line.collection_number({
+			...params,
+			...paginationValue.value
+		});
+		await executeCollectionLogic(list);
+		//如果列表为空，则停止采集
+		if (list.length === 0) {
+			stopAutoCollect();
+		}
+		if (list.length > 0) {
+			paginationValue.value.page = paginationValue.value.page + 1;
+			await autoPaginateCollect();
+		}
+	} catch (error: any) {
+		console.error('自动分页采集失败：', error);
+		ElMessage.error(`${t('采集失败')}：${error.message || error}`);
+	} finally {
+		autoCollecting.value = false;
+	}
+};
+
+// 执行具体的采集逻辑
+const executeCollectionLogic = async (pageData: any[]) => {
+	// 提取需要采集的视频名称
+	const videoNames = pageData
+		.map(item => item.video_name)
+		.filter(name => name && typeof name === 'string');
+
+	if (videoNames.length > 0) {
+		try {
+			// 调用采集接口
+			await service.video.collection.collection_keyword({
+				keyWord: videoNames
+			});
+			console.log(`${t('采集成功')}：`, videoNames);
+		} catch (error) {
+			console.error(`${t('采集失败')}：`, videoNames, error);
+		}
+	}
+};
+
+// 停止自动采集
+const stopAutoCollect = () => {
+	autoCollecting.value = false;
+	ElMessage.info(t('已停止采集'));
+};
+
+async function startCollection() {
+	// 获取表格选中的数据
+	const selection = Table.value?.selection || [];
+	// 获取所有选中项的 video_name 数组
+	const videoNames = selection
+		.map((item: any) => item.video_name || '')
+		.filter((name: string) => name);
+
+	await service.video.collection.collection_keyword({
+		keyWord: videoNames
+	});
+	ElMessage.success('操作成功');
+}
 
 // 刷新
 function refresh(params?: any) {
@@ -310,3 +451,17 @@ function openQuickImport(scope: any) {
 	});
 }
 </script>
+
+<style scoped>
+.collect-progress {
+	display: flex;
+	align-items: center;
+	margin-right: 20px;
+}
+
+.collect-progress span {
+	font-size: 14px;
+	color: #606266;
+	white-space: nowrap;
+}
+</style>

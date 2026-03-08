@@ -61,7 +61,7 @@ const Upsert = useUpsert({
 		},
 		{
 			label: t('解析地址'),
-			prop: 'address',
+			prop: 'parseAddress',
 			component: { name: 'el-input', props: { clearable: true } }
 		},
 		{

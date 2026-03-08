@@ -341,7 +341,14 @@ const Table = useTable({
 		{ label: t('页面'), prop: 'path', minWidth: 120 },
 		{ label: t('关联ID'), prop: 'relatedId', minWidth: 120 },
 		{ label: t('排序'), prop: 'sort', minWidth: 120 },
-		{ label: t('状态'), prop: 'status', minWidth: 120 },
+		{
+			label: t('状态'),
+			prop: 'status',
+			minWidth: 120,
+			component: {
+				name: 'cl-switch'
+			}
+		},
 		{ label: t('创建用户ID'), prop: 'createUserId', minWidth: 120 },
 		{ label: t('更新用户ID'), prop: 'updateUserId', minWidth: 120 },
 		{

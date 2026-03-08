@@ -494,6 +494,7 @@ const Table = useTable({
 			dictColor: true,
 			minWidth: 140
 		},
+		{ label: t('排序'), prop: 'sort', minWidth: 140 },
 		{
 			label: t('日人气'),
 			prop: 'popularity_day'
@@ -510,7 +511,6 @@ const Table = useTable({
 			label: t('总人气'),
 			prop: 'popularity_sum'
 		},
-		{ label: t('排序'), prop: 'sort', minWidth: 140 },
 		{ label: t('内容'), prop: 'introduce', showOverflowTooltip: true, minWidth: 200 },
 		{
 			label: t('状态'),

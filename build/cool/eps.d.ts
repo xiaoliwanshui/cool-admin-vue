@@ -3164,11 +3164,6 @@ declare namespace Eps {
 
 	interface VideoVideo_line {
 		/**
-		 * collection_number
-		 */
-		collection_number(data?: any): Promise<any>;
-
-		/**
 		 * delete
 		 */
 		delete(data?: any): Promise<any>;
@@ -3202,7 +3197,6 @@ declare namespace Eps {
 		 * 权限标识
 		 */
 		permission: {
-			collection_number: string;
 			delete: string;
 			update: string;
 			info: string;
@@ -3215,7 +3209,6 @@ declare namespace Eps {
 		 * 权限状态
 		 */
 		_permission: {
-			collection_number: boolean;
 			delete: boolean;
 			update: boolean;
 			info: boolean;

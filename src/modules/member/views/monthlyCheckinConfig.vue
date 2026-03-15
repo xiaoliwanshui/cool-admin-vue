@@ -31,9 +31,10 @@
 
 <script lang="ts" setup>
 import { ElMessage } from 'element-plus';
-import { useCrud, useTable, useUpsert, useSearch } from '@cool-vue/crud';
+import { useCrud, useSearch, useTable, useUpsert } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
 import { useI18n } from 'vue-i18n';
+
 const { service } = useCool();
 const { t } = useI18n();
 
@@ -48,6 +49,7 @@ function init() {
 		refresh();
 	});
 }
+
 // cl-upsert
 const Upsert = useUpsert({
 	items: [
@@ -108,7 +110,7 @@ const Upsert = useUpsert({
 const Table = useTable({
 	columns: [
 		{ type: 'selection' },
-
+		{ label: t('ID'), prop: 'id', minWidth: 120 },
 		{ label: t('月份'), prop: 'month', minWidth: 120 },
 		{ label: t('日期'), prop: 'day', minWidth: 120 },
 		{ label: t('签到获得的积分数额'), prop: 'score', minWidth: 120 },
@@ -146,7 +148,7 @@ const Search = useSearch({
 			},
 			value: 1,
 			required: true
-		},
+		}
 	]
 });
 

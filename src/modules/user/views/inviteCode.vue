@@ -30,91 +30,65 @@
 
 <script lang="ts" setup>
 defineOptions({
-	name: 'user-member-exchange-config'
+	name: 'user-invite-code'
 });
 
 import { useCrud, useSearch, useTable, useUpsert } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
 import { useI18n } from 'vue-i18n';
+import { reactive } from 'vue';
 
 const { service } = useCool();
 const { t } = useI18n();
+
+// 选项
+const options = reactive({
+	maxUsage: [
+		{ label: t('无限次'), value: 0, type: 'success' },
+		{ label: t('有限次'), value: 1, type: 'success' }
+	],
+	status: [
+		{ label: t('禁用'), value: 0, type: 'danger' },
+		{ label: t('启用'), value: 1, type: 'success' }
+	]
+});
 
 // cl-upsert
 const Upsert = useUpsert({
 	items: [
 		{
-			label: t('兑换名称'),
-			prop: 'exchangeName',
-			component: {
-				name: 'el-input',
-				props: {
-					clearable: true,
-					placeholder: t('请输入兑换名称')
-				}
-			},
+			label: t('邀请码'),
+			prop: 'code',
+			component: { name: 'el-input', props: { clearable: true } },
+			span: 12,
 			required: true
 		},
 		{
-			label: t('所需积分'),
-			prop: 'requiredScore',
-			component: {
-				name: 'el-input-number',
-				props: {
-					clearable: true,
-					min: 0,
-					placeholder: t('请输入所需积分')
-				}
-			},
-			required: true
-		},
-		{
-			label: t('兑换天数'),
-			prop: 'days',
-			component: {
-				name: 'el-input-number',
-				props: {
-					clearable: true,
-					min: 0,
-					placeholder: t('请输入兑换天数')
-				}
-			},
-			required: true
-		},
-		{
-			label: t('是否启用'),
-			prop: 'enabled',
-			value: 1,
-			component: {
-				name: 'cl-switch'
-			},
-			required: true
-		},
-		{
-			label: t('排序'),
-			prop: 'sort',
+			label: t('最大使用次数'),
+			prop: 'maxUsage',
+			component: { name: 'el-radio-group', options: options.maxUsage },
 			value: 0,
-			component: {
-				name: 'el-input-number',
-				props: {
-					clearable: true,
-					min: 0,
-					placeholder: t('请输入排序值')
-				}
-			}
+			required: true
+		},
+		{
+			label: t('已使用次数'),
+			prop: 'usedCount',
+			component: { name: 'el-input', props: { clearable: true } },
+			span: 12,
+			required: true
+		},
+		{
+			label: t('状态'),
+			prop: 'status',
+			component: { name: 'el-radio-group', options: options.status },
+			value: 1,
+			required: true
 		},
 		{
 			label: t('备注'),
 			prop: 'remark',
-			component: {
-				name: 'el-input',
-				props: {
-					type: 'textarea',
-					rows: 3,
-					clearable: true,
-					placeholder: t('请输入备注信息')
-				}
-			}
+			component: { name: 'el-input', props: { clearable: true } },
+			span: 12
 		}
 	]
 });
@@ -123,30 +97,22 @@ const Upsert = useUpsert({
 const Table = useTable({
 	columns: [
 		{ type: 'selection' },
-		{ label: t('ID'), prop: 'id', minWidth: 120 },
-		{ label: t('兑换名称'), prop: 'exchangeName', minWidth: 150 },
-		{ label: t('所需积分'), prop: 'requiredScore', minWidth: 120 },
-		{ label: t('兑换天数'), prop: 'days', minWidth: 120 },
+
+		{ label: t('邀请码'), prop: 'code', minWidth: 120 },
 		{
-			label: t('是否启用'),
-			prop: 'enabled',
-			minWidth: 100,
-			component: {
-				name: 'cl-switch'
-			}
+			label: t('最大使用次数'),
+			prop: 'maxUsage',
+			minWidth: 120,
+			dict: options.maxUsage
 		},
+		{ label: t('已使用次数'), prop: 'usedCount', minWidth: 120 },
 		{
-			label: t('排序'),
-			prop: 'sort',
-			minWidth: 80,
-			sortable: 'custom'
+			label: t('状态'),
+			prop: 'status',
+			minWidth: 120,
+			dict: options.status
 		},
-		{
-			label: t('备注'),
-			prop: 'remark',
-			minWidth: 200,
-			showOverflowTooltip: true
-		},
+		{ label: t('备注'), prop: 'remark', minWidth: 120 },
 		{ label: t('创建用户ID'), prop: 'createUserId', minWidth: 120 },
 		{ label: t('更新用户ID'), prop: 'updateUserId', minWidth: 120 },
 		{
@@ -163,6 +129,7 @@ const Table = useTable({
 			sortable: 'custom',
 			component: { name: 'cl-date-text' }
 		},
+
 		{ type: 'op', buttons: ['edit', 'delete'] }
 	]
 });
@@ -173,7 +140,7 @@ const Search = useSearch();
 // cl-crud
 const Crud = useCrud(
 	{
-		service: service.member.memberExchangeConfig
+		service: service.user.inviteCode
 	},
 	app => {
 		app.refresh();

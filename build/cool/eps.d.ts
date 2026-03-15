@@ -111,6 +111,13 @@ declare namespace Eps {
 		[key: string]: any;
 	}
 
+	interface ScoreWithdrawalEntity {
+		/**
+		 * 任意键值
+		 */
+		[key: string]: any;
+	}
+
 	interface PluginInfoEntity {
 		/**
 		 * 任意键值
@@ -168,6 +175,20 @@ declare namespace Eps {
 	}
 
 	interface UserInfoEntity {
+		/**
+		 * 任意键值
+		 */
+		[key: string]: any;
+	}
+
+	interface InviteCodeEntity {
+		/**
+		 * 任意键值
+		 */
+		[key: string]: any;
+	}
+
+	interface InviteRecordEntity {
 		/**
 		 * 任意键值
 		 */
@@ -397,6 +418,11 @@ declare namespace Eps {
 		list: ScoreEntity[];
 	}
 
+	interface MemberScoreWithdrawalPageResponse {
+		pagination: PagePagination;
+		list: ScoreWithdrawalEntity[];
+	}
+
 	interface PluginInfoPageResponse {
 		pagination: PagePagination;
 		list: PluginInfoEntity[];
@@ -440,6 +466,16 @@ declare namespace Eps {
 	interface UserInfoPageResponse {
 		pagination: PagePagination;
 		list: UserInfoEntity[];
+	}
+
+	interface UserInviteCodePageResponse {
+		pagination: PagePagination;
+		list: InviteCodeEntity[];
+	}
+
+	interface UserInviteRecordPageResponse {
+		pagination: PagePagination;
+		list: InviteRecordEntity[];
 	}
 
 	interface UserLikePageResponse {
@@ -1694,6 +1730,64 @@ declare namespace Eps {
 		request: Request;
 	}
 
+	interface MemberScoreWithdrawal {
+		/**
+		 * update
+		 */
+		update(data?: any): Promise<any>;
+
+		/**
+		 * delete
+		 */
+		delete(data?: any): Promise<any>;
+
+		/**
+		 * info
+		 */
+		info(data?: any): Promise<ScoreWithdrawalEntity>;
+
+		/**
+		 * list
+		 */
+		list(data?: any): Promise<ScoreWithdrawalEntity[]>;
+
+		/**
+		 * page
+		 */
+		page(data?: any): Promise<MemberScoreWithdrawalPageResponse>;
+
+		/**
+		 * add
+		 */
+		add(data?: any): Promise<any>;
+
+		/**
+		 * 权限标识
+		 */
+		permission: {
+			update: string;
+			delete: string;
+			info: string;
+			list: string;
+			page: string;
+			add: string;
+		};
+
+		/**
+		 * 权限状态
+		 */
+		_permission: {
+			update: boolean;
+			delete: boolean;
+			info: boolean;
+			list: boolean;
+			page: boolean;
+			add: boolean;
+		};
+
+		request: Request;
+	}
+
 	interface PluginInfo {
 		/**
 		 * install
@@ -2182,6 +2276,122 @@ declare namespace Eps {
 		 * page
 		 */
 		page(data?: any): Promise<UserInfoPageResponse>;
+
+		/**
+		 * add
+		 */
+		add(data?: any): Promise<any>;
+
+		/**
+		 * 权限标识
+		 */
+		permission: {
+			delete: string;
+			update: string;
+			info: string;
+			list: string;
+			page: string;
+			add: string;
+		};
+
+		/**
+		 * 权限状态
+		 */
+		_permission: {
+			delete: boolean;
+			update: boolean;
+			info: boolean;
+			list: boolean;
+			page: boolean;
+			add: boolean;
+		};
+
+		request: Request;
+	}
+
+	interface UserInviteCode {
+		/**
+		 * delete
+		 */
+		delete(data?: any): Promise<any>;
+
+		/**
+		 * update
+		 */
+		update(data?: any): Promise<any>;
+
+		/**
+		 * info
+		 */
+		info(data?: any): Promise<InviteCodeEntity>;
+
+		/**
+		 * list
+		 */
+		list(data?: any): Promise<InviteCodeEntity[]>;
+
+		/**
+		 * page
+		 */
+		page(data?: any): Promise<UserInviteCodePageResponse>;
+
+		/**
+		 * add
+		 */
+		add(data?: any): Promise<any>;
+
+		/**
+		 * 权限标识
+		 */
+		permission: {
+			delete: string;
+			update: string;
+			info: string;
+			list: string;
+			page: string;
+			add: string;
+		};
+
+		/**
+		 * 权限状态
+		 */
+		_permission: {
+			delete: boolean;
+			update: boolean;
+			info: boolean;
+			list: boolean;
+			page: boolean;
+			add: boolean;
+		};
+
+		request: Request;
+	}
+
+	interface UserInviteRecord {
+		/**
+		 * delete
+		 */
+		delete(data?: any): Promise<any>;
+
+		/**
+		 * update
+		 */
+		update(data?: any): Promise<any>;
+
+		/**
+		 * info
+		 */
+		info(data?: any): Promise<InviteRecordEntity>;
+
+		/**
+		 * list
+		 */
+		list(data?: any): Promise<InviteRecordEntity[]>;
+
+		/**
+		 * page
+		 */
+		page(data?: any): Promise<UserInviteRecordPageResponse>;
 
 		/**
 		 * add
@@ -3406,6 +3616,20 @@ declare namespace Eps {
 
 	type Request = (options: RequestOptions) => Promise<any>;
 
+	type DictKey =
+		| "live_category"
+		| "liveTags"
+		| "week"
+		| "area"
+		| "language"
+		| "video_category"
+		| "notice_type"
+		| "feedback_type"
+		| "ads_type"
+		| "search_type"
+		| "video_tag"
+		| "ads_page";
+
 	type Service = {
 		request: Request;
 
@@ -3435,6 +3659,7 @@ declare namespace Eps {
 			memberExchangeConfig: MemberMemberExchangeConfig;
 			monthlyCheckinConfig: MemberMonthlyCheckinConfig;
 			score: MemberScore;
+			scoreWithdrawal: MemberScoreWithdrawal;
 		};
 		plugin: { info: PluginInfo };
 		recycle: { data: RecycleData };
@@ -3445,6 +3670,8 @@ declare namespace Eps {
 			collect: UserCollect;
 			contacts: UserContacts;
 			info: UserInfo;
+			inviteCode: UserInviteCode;
+			inviteRecord: UserInviteRecord;
 			like: UserLike;
 			share: UserShare;
 			views: UserViews;

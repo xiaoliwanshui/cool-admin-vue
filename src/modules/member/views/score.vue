@@ -33,7 +33,7 @@ defineOptions({
 	name: 'user-score'
 });
 
-import { useCrud, useTable, useUpsert, useSearch } from '@cool-vue/crud';
+import { useCrud, useSearch, useTable, useUpsert } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
 import { useI18n } from 'vue-i18n';
 
@@ -96,6 +96,7 @@ const Upsert = useUpsert({
 const Table = useTable({
 	columns: [
 		{ type: 'selection' },
+		{ label: t('ID'), prop: 'id', minWidth: 120 },
 		{ label: t('积分变化数量'), prop: 'score', minWidth: 120 },
 		{
 			label: t('变更类型'),

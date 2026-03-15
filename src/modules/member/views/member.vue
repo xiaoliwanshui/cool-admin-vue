@@ -33,7 +33,7 @@ defineOptions({
 	name: 'user-member'
 });
 
-import { useCrud, useTable, useUpsert, useSearch } from '@cool-vue/crud';
+import { useCrud, useSearch, useTable, useUpsert } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
 import { useI18n } from 'vue-i18n';
 
@@ -90,6 +90,7 @@ const Upsert = useUpsert({
 const Table = useTable({
 	columns: [
 		{ type: 'selection' },
+		{ label: t('ID'), prop: 'id', minWidth: 120 },
 		{ label: t('积分'), prop: 'score', minWidth: 120 },
 		{ label: t('余额'), prop: 'balance', minWidth: 120 },
 		{ label: t('会员等级'), prop: 'level', minWidth: 120 },

@@ -71,6 +71,9 @@ importers:
       nprogress:
         specifier: ^0.2.0
         version: 0.2.0
+      page-agent:
+        specifier: ^1.5.6
+        version: 1.5.6(zod@4.3.6)
       pinia:
         specifier: ^2.3.1
         version: 2.3.1(typescript@5.5.4)(vue@3.5.18(typescript@5.5.4))
@@ -792,6 +795,22 @@ packages:
   '@one-ini/wasm@0.1.1':
     resolution: {integrity: sha512-XuySG1E38YScSJoMlqovLru4KTUNSjgVTIjyh7qMX6aNN5HY5Ct5LhRJdxO79JtTzKfzV/bnWpz+zquYrISsvw==}
 
+  '@page-agent/core@1.5.6':
+    resolution: {integrity: sha512-tBeish7olwgVrujq7m+Ef8mfsjAD71SZnLC+wPm4Ug6AxAsfv/FsnUWeGH4GFUMWsbqlMHznMr1KVKdS9EpsaA==}
+    peerDependencies:
+      zod: ^3.25.0 || ^4.0.0
+
+  '@page-agent/llms@1.5.6':
+    resolution: {integrity: sha512-9QPQ/dMAIdC1QuY67XETDI3Bz3foRfHocCvGpHLfVcMLEhPNthtERtdVjlG+Q92406MQJEINJw44ajCTTcsdkw==}
+    peerDependencies:
+      zod: ^3.25.0 || ^4.0.0
+
+  '@page-agent/page-controller@1.5.6':
+    resolution: {integrity: sha512-6oBjrmVXL/IsI5GWurDbzzJuVkrn4Vh/GoYbc+gG1ijQWFqYbQNoxv3u3Y0itFmJpb78wDbW+55FjGT3oJosZw==}
+
+  '@page-agent/ui@1.5.6':
+    resolution: {integrity: sha512-qqK+OzZoIi3Mw96Z8MM1GbrwXK1PYZ9k1y1SgTc9npz9VRqrHsmm8bnMnq3SfX8NzJzNSIEJJS4Di6VV80WKog==}
+
   '@parcel/watcher-android-arm64@2.5.1':
     resolution: {integrity: sha512-KF8+j9nNbUN8vzOFDpRMsaKBHZ/mcjEjMToVMJOhTozkDonQFFrRcfdLWn6yWKCmJKmdVxSgHiYvTCef4/qcBA==}
     engines: {node: '>= 10.0.0'}
@@ -1401,6 +1420,9 @@ packages:
     resolution: {integrity: sha512-ynZ4w/nUUv5rrsR8UUGoe1VC9hZj6V5hU9Qw1HlMDJGEJw5S7TfTErWTjMys6M7vr0YWcPqs3qAr4ss0nDfP+A==}
     engines: {node: '>=0.8'}
 
+  ai-motion@0.4.8:
+    resolution: {integrity: sha512-9nQVjf8lrYQWSW0sZdb9bES4x8Ei1w9C0S62po2KvRbMjslmjm0WMeszyW771SEauDnu4YGWqurLZ/gCkCTosQ==}
+
   ajv@6.12.6:
     resolution: {integrity: sha512-j3fVLgvTo527anyYyJOGTYJbG+vnnQYvE0m5mmkc1TK+nxAppkCLMIL0aZ4dblVCNoGShhm+kzE4ZUykBoMg4g==}
 
@@ -1526,6 +1548,10 @@ packages:
   chalk@4.1.2:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
     engines: {node: '>=10'}
+
+  chalk@5.6.2:
+    resolution: {integrity: sha512-7NzBL0rN6fMUW+f7A6Io4h40qQlG+xGmtMxfbnH/K7TAtt8JQWVQK+6g0UXKMeVJoyV5EkkNsErQ8pVD3bLHbA==}
+    engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
 
   chardet@2.1.0:
     resolution: {integrity: sha512-bNFETTG/pM5ryzQ9Ad0lJOTa6HWD/YsScAR3EnCPZRPlQh77JocYktSHOUHelyhm8IARL+o4c4F1bP5KVOjiRA==}
@@ -2484,6 +2510,11 @@ packages:
   package-json-from-dist@1.0.1:
     resolution: {integrity: sha512-UEZIS3/by4OC8vL3P2dTXRETpebLI2NiI5vIrjaD/5UtrkFX/tNbwjTSRAGC/+7CAo2pIcBaRgWmcBBHcsaCIw==}
 
+  page-agent@1.5.6:
+    resolution: {integrity: sha512-GiWAJJsRgZbvqqKzLNAcmhU34q1q2TAH0i9g3d8ow17jCmjCXRF+fZy9MfMTMwSv7S0eL2F68wvSk1ElXjzt5w==}
+    peerDependencies:
+      zod: ^3.25.0 || ^4.0.0
+
   parent-module@1.0.1:
     resolution: {integrity: sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g==}
     engines: {node: '>=6'}
@@ -3200,6 +3231,9 @@ packages:
     resolution: {integrity: sha512-GQHQqAopRhwU8Kt1DDM8NjibDXHC8eoh1erhGAJPEyveY9qqVeXvVikNKrDz69sHowPMorbPUrH/mx8c50eiBQ==}
     engines: {node: '>=18'}
 
+  zod@4.3.6:
+    resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
+
   zrender@5.6.1:
     resolution: {integrity: sha512-OFXkDJKcrlx5su2XbzJvj/34Q3m6PvyCZkVPHGYpcCJ52ek4U/ymZyfuV1nKE23AyBJ51E/6Yr0mhZ7xGTO4ag==}
 
@@ -3757,6 +3791,24 @@ snapshots:
       fastq: 1.19.1
 
   '@one-ini/wasm@0.1.1': {}
+
+  '@page-agent/core@1.5.6(zod@4.3.6)':
+    dependencies:
+      '@page-agent/llms': 1.5.6(zod@4.3.6)
+      '@page-agent/page-controller': 1.5.6
+      chalk: 5.6.2
+      zod: 4.3.6
+
+  '@page-agent/llms@1.5.6(zod@4.3.6)':
+    dependencies:
+      chalk: 5.6.2
+      zod: 4.3.6
+
+  '@page-agent/page-controller@1.5.6':
+    dependencies:
+      ai-motion: 0.4.8
+
+  '@page-agent/ui@1.5.6': {}
 
   '@parcel/watcher-android-arm64@2.5.1':
     optional: true
@@ -4412,6 +4464,8 @@ snapshots:
 
   adler-32@1.3.1: {}
 
+  ai-motion@0.4.8: {}
+
   ajv@6.12.6:
     dependencies:
       fast-deep-equal: 3.1.3
@@ -4536,6 +4590,8 @@ snapshots:
     dependencies:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
+
+  chalk@5.6.2: {}
 
   chardet@2.1.0: {}
 
@@ -5491,6 +5547,15 @@ snapshots:
 
   package-json-from-dist@1.0.1: {}
 
+  page-agent@1.5.6(zod@4.3.6):
+    dependencies:
+      '@page-agent/core': 1.5.6(zod@4.3.6)
+      '@page-agent/llms': 1.5.6(zod@4.3.6)
+      '@page-agent/page-controller': 1.5.6
+      '@page-agent/ui': 1.5.6
+      chalk: 5.6.2
+      zod: 4.3.6
+
   parent-module@1.0.1:
     dependencies:
       callsites: 3.1.0
@@ -6225,6 +6290,8 @@ snapshots:
   yocto-queue@0.1.0: {}
 
   yoctocolors@2.1.1: {}
+
+  zod@4.3.6: {}
 
   zrender@5.6.1:
     dependencies:

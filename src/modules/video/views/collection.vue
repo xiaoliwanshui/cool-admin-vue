@@ -37,9 +37,17 @@ import { useCool } from '/@/cool';
 import { VIDEOPARAMS } from '/$/video/utils/VideoParams';
 import { useI18n } from 'vue-i18n';
 import { ElMessage } from 'element-plus';
+import { reactive } from 'vue';
 
 const { service } = useCool();
 const { t } = useI18n();
+
+const options = reactive({
+	isKeyWord: [
+		{ label: t('禁用'), value: 0, type: 'danger' },
+		{ label: t('启用'), value: 1, type: 'success' }
+	]
+});
 
 // cl-upsert
 const Upsert = useUpsert({
@@ -68,6 +76,13 @@ const Upsert = useUpsert({
 			label: t('APIKey'),
 			prop: 'apiKey',
 			component: { name: 'el-input', props: { clearable: true } }
+		},
+		{
+			label: t('是否支持模糊采集'),
+			prop: 'isKeyWord',
+			component: { name: 'el-radio-group', options: options.isKeyWord },
+			value: 1,
+			required: true
 		},
 		{
 			label: t('说明'),
@@ -104,6 +119,11 @@ const Table = useTable({
 		{ label: t('解析地址'), prop: 'parse_address', minWidth: 140 },
 		{ label: t('APIKey'), prop: 'apiKey', minWidth: 140 },
 		{ label: t('参数'), prop: 'param', minWidth: 140 },
+		{
+			label: t('是否支持模糊采集'),
+			prop: 'isKeyWord',
+			dict: options.isKeyWord
+		},
 		{ label: t('说明'), prop: 'desc', minWidth: 140 },
 		{ label: t('排序'), prop: 'sort', minWidth: 140 },
 		{ label: t('创建人'), prop: 'createUserId', minWidth: 140 },

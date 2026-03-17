@@ -14,7 +14,15 @@
 
 		<cl-row>
 			<!-- 数据表格 -->
-			<cl-table ref="Table" />
+			<cl-table ref="Table">
+				<template #column-maxUsage="{ scope }">
+					<cl-row align="middle" type="flex">
+						<el-text
+							>{{ scope.row.maxUsage === 0 ? '无限次' : scope.row.maxUsage + '次' }}
+						</el-text>
+					</cl-row>
+				</template>
+			</cl-table>
 		</cl-row>
 
 		<cl-row>
@@ -60,13 +68,12 @@ const Upsert = useUpsert({
 			label: t('邀请码'),
 			prop: 'code',
 			component: { name: 'el-input', props: { clearable: true } },
-			span: 12,
 			required: true
 		},
 		{
 			label: t('最大使用次数'),
 			prop: 'maxUsage',
-			component: { name: 'el-radio-group', options: options.maxUsage },
+			component: { name: 'el-input' },
 			value: 0,
 			required: true
 		},
@@ -74,7 +81,6 @@ const Upsert = useUpsert({
 			label: t('已使用次数'),
 			prop: 'usedCount',
 			component: { name: 'el-input', props: { clearable: true } },
-			span: 12,
 			required: true
 		},
 		{
@@ -87,8 +93,7 @@ const Upsert = useUpsert({
 		{
 			label: t('备注'),
 			prop: 'remark',
-			component: { name: 'el-input', props: { clearable: true } },
-			span: 12
+			component: { name: 'el-input', props: { clearable: true } }
 		}
 	]
 });
@@ -102,8 +107,7 @@ const Table = useTable({
 		{
 			label: t('最大使用次数'),
 			prop: 'maxUsage',
-			minWidth: 120,
-			dict: options.maxUsage
+			minWidth: 120
 		},
 		{ label: t('已使用次数'), prop: 'usedCount', minWidth: 120 },
 		{

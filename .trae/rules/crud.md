@@ -1,7 +1,5 @@
----
-description: cl-crud 组件示例
-globs: *.tsx, *.ts, *.vue
----
+# cl-crud 组件示例
+
 ## 完整示例 示例
 
 ```vue
@@ -328,13 +326,13 @@ const Upsert = useUpsert<Eps.UserInfoEntity>({
 	onInfo(data, { next, done }) {
 		// 继续请求 info 接口，可以带其他自定义参数
 		// next({
-		// 	id: data.id,
+		//  id: data.id,
 		//	status: 1
 		// });
 
 		// 使用其他接口
 		// service.demo.goods.info({ id: data.id }).then((res) => {
-		// 	done(res);
+		//  done(res);
 		// });
 
 		// 直接取列表的数据返回
@@ -349,22 +347,22 @@ const Upsert = useUpsert<Eps.UserInfoEntity>({
 
 		// 自定义接口
 		// service.demo.goods
-		// 	.update(data)
-		// 	.then(() => {
-		// 		ElMessage.success("保存成功");
+		//  .update(data)
+		//  .then(() => {
+		//   ElMessage.success("保存成功");
 
-		// 		// 操作完，刷新列表
-		// 		refresh();
+		//   // 操作完，刷新列表
+		//   refresh();
 
-		// 		// 关闭窗口
-		// 		close();
-		// 	})
-		// 	.catch((err) => {
-		// 		ElMessage.error(err.message);
+		//   // 关闭窗口
+		//   close();
+		//  })
+		//  .catch((err) => {
+		//   ElMessage.error(err.message);
 
-		// 		// 关闭加载状态
-		// 		done();
-		// 	});
+		//   // 关闭加载状态
+		//   done();
+		//  });
 	},
 
 	// 打开后，数据加载完，onInfo 之后
@@ -1305,20 +1303,20 @@ const Crud = useCrud(
 
 		// 自定义配置2，针对一些特殊场景
 		// service: {
-		// 	page(params: any) {
-		// 		// params 请求参数
-		// 		//【很重要】必须返回一个 Promise 格式
-		// 		return Promise.resolve({
-		// 			list: [],
-		// 			pagination: {
-		// 				total: 1,
-		// 				page: 1,
-		// 				size: 20
-		// 			}
-		// 		});
-		// 	}
+		//  page(params: any) {
+		//      // params 请求参数
+		//      //【很重要】必须返回一个 Promise 格式
+		//      return Promise.resolve({
+		//          list: [],
+		//          pagination: {
+		//              total: 1,
+		//              page: 1,
+		//              size: 20
+		//          }
+		//      });
+		//  }
 
-		// 	// add、delete、update、info、list 也是如此配置
+		//  // add、delete、update、info、list 也是如此配置
 		// }
 	},
 	app => {
@@ -1327,7 +1325,7 @@ const Crud = useCrud(
 
 		// 带参数
 		// app.refresh({
-		// 	userId: route.query.id
+		//  userId: route.query.id
 		// });
 	}
 );

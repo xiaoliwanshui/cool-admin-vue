@@ -1,7 +1,3 @@
----
-description: cl-upsert 组件示例
-globs: *.tsx, *.ts, *.vue
----
 ## 起步 示例
 
 ```vue

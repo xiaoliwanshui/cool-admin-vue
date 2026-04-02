@@ -1,7 +1,3 @@
----
-description: module | plugins 模块、插件
-globs: 
----
 # 模块/插件开发
 
 ## 目录结构

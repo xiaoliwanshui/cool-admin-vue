@@ -1,7 +1,5 @@
----
-description: cl-adv-search 组件示例
-globs: *.tsx, *.ts, *.vue
----
+# cl-adv-search 组件示例
+
 ## 起步 示例
 
 ```vue
@@ -143,7 +141,6 @@ function open() {
 	visible.value = true;
 }
 </script>
-
 ```
 
 ## 自定义 示例
@@ -301,5 +298,4 @@ function open() {
 	visible.value = true;
 }
 </script>
-
 ```

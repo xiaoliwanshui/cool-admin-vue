@@ -12,12 +12,13 @@
 						{{ $t('移除') }}
 					</el-button>
 					<el-button
-						:disabled="refs.table?.selection.length == 0"
-						:type="props.handleBtn.type"
-						@click="handle()"
-					>
-						{{ props.handleBtn.text }}
-					</el-button>
+					v-if="props.handleBtn"
+					:disabled="refs.table?.selection.length == 0"
+					:type="(props.handleBtn.type as 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'text' | 'default') || 'primary'"
+					@click="handle()"
+				>
+					{{ props.handleBtn.text }}
+				</el-button>
 				</div>
 
 				<cl-crud padding="0">
@@ -200,9 +201,15 @@ const props = defineProps({
 		default: () => []
 	},
 	handleBtn: {
-		type: String,
-		text: String,
-		onHandle: Function
+		type: Object as PropType<
+			| {
+					type?: string;
+					text: string;
+					onHandle?: (params: any) => void;
+			  }
+			| undefined
+		>,
+		default: undefined
 	},
 	// 移除回调函数
 	onRemove: Function,
@@ -404,7 +411,7 @@ async function handle() {
 		const ids = ((refs.table?.selection || []) as any[]).map(e => e[dict.id]);
 		const propsParams = refs.table?.getSelectionRows();
 		// 执行 props 中定义的回调函数
-		if (props.handleBtn.onHandle && typeof props.handleBtn.onHandle === 'function') {
+		if (props.handleBtn?.onHandle && typeof props.handleBtn.onHandle === 'function') {
 			props.handleBtn.onHandle(propsParams);
 		}
 		list.value.forEach(e => {
@@ -415,9 +422,9 @@ async function handle() {
 		list.value = [];
 
 		// 执行 props 中定义的回调函数
-		if (props.handleBtn.onHandle && typeof props.handleBtn.onHandle === 'function') {
-			props.handleBtn.onHandle([]);
-		}
+			if (props.handleBtn?.onHandle && typeof props.handleBtn.onHandle === 'function') {
+				props.handleBtn.onHandle([]);
+			}
 	}
 }
 

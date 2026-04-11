@@ -40,68 +40,44 @@
 			<!-- 数据表格 -->
 			<cl-table ref="Table">
 				<template #column-video_class="{ scope }">
-					<template v-if="scope.row.video_class">
-						<el-tag
-							v-for="(item, index) in typeof scope.row.video_class === 'string'
-								? scope.row.video_class.split(',').filter(Boolean)
-								: Array.isArray(scope.row.video_class)
-									? scope.row.video_class
-									: []"
-							:key="index"
-							size="small"
-							style="margin-right: 4px; margin-bottom: 4px"
-						>
-							{{ item.trim() }}
-						</el-tag>
-					</template>
+					<el-tag
+						v-for="(item, index) in formatTags(scope.row.video_class)"
+						:key="index"
+						size="small"
+						style="margin-right: 4px; margin-bottom: 4px"
+					>
+						{{ item }}
+					</el-tag>
 				</template>
 				<template #column-video_tag="{ scope }">
-					<template v-if="scope.row.video_tag">
-						<el-tag
-							v-for="(item, index) in typeof scope.row.video_tag === 'string'
-								? scope.row.video_tag.split(',').filter(Boolean)
-								: Array.isArray(scope.row.video_tag)
-									? scope.row.video_tag
-									: []"
-							:key="index"
-							size="small"
-							style="margin-right: 4px; margin-bottom: 4px"
-						>
-							{{ item.trim() }}
-						</el-tag>
-					</template>
+					<el-tag
+						v-for="(item, index) in formatTags(scope.row.video_tag)"
+						:key="index"
+						size="small"
+						style="margin-right: 4px; margin-bottom: 4px"
+					>
+						{{ item }}
+					</el-tag>
 				</template>
 				<template #column-actors="{ scope }">
-					<template v-if="scope.row.actors">
-						<el-tag
-							v-for="(item, index) in typeof scope.row.actors === 'string'
-								? scope.row.actors.split(',').filter(Boolean)
-								: Array.isArray(scope.row.actors)
-									? scope.row.actors
-									: []"
-							:key="index"
-							size="small"
-							style="margin-right: 4px; margin-bottom: 4px"
-						>
-							{{ item.trim() }}
-						</el-tag>
-					</template>
+					<el-tag
+						v-for="(item, index) in formatTags(scope.row.actors)"
+						:key="index"
+						size="small"
+						style="margin-right: 4px; margin-bottom: 4px"
+					>
+						{{ item }}
+					</el-tag>
 				</template>
 				<template #column-directors="{ scope }">
-					<template v-if="scope.row.directors">
-						<el-tag
-							v-for="(item, index) in typeof scope.row.directors === 'string'
-								? scope.row.directors.split(',').filter(Boolean)
-								: Array.isArray(scope.row.directors)
-									? scope.row.directors
-									: []"
-							:key="index"
-							size="small"
-							style="margin-right: 4px; margin-bottom: 4px"
-						>
-							{{ item.trim() }}
-						</el-tag>
-					</template>
+					<el-tag
+						v-for="(item, index) in formatTags(scope.row.directors)"
+						:key="index"
+						size="small"
+						style="margin-right: 4px; margin-bottom: 4px"
+					>
+						{{ item }}
+					</el-tag>
 				</template>
 			</cl-table>
 		</cl-row>
@@ -176,6 +152,7 @@ import { useDict } from '/$/dict';
 import { useI18n } from 'vue-i18n';
 import { ref, watch } from 'vue';
 import { ElMessage } from 'element-plus';
+import { formatTags, debounce } from '../utils/format';
 
 const { service, router, route } = useCool();
 const { dict } = useDict();
@@ -229,40 +206,9 @@ const Search = useSearch({
 				}
 			}
 		}
-	],
-	onChange(data, prop) {}
+	]
 });
 
-// 创建一个响应式的分类字典引用
-const categoryDict = ref([]);
-// 创建未知分类
-const unknownCategory = {
-	id: 0,
-	typeId: 0,
-	name: '未知',
-	value: 0,
-	orderNum: 1,
-	status: 1,
-	color: null,
-	parentId: null,
-	label: '未知'
-};
-// 监听字典数据变化，动态更新分类列表
-watch(
-	() => dict.get('video_category').value,
-	newValue => {
-		console.log('video_category 字典数据变化:', newValue);
-
-		// 获取现有的分类数据
-		const existingCategories = Array.isArray(newValue) ? [...newValue] : [];
-
-		// 合并现有数据和未知分类
-		categoryDict.value = [...existingCategories, unknownCategory];
-
-		console.log('更新后的categoryDict:', categoryDict.value);
-	},
-	{ immediate: true }
-);
 // 视频ID输入框的值
 const videoIdValue = ref<string | number>('');
 
@@ -284,36 +230,6 @@ const collectProgress = ref({
 	totalPages: 0
 });
 const collectedData = ref<any[]>([]);
-
-const play_url_put_inDict = [
-	{ value: 1, label: t('已入库') },
-	{ value: 0, label: t('未入库') }
-];
-const onChange = (data, prop) => {
-	// 当 video_id 字段变化时，同步更新路由参数
-	if (prop === 'video_id') {
-		const videoId = String(data.video_id || '').trim();
-
-		if (videoId) {
-			// 有值时更新路由参数
-			router.replace({
-				path: route.path,
-				query: {
-					...route.query,
-					id: videoId
-				}
-			});
-		} else {
-			// 空值时移除路由参数中的 video_id
-			const query = { ...route.query };
-			delete query.video_id;
-			router.replace({
-				path: route.path,
-				query
-			});
-		}
-	}
-};
 // cl-upsert
 const Upsert = useUpsert({
 	items: [
@@ -1265,7 +1181,7 @@ function handleAddTag(scope: any) {
 }
 
 // 处理ID清除
-function handleIdClear() {
+const handleIdClear = debounce(() => {
 	videoIdValue.value = '';
 	// 清空时移除路由参数中的 id
 	const query = { ...route.query };
@@ -1279,10 +1195,10 @@ function handleIdClear() {
 		id: undefined,
 		page: 1
 	});
-}
+}, 300);
 
 // 处理ID变化
-function handleIdChange() {
+const handleIdChange = debounce(() => {
 	const id = String(videoIdValue.value || '').trim();
 
 	if (id) {
@@ -1312,7 +1228,7 @@ function handleIdChange() {
 			page: 1
 		});
 	}
-}
+}, 300);
 
 // 处理路由参数变化，更新输入框值并刷新列表
 function handleRouteQuery(crudInstance?: any) {
@@ -1356,19 +1272,11 @@ watch(
 	([newId, newVideoId], [oldId, oldVideoId]) => {
 		// 只有当 id 或 video_id 真的变化时才处理
 		if (String(newId) !== String(oldId) || String(newVideoId) !== String(oldVideoId)) {
-			console.log('路由参数变化:', { oldId, newId, oldVideoId, newVideoId });
 			handleRouteQuery();
 		}
 	},
 	{ immediate: false }
 );
-
-/**
- * 自动采集业务
- */
-function autoCollect() {
-	console.log(Search.value.getForm);
-}
 </script>
 
 <style scoped>

@@ -1,38 +1,58 @@
 import { useCool } from "/@/cool";
 
-// 假设 service.video.category.page 方法返回的对象结构是已知的，
-// 以下是一个示例类型声明，你需要根据实际情况调整
+// 定义服务返回的数据结构
+interface CategoryItem {
+	name: string;
+	id: string | number;
+}
+
 interface PageResult {
-	list: Array<{
-		name: string;
-		id: string | number;
-	}>;
+	list: CategoryItem[];
+}
+
+// 定义返回的数据结构
+export interface CategoryOption {
+	label: string;
+	value: string;
+}
+
+// 定义参数类型
+interface CategoryParams {
+	[key: string]: any;
 }
 
 const { service } = useCool();
 
-// 增加了输入参数类型和返回值类型声明
+/**
+ * 获取分类数据
+ * @param params 查询参数
+ * @returns 分类选项列表
+ */
 export const categoryGet = async (
-	params: any
-): Promise<Array<{ label: string; value: string | number }>> => {
-	// 输入参数校验逻辑，这里使用了一个简单的示例，实际情况可能需要更复杂的逻辑
+	params: CategoryParams = {}
+): Promise<CategoryOption[]> => {
+	// 输入参数校验
 	if (!params || typeof params !== "object") {
-		throw new Error("Invalid parameters");
+		throw new Error("Invalid parameters: params must be an object");
 	}
 
 	try {
-		// 假设 service.video.category.page 已经正确类型化，这样就可以避免使用 any
-		const { list } = (await service.video.category.page(params)) as PageResult;
+		const response = await service.video.category.page(params);
+		const { list } = response as unknown as PageResult;
 
-		return list.map((item) => {
-			return {
-				label: item.name,
-				value: `${item.id}`
-			};
-		});
+		// 确保 list 是数组
+		if (!Array.isArray(list)) {
+			return [];
+		}
+
+		return list.map((item) => ({
+			label: item.name || '',
+			value: String(item.id)
+		}));
 	} catch (error) {
-		// 异常处理逻辑
-		// 这里简单地将错误抛出，实际应用中可能需要更复杂的错误处理策略
-		throw new Error("Failed to fetch category data");
+		// 更详细的错误处理
+		console.error('Error fetching category data:', error);
+		// 返回空数组而不是抛出错误，避免影响正常流程
+		return [];
 	}
 };

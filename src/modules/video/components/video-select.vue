@@ -1,40 +1,49 @@
 <template>
-	<el-row :gutter="20">
-		<el-col :span="24">
-			<div class="grid-content ep-bg-purple" />
-			<el-select
-				v-model="selectedValue"
-				:loading="loading"
-				:placeholder="placeholder"
-				:remote-method="remoteMethod"
-				clearable
-				filterable
-				remote
-				reserve-keyword
-				@change="handleChange"
+	<el-select
+		v-model="selectedValue"
+		:loading="loading"
+		:placeholder="placeholder"
+		:remote-method="remoteMethod"
+		clearable
+		filterable
+		remote
+		reserve-keyword
+		@change="handleChange"
+	>
+		<el-option
+			v-for="item in options"
+			:key="item.value"
+			:label="item.label"
+			:value="item.value"
+		>
+			<span style="float: left">{{ item.label }}</span>
+			<span
+				v-if="item.remarks"
+				style="float: right; color: var(--el-text-color-secondary); font-size: 13px"
 			>
-				<el-option
-					v-for="item in options"
-					:key="item.value"
-					:label="item.label"
-					:value="item.value"
-				>
-					<span style="float: left">{{ item.label }}</span>
-					<span
-						style="float: right; color: var(--el-text-color-secondary); font-size: 13px"
-					>
-						{{ item.remarks }}
-					</span>
-				</el-option>
-			</el-select>
-		</el-col>
-	</el-row>
+				{{ item.remarks }}
+			</span>
+		</el-option>
+	</el-select>
 </template>
 
 <script lang="ts" setup>
-import { useDict } from '/$/dict';
 import { onMounted, ref, watch } from 'vue';
 import { useCool } from '/@/cool/hooks';
+
+// 定义数据类型
+interface VideoOption {
+	label: string;
+	value: number;
+	remarks?: string;
+}
+
+interface VideoInfo {
+	id: number;
+	title: string;
+	remarks?: string;
+	[key: string]: any;
+}
 
 // 定义 props
 interface Props {
@@ -43,23 +52,22 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-	placeholder: ''
+	placeholder: '请选择视频'
 });
 
 // 定义 emit 事件
 const emit = defineEmits<{
-	(e: 'change', value: any);
+	(e: 'change', value: VideoInfo | null);
 }>();
 
-const { dict } = useDict();
 const loading = ref(false);
 const selectedValue = ref<number | null>(null);
 const { service } = useCool();
-const options = ref<Array<{ label: string; value: number; remarks?: string }>>([]);
+const options = ref<VideoOption[]>([]);
 
 // 根据传入的 videoId 查询并回填默认值
 const loadDefaultValue = async (videoId: number) => {
-	if (!videoId) return;
+	if (!videoId || videoId <= 0) return;
 
 	loading.value = true;
 	try {
@@ -67,47 +75,61 @@ const loadDefaultValue = async (videoId: number) => {
 			id: videoId
 		});
 
-		selectedValue.value = data.id || null;
-		// 设置选项以便显示标签
-		options.value = [
-			{
-				label: data.title || '',
-				value: data.id || 0,
-				remarks: data.remarks
-			}
-		];
-		emit('change', data);
+		if (data && data.id) {
+			selectedValue.value = data.id;
+			// 设置选项以便显示标签
+			options.value = [
+				{
+					label: data.title || '',
+					value: data.id,
+					remarks: data.remarks
+				}
+			];
+			emit('change', {
+				id: data.id,
+				title: data.title || '',
+				remarks: data.remarks,
+				...data
+			});
+		}
 	} catch (error) {
 		console.error('加载默认值失败:', error);
+		// 错误时清空选择
+		selectedValue.value = null;
+		options.value = [];
+		emit('change', null);
 	} finally {
 		loading.value = false;
 	}
 };
 
 // 远程搜索方法
-const remoteMethod = (query: string) => {
-	if (query) {
-		loading.value = true;
-		service.video.videos
-			.page({
-				keyWord: query
-			})
-			.then(data => {
-				loading.value = false;
-				options.value = data.list.map(item => {
-					return {
-						label: item.title || '',
-						value: item.id || 0,
-						remarks: item.remarks
-					};
-				});
-			})
-			.catch(error => {
-				loading.value = false;
-				console.error('远程搜索失败:', error);
-			});
-	} else {
+const remoteMethod = async (query: string) => {
+	if (!query.trim()) {
 		options.value = [];
+		return;
+	}
+
+	loading.value = true;
+	try {
+		const data = await service.video.videos.page({
+			keyWord: query.trim()
+		});
+
+		if (data && Array.isArray(data.list)) {
+			options.value = data.list.map(item => ({
+				label: item.title || '',
+				value: item.id || 0,
+				remarks: item.remarks
+			}));
+		} else {
+			options.value = [];
+		}
+	} catch (error) {
+		console.error('远程搜索失败:', error);
+		options.value = [];
+	} finally {
+		loading.value = false;
 	}
 };
 
@@ -146,6 +168,7 @@ watch(
 			// 如果 videoId 被设置为 undefined 或 null，清空当前值
 			selectedValue.value = null;
 			options.value = [];
+			emit('change', null);
 		}
 	}
 );

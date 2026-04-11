@@ -30,10 +30,12 @@
 import { useCrud, useTable } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
 import { useDict } from '/$/dict';
+import { useI18n } from 'vue-i18n';
 import { Plugins } from '/#/crud';
 
 const { service } = useCool();
 const { dict } = useDict();
+const { t } = useI18n();
 
 // cl-table
 const Table = useTable({

@@ -137,9 +137,11 @@ const Upsert = useUpsert({
 									console.error('图片加载失败:', imageUrl);
 								};
 							} catch (error) {
-								console.error('初始化ColorThief失败:', error);
-								console.error('错误详情:', error.message);
-							}
+									console.error('初始化ColorThief失败:', error);
+									if (error instanceof Error) {
+										console.error('错误详情:', error.message);
+									}
+								}
 						}
 					},
 					onChange: file => {

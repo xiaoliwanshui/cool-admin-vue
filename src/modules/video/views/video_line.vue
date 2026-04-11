@@ -99,8 +99,14 @@ const ImportForm = useForm();
 
 // 自动分页采集相关状态
 const autoCollecting = ref<boolean>(false);
-const paginationValue = ref({});
+const paginationValue = ref<{ page: number; [key: string]: any }>({ page: 1 });
 const collectedData = ref<any[]>([]);
+const collectProgress = {
+	current: 0,
+	total: 0,
+	currentPage: 1,
+	totalPages: 1
+};
 
 // cl-upsert
 const Upsert = useUpsert({
@@ -246,8 +252,9 @@ const Crud = useCrud(
 		async onRefresh(params, { next, done, render }) {
 			if (typeof params.collection_number === 'number') {
 				// 1 默认调用
-				const { list, pagination } =
-					await service.video.video_line.collection_number(params);
+				const { list, pagination } = await (
+					service.video.video_line as any
+				).collection_number(params);
 
 				// 更新收集进度参数中的分页数据
 				if (pagination) {
@@ -281,7 +288,7 @@ const autoPaginateCollect = async () => {
 		//每次等待1秒
 		await new Promise(resolve => setTimeout(resolve, 3000));
 		const params = Search.value?.getForm() || {};
-		const { list } = await service.video.video_line.collection_number({
+		const { list } = await (service.video.video_line as any).collection_number({
 			...params,
 			...paginationValue.value
 		});
@@ -347,7 +354,21 @@ function refresh(params?: any) {
 	Crud.value?.refresh(params);
 }
 
-function parseM3u8List(input: string, scope: any): Array<{ file: string; title: string }> {
+function parseM3u8List(
+	input: string,
+	scope: any
+): Array<{
+	file: string;
+	title: string;
+	sub_title?: string;
+	collection_id?: any;
+	collection_name?: any;
+	video_line_id?: any;
+	video_name?: any;
+	video_id?: any;
+	sort?: number;
+	status?: number;
+}> {
 	const lines = input
 		.trim()
 		.split(/\r?\n/)
@@ -372,7 +393,7 @@ function parseM3u8List(input: string, scope: any): Array<{ file: string; title: 
 				video_id: scope.video_id,
 				sort: Number(fullMatch[1]),
 				status: 1
-			});
+			} as any);
 			continue;
 		}
 
@@ -380,35 +401,35 @@ function parseM3u8List(input: string, scope: any): Array<{ file: string; title: 
 		const standardMatch = trimmedLine.match(/^第(\d+)集\$([^$]+)/);
 		if (standardMatch) {
 			result.push({
-				file: standardMatch[2],
-				title: t('第{num}集', { num: standardMatch[1] }),
-				sub_title: t('第{num}集', { num: standardMatch[1] }),
-				collection_id: scope.collection_id,
-				collection_name: scope.collection_name,
-				video_line_id: scope.id,
-				video_name: scope.video_name,
-				video_id: scope.video_id,
-				sort: Number(standardMatch[1]),
-				status: 1
-			});
-			continue;
-		}
+					file: standardMatch[2],
+					title: t('第{num}集', { num: standardMatch[1] }),
+					sub_title: t('第{num}集', { num: standardMatch[1] }),
+					collection_id: scope.collection_id,
+					collection_name: scope.collection_name,
+					video_line_id: scope.id,
+					video_name: scope.video_name,
+					video_id: scope.video_id,
+					sort: Number(standardMatch[1]),
+					status: 1
+				} as any);
+				continue;
+			}
 
-		// 处理纯 URL 列表
-		const urlMatch = trimmedLine.match(/^(https?:\/\/[^\s]+)$/);
-		if (urlMatch) {
-			result.push({
-				file: urlMatch[1],
-				title: t('第{num}集', { num: episodeCounter.toString().padStart(2, '0') }),
-				sub_title: t('第{num}集', { num: episodeCounter.toString().padStart(2, '0') }),
-				collection_id: scope.collection_id,
-				collection_name: scope.collection_name,
-				video_line_id: scope.id,
-				video_name: scope.video_name,
-				video_id: scope.video_id,
-				sort: Number(episodeCounter.toString().padStart(2, '0')),
-				status: 1
-			});
+			// 处理纯 URL 列表
+			const urlMatch = trimmedLine.match(/^(https?:\/\/[^\s]+)$/);
+			if (urlMatch) {
+				result.push({
+					file: urlMatch[1],
+					title: t('第{num}集', { num: episodeCounter.toString().padStart(2, '0') }),
+					sub_title: t('第{num}集', { num: episodeCounter.toString().padStart(2, '0') }),
+					collection_id: scope.collection_id,
+					collection_name: scope.collection_name,
+					video_line_id: scope.id,
+					video_name: scope.video_name,
+					video_id: scope.video_id,
+					sort: Number(episodeCounter.toString().padStart(2, '0')),
+					status: 1
+				} as any);
 			episodeCounter++;
 		}
 	}
@@ -439,7 +460,7 @@ function openQuickImport(scope: any) {
 		],
 		on: {
 			async submit(data, { close, done }) {
-				parseM3u8List(data.importData, scope.row).forEach(item => {
+				parseM3u8List(data.importData, scope.row).forEach((item: any) => {
 					service.video.play_line.add(item).then(() => {
 						ElMessage.success(t('导入成功'));
 						done();

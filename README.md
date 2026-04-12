@@ -53,6 +53,35 @@ Ai时代，很多老旧的框架已经无法满足现代化的开发需求，Coo
 
 [https://gitcode.com/cool_team/cool-admin-midway](https://gitcode.com/cool_team/cool-admin-midway)
 
+## 📁 系统架构
+
+### 全栈解决方案
+
+本项目是 **cool-admin** 生态系统的一部分，采用前后端分离的架构：
+
+```
+┌─────────────────┐         ┌─────────────────┐         ┌─────────────────┐
+│   Flutter App   │ ──────▶ │  cool-admin-    │ ──────▶ │  cool-admin-    │
+│  (移动端前端)   │  HTTP   │   midway        │  MySQL  │   Database      │
+│                 │ ◀────── │  (服务端后端)   │         │                 │
+└─────────────────┘         └─────────────────┘         └─────────────────┘
+         ▲
+         │
+         │
+┌─────────────────┐
+│  cool-admin-vue │
+│  (后台管理前端) │
+└─────────────────┘
+```
+
+#### 📌 相关项目
+
+| 项目             | 说明                                           | 地址                                                  |
+| ---------------- | ---------------------------------------------- | ----------------------------------------------------- |
+| **移动端应用**   | 本项目的 Flutter 客户端                        | `https://github.com/xiaoliwanshui/cool-admin-flutter` |
+| **后台管理前端** | 基于 Vue3 + Element Plus 的后台管理系统        | `https://github.com/xiaoliwanshui/cool-admin-vue`     |
+| **服务端后端**   | 基于 Node.js + Midway + TypeScript 的 API 服务 | `https://github.com/xiaoliwanshui/cool-admin-midway`  |
+
 ## 微信群
 
 <img width="260" src="https://cool-show.oss-cn-shanghai.aliyuncs.com/admin/wechat.jpeg" alt="Admin Wechat"></a>
